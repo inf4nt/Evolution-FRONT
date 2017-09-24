@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+.block-background {
+  background: rgba(177, 175, 168, 0.5); /* Цвет фона */
+  /*background: rgba(126, 124, 119, 0.5); !* Цвет фона *!*/
+  color: #fff; /* Цвет текста */
+  padding: 5px; /* Поля вокруг текста */
+  border-radius: 10px;
+}
+li {
+  list-style-type: none;
+}
+.block-link a {
+  display: block; /* Ссылка как блочный элемент */
+  height: 100%; /* Высота на весь слой */
+  /*color: #666; !* Цвет ссылки *!*/
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+ .block-sms {
+   height: 500px;
+   width: 100%;
+   overflow: scroll;
+   word-break:break-all;
+   overflow-x:hidden;
+ }
+
