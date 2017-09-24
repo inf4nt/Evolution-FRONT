@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   error = '';
   server: string = serverUrl;
+  isLoad: Boolean = false;
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
@@ -23,10 +24,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoad = false;
     this.authenticationService.logout();
     NProgress.start();
     this.httpClient.get(this.server + 'index').subscribe(data => {
       NProgress.done();
+      this.isLoad = true;
     });
   }
 
