@@ -3,6 +3,6 @@
  */
 // export let serverUrl = 'http://localhost:8585/';
 
-export let serverUrl = 'https://evolution-social-rest.herokuapp.com/';
+export let serverUrl = 'https://evolution-social-rest-server.herokuapp.com/';
 
 export let maxListMessageLength = 7;
