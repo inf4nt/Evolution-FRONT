@@ -82,7 +82,7 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.model.newMessage = '';
 
       this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders}).subscribe(data => {
-        this.messageList.push(message);
+        this.messageList.push(data);
         if (this.messageList.length >= this.maxListMessageLength) {
           this.messageList.splice(0, 1);
         }
