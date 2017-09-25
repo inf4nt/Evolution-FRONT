@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+.index-background {
+  background: url(assets/background.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
 .block-background {
   background: rgba(177, 175, 168, 0.5); /* Цвет фона */
   /*background: rgba(126, 124, 119, 0.5); !* Цвет фона *!*/

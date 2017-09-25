@@ -66,7 +66,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   postMessage(): void {
-
+    NProgress.start();
     if (this.model.newMessage.length !== 0) {
 
       const message = {
@@ -81,12 +81,12 @@ export class MessageComponent implements OnInit, OnDestroy {
 
       this.model.newMessage = '';
 
-      this.messageList.push(message);
-      if (this.messageList.length >= this.maxListMessageLength) {
-        this.messageList.splice(0, 1);
-      }
-
       this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders}).subscribe(data => {
+        this.messageList.push(message);
+        if (this.messageList.length >= this.maxListMessageLength) {
+          this.messageList.splice(0, 1);
+        }
+        NProgress.done();
       });
 
     }
@@ -100,7 +100,6 @@ export class MessageComponent implements OnInit, OnDestroy {
     const index = this.messageList.indexOf(this.model.tempMessage);
     this.messageList.splice(index, 1);
     this.http.delete(this.server + 'message/' + this.model.tempMessage.id, {headers: this.httpHeaders}).subscribe(data => {
-
     });
   }
 }

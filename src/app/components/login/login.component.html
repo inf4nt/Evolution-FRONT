@@ -1,10 +1,17 @@
 <div class="form-action" id="login-page">
     <div class="row">
       <div class="col-lg-12 text-center" style="margin-top: 15%">
-        <h1 style="color: #fbfff9">Login</h1>
+        <h1 style="color: #fbfff9">
+          Login
+          <h1 *ngIf="!isRestLoad" class="text-center">
+            <br/>
+            <br/>
+            <img src="assets/preloader.gif"/>
+          </h1>
+        </h1>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="isRestLoad">
       <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
         <div class="col-lg-2"></div>

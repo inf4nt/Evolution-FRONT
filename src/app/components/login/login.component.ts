@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {serverUrl} from '../../common/const';
+import {Http} from '@angular/http';
 declare var NProgress: any;
 
 @Component({
@@ -12,19 +12,45 @@ declare var NProgress: any;
 })
 export class LoginComponent implements OnInit {
 
+
   model: any = {};
   loading = false;
   error = '';
+  server: string = serverUrl;
+  isRestLoad = false;
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService,
-              private http: HttpClient) {
+              private http: Http) {
   }
 
   ngOnInit() {
-    NProgress.done();
+    this.isRestLoad = false;
+
+    NProgress.start();
     this.authenticationService.logout();
+
+    setTimeout( () => {
+      this.wakeUpRest();
+    }, 3000);
+
   }
+
+  wakeUpRest(): void {
+    this.http
+      .get(this.server + 'index')
+      .map(res => res).subscribe((data) => {
+        console.log(data);
+        NProgress.done();
+        this.isRestLoad = true;
+      },
+      (err) => {
+        console.log(err);
+        NProgress.done();
+        this.ngOnInit();
+      });
+  }
+
 
   login() {
     NProgress.start();
