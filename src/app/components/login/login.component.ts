@@ -30,9 +30,7 @@ export class LoginComponent implements OnInit {
     NProgress.start();
     this.authenticationService.logout();
 
-    setTimeout( () => {
-      this.wakeUpRest();
-    }, 3000);
+    this.wakeUpRest();
 
   }
 
