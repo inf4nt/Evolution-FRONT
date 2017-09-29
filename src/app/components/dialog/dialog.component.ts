@@ -15,7 +15,7 @@ declare var NProgress: any;
 export class DialogComponent implements OnInit {
 
   message: any = [];
-  url: string = serverUrl + 'message/last_from_my_dialog/repair_dialog';
+  url: string = serverUrl + 'message/last_from_my_dialog';
   authUser: any = {};
 
   httpHeaders = new HttpHeaders({
