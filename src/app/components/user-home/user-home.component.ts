@@ -15,8 +15,12 @@ declare var NProgress: any;
 export class UserHomeComponent implements OnInit {
 
   id: number;
-  user: any = {};
+  currentUser: any = {};
+  auth: any = {};
   url: string = serverUrl + 'user/';
+  server: string = serverUrl;
+  isDone = false;
+  feedList: any = [];
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -29,14 +33,31 @@ export class UserHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isDone = false;
+    this.auth = this.authenticationService.getAuthUser();
     NProgress.start();
     this.activatedRoute.params.subscribe(params => {
       this.id = +params['id'];
     });
 
     this.http.get(this.url + this.id, {headers: this.httpHeaders}).subscribe(data => {
-      this.user = data;
+      this.currentUser = data;
+
+    });
+
+    this.http.get(this.server + 'feed/user/' + this.id, {headers: this.httpHeaders}).subscribe(data => {
+      this.feedList = data;
+      console.log(data);
+      this.isDone = true;
       NProgress.done();
     });
+
   }
+
+  removeFeed(feed: any): void {
+    const index = this.feedList.indexOf(feed);
+    this.feedList.splice(index, 1);
+  }
+
+
 }
