@@ -36,6 +36,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     NProgress.start();
     this.model.tempMessage = {};
+    this.authUser = this.authenticationService.getAuthUser();
 
     this.activatedRoute.params.subscribe(params => {
       this.userid = +params['id'];
@@ -43,22 +44,22 @@ export class MessageComponent implements OnInit, OnDestroy {
 
     this.http.get(this.url + this.userid, {headers: this.httpHeaders}).subscribe(data => {
       NProgress.done();
-      this.authUser = this.authenticationService.getAuthUser();
-      this.messageList = data;
-      this.messageList.reverse();
+      if (data) {
+        this.messageList = data;
+        this.messageList.reverse();
+        this.startInterval();
+      }
     });
 
     this.http.get(this.server + 'user/' + this.userid, {headers: this.httpHeaders}).subscribe(data => {
       this.secondUser = data;
     });
 
-    this.startInterval();
 
   }
 
   startInterval(): void {
-    clearInterval(this.timer);
-    this.timer = setInterval( () => {
+    this.timer = setInterval(() => {
       this.http.get(this.url + this.userid, {headers: this.httpHeaders}).subscribe(data => {
         this.messageList = data;
         this.messageList.reverse();
@@ -73,7 +74,6 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   postMessage(): void {
     if (this.model.newMessage.length > 0) {
-      clearInterval(this.timer);
       NProgress.start();
       const message = {
         message: this.model.newMessage,
@@ -92,7 +92,6 @@ export class MessageComponent implements OnInit, OnDestroy {
         if (this.messageList.length >= this.maxListMessageLength) {
           this.messageList.splice(0, 1);
         }
-        this.startInterval();
         NProgress.done();
       });
 
@@ -104,18 +103,15 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   deleteMessage(): void {
-    clearInterval(this.timer);
     const index = this.messageList.indexOf(this.model.tempMessage);
     this.messageList.splice(index, 1);
 
     this.http
       .delete(this.server + 'message/' + this.model.tempMessage.id, {headers: this.httpHeaders})
       .map(res => res).subscribe((data) => {
-        this.startInterval();
         console.log(data);
       },
       (err) => {
-        this.startInterval();
         console.log(err);
       });
   }

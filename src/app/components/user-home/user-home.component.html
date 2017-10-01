@@ -26,8 +26,20 @@
       <div *ngIf="id !== auth.id">
         <p class="text-center">
 
-          <button class="btn btn-md btn-info">
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'NOT_FOUND'">
             <span class="glyphicon glyphicon-plus"></span> Add friend
+          </button>
+
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'PROGRESS'">
+            <span class="glyphicon glyphicon-plus"></span> Remove friend
+          </button>
+
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'FOLLOWER'">
+            <span class="glyphicon glyphicon-plus"></span> Accept request
+          </button>
+
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'REQUEST'">
+            <span class="glyphicon glyphicon-plus"></span> Remove request
           </button>
 
         </p>
@@ -41,7 +53,7 @@
 
     <div class="col-lg-12 block-background">
       <div>
-        <a class="user-data-link " routerLink="{{'user-home/' + currentUser.id}}" style="color: white">
+        <a class="user-data-link " routerLink="{{'/user-home/' + currentUser.id}}" style="color: white">
           <p class="text-center" style="font-size: x-large">
             {{currentUser.firstName}} {{currentUser.lastName}}
           </p>
@@ -68,7 +80,7 @@
                 <button *ngIf="f.toUser && f.toUser.id == auth.id" type="submit" class="btn btn-default btn-md pull-right">
                   <span class="glyphicon glyphicon-remove text-danger"></span>
                 </button>
-                <a href="{{'/user-home/' +  f.sender.id}}" style="color: white">
+                <a routerLink="{{'/user-home/' +  f.sender.id}}" style="color: white">
                   {{f.sender.firstName}} {{f.sender.lastName}}
                 </a>
                 <span class="date-tweet">
