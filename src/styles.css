@@ -10,7 +10,6 @@
   background-size: cover;
 }
 
-
 .block-background {
   background: rgba(177, 175, 168, 0.5); /* Цвет фона */
   /*background: rgba(126, 124, 119, 0.5); !* Цвет фона *!*/
@@ -18,9 +17,11 @@
   padding: 5px; /* Поля вокруг текста */
   border-radius: 10px;
 }
+
 li {
   list-style-type: none;
 }
+
 .block-link a {
   display: block; /* Ссылка как блочный элемент */
   height: 100%; /* Высота на весь слой */
@@ -31,11 +32,24 @@ li {
   cursor: pointer;
 }
 
- .block-sms {
-   height: 500px;
-   width: 100%;
-   overflow: scroll;
-   word-break:break-all;
-   overflow-x:hidden;
- }
+.block-sms {
+  height: 500px;
+  width: 100%;
+  overflow: scroll;
+  word-break: break-all;
+  overflow-x: hidden;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-white:hover {
+  color: white;
+}
+
+.text-white:visited {
+  color: white;
+}
+
 

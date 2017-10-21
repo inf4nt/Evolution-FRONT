@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from '../../service/authentication.service';
 import {serverUrl} from '../../common/const';
 
@@ -73,14 +72,14 @@ export class UserHomeComponent implements OnInit, OnDestroy {
   }
 
   actionFriend(): void {
-    NProgress.start();
-    const action = this.getActionByStatus(this.friendStatus);
-
-    this.http.post(this.server + '/friend/action/user/' + this.id + '/' + action, {headers: this.httpHeaders}).subscribe((data: any) => {
+    // setInterval(() => {
+      NProgress.start();
+      const action = this.getActionByStatus(this.friendStatus);
       this.friendStatus = this.getFriendStatus(action);
+      this.http.post(this.server + 'friend/action/user/' + this.id + '/' + action, null, {headers: this.httpHeaders}).subscribe((data: any) => {
+      });
       NProgress.done();
-    });
-
+    // }, 200);
   }
 
   getActionByStatus(status: string): string {
@@ -106,7 +105,6 @@ export class UserHomeComponent implements OnInit, OnDestroy {
       return 'NOT_FOUND';
     }
   }
-
 
 
   ngOnDestroy(): void {

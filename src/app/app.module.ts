@@ -13,6 +13,7 @@ import {FriendsComponent} from './components/friends/friends.component';
 import {DialogComponent} from './components/dialog/dialog.component';
 import {MessageComponent} from './components/message/message.component';
 import {UserHomeComponent} from './components/user-home/user-home.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 
 
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
   {path: 'dialog', component: DialogComponent},
   {path: 'message/user/:id', component: MessageComponent},
   {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full'},
-
+  {path: 'registration', component: RegistrationComponent},
 ];
 
 @NgModule({
@@ -36,6 +37,7 @@ const appRoutes: Routes = [
     DialogComponent,
     MessageComponent,
     UserHomeComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,

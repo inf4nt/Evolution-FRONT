@@ -1,0 +1,68 @@
+<div>
+  <a class="text-white cursor" routerLink="/login">Go back to login</a>
+
+  <h2 class="text-center text-white">
+    Registration
+  </h2>
+
+  <div class="container col-lg-12">
+
+    <div class="col-lg-8 col-lg-offset-2">
+      <form name="form" (ngSubmit)="f.form.valid && registration()" #f="ngForm" novalidate>
+        <div>
+          <label class="control-label text-white">Email:</label>
+          <input name="username" [(ngModel)]="userAdditionalData.username" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">Password:</label>
+          <input name="password" [(ngModel)]="userAdditionalData.password" type="password" class="form-control"/>
+          <label class="text-white cursor">Show password</label>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">Nickname:</label>
+          <input name="nickname" [(ngModel)]="user.nickName" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">First name:</label>
+          <input name="first-name" [(ngModel)]="user.firstName" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">Last name:</label>
+          <input name="last-name" [(ngModel)]="user.lastName" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">State:</label>
+          <input name="state" [(ngModel)]="user.state" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">Country:</label>
+          <input name="country" [(ngModel)]="userAdditionalData.country" type="text" class="form-control"/>
+        </div>
+        <br/>
+        <div>
+          <label class="control-label text-white">Gender:</label>
+          <select name="gender" [(ngModel)]="userAdditionalData.gender" class="form-control">
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </select>
+        </div>
+        <br/>
+        <button type="submit" style="width: 100%" class="btn btn-success">Registration</button>
+      </form>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+

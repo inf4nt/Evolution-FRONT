@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../service/authentication.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {serverUrl} from '../../common/const';
 
@@ -19,6 +19,11 @@ export class FriendsComponent implements OnInit {
   listFriend: any = [];
   authUser: any = {};
 
+  httpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + this.authenticationService.getToken()
+  });
+
   constructor(private authenticationService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
               private httpClient: HttpClient) {
@@ -32,7 +37,7 @@ export class FriendsComponent implements OnInit {
       this.status = params['status'].toString();
       this.userId = +params['id'];
 
-      this.httpClient.get(this.server + 'friend/user/' + this.userId + '/' + this.status).subscribe(data => {
+      this.httpClient.get(this.server + 'friend/user/' + this.userId + '/' + this.status, {headers: this.httpHeaders}).subscribe(data => {
         if (data) {
           this.listFriend = data;
         }
