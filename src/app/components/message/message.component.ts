@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
@@ -13,9 +13,8 @@ declare var NProgress: any;
 })
 export class MessageComponent implements OnInit, OnDestroy {
 
-  dialogId: number;
-  recipientId: number;
-  url: string = serverUrl + 'message/dialog/';
+  interlocutor: number;
+  url: string = serverUrl + 'message/interlocutor/';
   server: string = serverUrl;
   messageList: any = [];
   model: any = {};
@@ -38,16 +37,14 @@ export class MessageComponent implements OnInit, OnDestroy {
     NProgress.start();
     this.model.tempMessage = {};
     this.authUser = this.authenticationService.getAuthUser();
-
     this.activatedRoute.params.subscribe(params => {
-      this.dialogId = +params['dialogId'];
-      this.recipientId = +params['recipientId'];
 
-      this.http.get(this.url + this.dialogId, {headers: this.httpHeaders})
+      this.interlocutor = +params['interlocutor'];
+
+      this.http.get(this.url + this.interlocutor, {headers: this.httpHeaders})
         .map(res => res).subscribe((data: any) => {
           if (data) {
             this.messageList = data.content;
-            this.messageList.reverse();
             this.startInterval();
           } else {
             this.messageList = null;
@@ -60,7 +57,7 @@ export class MessageComponent implements OnInit, OnDestroy {
         }
       );
 
-      this.http.get(this.server + 'user/' + this.recipientId, {headers: this.httpHeaders}).subscribe(data => {
+      this.http.get(this.server + 'user/' + this.interlocutor, {headers: this.httpHeaders}).subscribe(data => {
         this.secondUser = data;
       });
 
@@ -70,10 +67,21 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   startInterval(): void {
     this.timer = setInterval(() => {
-      this.http.get(this.url + this.dialogId, {headers: this.httpHeaders}).subscribe(data => {
-        this.messageList = data;
-        this.messageList.reverse();
-      });
+
+      this.http.get(this.url + this.interlocutor, {headers: this.httpHeaders})
+        .map(res => res).subscribe((data: any) => {
+          if (data) {
+            this.messageList = data.content;
+          } else {
+            this.messageList = null;
+          }
+          NProgress.done();
+        },
+        (err) => {
+          console.log(err);
+          NProgress.done();
+        }
+      );
       console.log('interval');
     }, 7000);
   }
@@ -88,20 +96,21 @@ export class MessageComponent implements OnInit, OnDestroy {
       const message = {
         text: this.model.newMessage,
         senderId: this.authenticationService.getAuthUser().id,
-        recipientId: this.recipientId
+        recipientId: this.interlocutor
       };
 
+
       this.model.newMessage = undefined;
-
-
       this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders})
         .map(res => res).subscribe((data: any) => {
           if (data) {
+            console.log(data);
             this.messageList.push(data);
             if (this.messageList.length >= this.maxListMessageLength) {
               this.messageList.splice(0, 1);
             }
           }
+
           NProgress.done();
         },
         (err) => {

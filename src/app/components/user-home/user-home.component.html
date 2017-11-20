@@ -16,7 +16,7 @@
         <a routerLink="/dialog" *ngIf="id == auth.id" class="btn btn-success" style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
-        <a *ngIf="id !== auth.id" routerLink="{{'/message/user/' + id}}"  class="btn btn-success" style="width: 100%">
+        <a *ngIf="id !== auth.id" routerLink="{{'/message/interlocutor/' + id}}"  class="btn btn-success" style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
       </div>

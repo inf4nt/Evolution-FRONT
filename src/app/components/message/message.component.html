@@ -3,8 +3,7 @@
     <h1 class="text-center"> {{secondUser.firstName}} {{secondUser.lastName}}</h1>
   </a>
   <hr/>
-  <div id="scroll" class="form-group block-sms scroll-down">
-
+  <div style="overflow: scroll; overflow-x: hidden"  #scrollMe [scrollTop]="scrollMe.scrollHeight" class="form-group block-sms scroll-down">
     <table class="table">
       <thead>
       <tr>
@@ -37,7 +36,7 @@
 
     <div class="col-lg-12 " >
       <br/>
-      <button form="formMessage" (click)="postMessage()" style="width: 100%" class="btn btn-info">
+      <button form="formMessage" (click)="postMessage()" type="submit" style="width: 100%" class="btn btn-info">
         Send <span class="glyphicon glyphicon-ok"></span>
       </button>
     </div>
