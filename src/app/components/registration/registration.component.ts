@@ -11,7 +11,6 @@ import {serverUrl} from '../../common/const';
 export class RegistrationComponent implements OnInit {
 
   user: any = {};
-  userAdditionalData: any = {};
   server: string = serverUrl;
 
   headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
@@ -27,19 +26,16 @@ export class RegistrationComponent implements OnInit {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       nickname: this.user.nickname,
-
-      userAdditionalData: {
-        username: this.userAdditionalData.username,
-        password: this.userAdditionalData.password,
-        state: this.userAdditionalData.state,
-        country: this.userAdditionalData.country,
-        gender: this.userAdditionalData.gender
-      }
+      username: this.user.username,
+      password: this.user.password,
+      state: this.user.state,
+      country: this.user.country,
+      gender: this.user.gender
     };
 
     console.log(result);
 
-    this.http.post(this.server + '/user', result, this.headers).map(res => res).subscribe((response) => {
+    this.http.post(this.server + 'user/post', result, this.headers).map(res => res).subscribe((response) => {
       console.log(response);
     });
 

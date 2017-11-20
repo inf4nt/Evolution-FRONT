@@ -1,21 +1,24 @@
-<div id="content-dialog" class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-1 div-white block-background" *ngIf="message.length > 0">
 
-  <h4>
-    <span class="glyphicon glyphicon-th-list"></span>
-    Dialog
-    <a style="color: white" routerLink="{{ '/user-home/' + authUser.id}}">{{authUser.firstName}} {{authUser.lastName}}</a>
-  </h4>
 
-  <div class="col-md-12 col-sm-10">
 
-    <table class="table">
-      <thead>
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
-      </thead>
-      <tbody>
+<div id="content-dialog" class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-1 div-white block-background">
+
+    <h4>
+      <span class="glyphicon glyphicon-th-list"></span>
+      Dialog <span *ngIf="!message">not found</span>
+      <a style="color: white" routerLink="{{ '/user-home/' + authUser.id}}">{{authUser.firstName}} {{authUser.lastName}}</a>
+    </h4>
+
+    <div class="col-md-12 col-sm-10">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
         <tr *ngFor="let m of message">
           <td style="width: 2%">
             <img data-src="holder.js/140x140" class="img-circle center-block" style="width: 100px; height: 100px;"
@@ -34,8 +37,8 @@
             </li>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
 
 </div>

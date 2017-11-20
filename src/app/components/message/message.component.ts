@@ -105,6 +105,9 @@ export class MessageComponent implements OnInit, OnDestroy {
         .map(res => res).subscribe((data: any) => {
           if (data) {
             console.log(data);
+            if (!this.messageList) {
+              this.messageList = [];
+            }
             this.messageList.push(data);
             if (this.messageList.length >= this.maxListMessageLength) {
               this.messageList.splice(0, 1);
