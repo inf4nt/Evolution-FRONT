@@ -13,8 +13,9 @@ declare var NProgress: any;
 })
 export class MessageComponent implements OnInit, OnDestroy {
 
-  userid: number;
-  url: string = serverUrl + 'message/user/';
+  dialogId: number;
+  recipientId: number;
+  url: string = serverUrl + 'message/dialog/';
   server: string = serverUrl;
   messageList: any = [];
   model: any = {};
@@ -39,28 +40,37 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.authUser = this.authenticationService.getAuthUser();
 
     this.activatedRoute.params.subscribe(params => {
-      this.userid = +params['id'];
-    });
+      this.dialogId = +params['dialogId'];
+      this.recipientId = +params['recipientId'];
 
-    this.http.get(this.url + this.userid, {headers: this.httpHeaders}).subscribe(data => {
-      NProgress.done();
-      if (data) {
-        this.messageList = data;
-        this.messageList.reverse();
-        this.startInterval();
-      }
-    });
+      this.http.get(this.url + this.dialogId, {headers: this.httpHeaders})
+        .map(res => res).subscribe((data: any) => {
+          if (data) {
+            this.messageList = data.content;
+            this.messageList.reverse();
+            this.startInterval();
+          } else {
+            this.messageList = null;
+          }
+          NProgress.done();
+        },
+        (err) => {
+          console.log(err);
+          NProgress.done();
+        }
+      );
 
-    this.http.get(this.server + 'user/' + this.userid, {headers: this.httpHeaders}).subscribe(data => {
-      this.secondUser = data;
-    });
+      this.http.get(this.server + 'user/' + this.recipientId, {headers: this.httpHeaders}).subscribe(data => {
+        this.secondUser = data;
+      });
 
+    });
 
   }
 
   startInterval(): void {
     this.timer = setInterval(() => {
-      this.http.get(this.url + this.userid, {headers: this.httpHeaders}).subscribe(data => {
+      this.http.get(this.url + this.dialogId, {headers: this.httpHeaders}).subscribe(data => {
         this.messageList = data;
         this.messageList.reverse();
       });
@@ -76,24 +86,38 @@ export class MessageComponent implements OnInit, OnDestroy {
     if (this.model.newMessage.length > 0) {
       NProgress.start();
       const message = {
-        message: this.model.newMessage,
-        sender: this.authenticationService.getAuthUser(),
-        dialog: {
-          second: {
-            id: this.userid
-          }
-        }
+        text: this.model.newMessage,
+        senderId: this.authenticationService.getAuthUser().id,
+        recipientId: this.recipientId
       };
 
       this.model.newMessage = undefined;
 
-      this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders}).subscribe(data => {
-        this.messageList.push(data);
-        if (this.messageList.length >= this.maxListMessageLength) {
-          this.messageList.splice(0, 1);
+
+      this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders})
+        .map(res => res).subscribe((data: any) => {
+          if (data) {
+            this.messageList.push(data);
+            if (this.messageList.length >= this.maxListMessageLength) {
+              this.messageList.splice(0, 1);
+            }
+          }
+          NProgress.done();
+        },
+        (err) => {
+          console.log(err);
+          NProgress.done();
         }
-        NProgress.done();
-      });
+      );
+
+
+      // this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders}).subscribe(data => {
+      //   this.messageList.push(data);
+      //   if (this.messageList.length >= this.maxListMessageLength) {
+      //     this.messageList.splice(0, 1);
+      //   }
+      //   NProgress.done();
+      // });
 
     }
   }
@@ -108,7 +132,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
     this.http
       .delete(this.server + 'message/' + this.model.tempMessage.id, {headers: this.httpHeaders})
-      .map(res => res).subscribe((data) => {
+      .map(res => res).subscribe((data: any) => {
         console.log(data);
       },
       (err) => {

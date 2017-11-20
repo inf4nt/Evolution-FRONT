@@ -23,7 +23,7 @@
               <span *ngIf="m.sender.id == authUser.id"
                  (click)="writeMessageToTemp(m)" class="pull-right cursor" style="color: white" data-toggle="modal" href="#modal-message-delete">X</span>
             </p>
-            {{ m.message }}
+            {{ m.text }}
           </td>
         </tr>
       </tbody>

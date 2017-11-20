@@ -37,14 +37,21 @@ export class FriendsComponent implements OnInit {
       this.status = params['status'].toString();
       this.userId = +params['id'];
 
-      this.httpClient.get(this.server + 'friend/user/' + this.userId + '/' + this.status, {headers: this.httpHeaders}).subscribe(data => {
-        if (data) {
-          this.listFriend = data;
+      this.httpClient.get(this.server + 'friend/find/' + this.status + '/' + this.userId, {headers: this.httpHeaders})
+        .map(res => res).subscribe((data: any) => {
+          if (data) {
+            console.log(data);
+            this.listFriend = data.content;
+          } else {
+            this.listFriend = null;
+          }
+          NProgress.done();
+        },
+        (err) => {
+          console.log(err);
+          NProgress.done();
         }
-
-        NProgress.done();
-      });
-
+      );
 
     });
 

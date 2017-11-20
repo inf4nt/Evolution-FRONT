@@ -15,7 +15,7 @@ declare var NProgress: any;
 export class DialogComponent implements OnInit {
 
   message: any = [];
-  url: string = serverUrl + 'message/last_from_my_dialog';
+  url: string = serverUrl + 'message/last-message-dialog/user/' + this.authenticationService.getAuthUser().id;
   authUser: any = {};
 
   httpHeaders = new HttpHeaders({
@@ -30,11 +30,24 @@ export class DialogComponent implements OnInit {
 
   ngOnInit() {
     NProgress.start();
-    this.http.get(this.url, {headers: this.httpHeaders}).subscribe(data => {
-      NProgress.done();
-      this.message = data;
-      console.log(this.message);
-      this.authUser = this.authenticationService.getAuthUser();
-    });
+
+
+    this.http.get(this.url, {headers: this.httpHeaders})
+      .map(res => res).subscribe((data: any) => {
+        if (data) {
+          this.message = data.content;
+          this.authUser = this.authenticationService.getAuthUser();
+          console.log(this.authUser);
+        } else {
+          this.message = null;
+        }
+        NProgress.done();
+      },
+      (err) => {
+        console.log(err);
+        NProgress.done();
+      }
+    );
+
   }
 }

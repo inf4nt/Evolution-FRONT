@@ -9,9 +9,9 @@
           <br/>
           <span class="glyphicon glyphicon-user"></span><a routerLink="{{ '/friend/user/' + userId + '/progress'}}" class="curs" style="color: white"> Friends</a>
           <br/>
-          <span class="glyphicon glyphicon-share-alt"></span><a routerLink="{{ '/friend/user/' + userId + '/follower'}}" class="curs" style="color: white"> Followers</a>
+          <span class="glyphicon glyphicon-share-alt"></span><a routerLink="{{ '/friend/user/' + userId + '/followers'}}" class="curs" style="color: white"> Followers</a>
           <br/>
-          <span class="glyphicon glyphicon-question-sign"></span><a routerLink="{{ '/friend/user/' + userId + '/request'}}" class="curs" style="color: white"> Friend request</a>
+          <span class="glyphicon glyphicon-question-sign"></span><a routerLink="{{ '/friend/user/' + userId + '/requests'}}" class="curs" style="color: white"> Friend request</a>
         </p>
       </div>
     </div>
@@ -39,9 +39,9 @@
                    src="http://www.isu.edu.tw/upload/276e/9/coming-soon.jpg" data-holder-rendered="true">
             </td>
             <td style="width: 10%">
-              <a routerLink="{{ '/user-home/' + f.friend.id }}" style="color: white">
-                {{f.friend.firstName}}
-                {{f.friend.lastName}}
+              <a routerLink="{{ '/user-home/' + f.second.id }}" style="color: white">
+                {{f.second.firstName}}
+                {{f.second.lastName}}
               </a>
             </td>
           </tr>

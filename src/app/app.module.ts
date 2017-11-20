@@ -22,7 +22,7 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'friend/user/:id/:status', component: FriendsComponent},
   {path: 'dialog', component: DialogComponent},
-  {path: 'message/user/:id', component: MessageComponent},
+  {path: 'message/dialog/:dialogId/recipient/:recipientId', component: MessageComponent},
   {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full'},
   {path: 'registration', component: RegistrationComponent},
 ];

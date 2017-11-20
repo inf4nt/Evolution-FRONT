@@ -60,9 +60,11 @@ export class UserHomeComponent implements OnInit, OnDestroy {
         });
     }
 
-    this.http.get(this.server + 'feed/user/' + this.id, {headers: this.httpHeaders}).subscribe(data => {
-      this.feedList = data;
-    });
+    // this.http.get(this.server + 'feed/user/' + this.id, {headers: this.httpHeaders}).subscribe(data => {
+    //   this.feedList = data;
+    // });
+
+
     this.http.get(this.url + this.id, {headers: this.httpHeaders}).subscribe(data => {
       this.currentUser = data;
       NProgress.done();

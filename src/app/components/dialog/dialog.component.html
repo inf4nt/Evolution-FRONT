@@ -23,12 +23,12 @@
           </td>
           <td style="width: 10%">
             <li>
-              <a style="color: white" routerLink="{{'/message/user/' +  m.dialog.second.id}}">
+              <a style="color: white" routerLink="{{'/message/dialog/' +  m.dialog.id + '/recipient/' + m.dialog.second.id}}">
                 <p>{{m.dialog.second.firstName}} {{m.dialog.second.lastName}}</p>
                 <hr/>
                 <p style="color: white"><span class="glyphicon glyphicon-pencil"></span>
                   {{m.sender.firstName}} {{m.sender.lastName}}
-                  <br/><br/> <span class="glyphicon glyphicon-envelope"></span> {{m.message}} </p>
+                  <br/><br/> <span class="glyphicon glyphicon-envelope"></span> {{m.text}} </p>
                 <hr/>
               </a>
             </li>
@@ -37,4 +37,5 @@
       </tbody>
     </table>
   </div>
+
 </div>

@@ -12,7 +12,6 @@ declare var NProgress: any;
 })
 export class LoginComponent implements OnInit {
 
-
   model: any = {};
   loading = false;
   error = '';
