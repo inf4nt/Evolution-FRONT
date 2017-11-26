@@ -16,7 +16,8 @@
         <a routerLink="/dialog" *ngIf="id == auth.id" class="btn btn-success" style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
-        <a *ngIf="id !== auth.id" routerLink="{{'/message/interlocutor/' + id}}"  class="btn btn-success" style="width: 100%">
+        <a *ngIf="id !== auth.id" routerLink="{{'/message/interlocutor/' + id}}" class="btn btn-success"
+           style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
       </div>
@@ -26,19 +27,21 @@
       <div *ngIf="id !== auth.id">
         <p class="text-center">
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'NOT_FOUND'">
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus === 'NOT_FOUND'">
             <span class="glyphicon glyphicon-plus"></span> Add friend
           </button>
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'PROGRESS'">
+          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus === 'PROGRESS'">
             <span class="glyphicon glyphicon-plus"></span> Remove friend
           </button>
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'FOLLOWER'">
+          <button class="btn btn-md btn-info" (click)="actionFriend()"
+                  *ngIf="friendStatus === 'REQUEST' && actionUser !== auth.id ">
             <span class="glyphicon glyphicon-plus"></span> Accept request
           </button>
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus == 'REQUEST'">
+          <button class="btn btn-md btn-info" (click)="actionFriend()"
+                  *ngIf="friendStatus === 'REQUEST' && actionUser === auth.id ">
             <span class="glyphicon glyphicon-plus"></span> Remove request
           </button>
 
@@ -61,6 +64,21 @@
       </div>
     </div>
 
+    <div>
+      <br/><br/><br/><br/>
+    </div>
+
+    <div class="col-lg-12 block-background">
+      <textarea [(ngModel)]="tweetText" placeholder="What's new ?" name="tweet-content" class="form-control"
+                style="height: 100px " rows="5"></textarea>
+      <br/>
+      <button (click)="postTweet()" type="submit" id="btn-tweet-post" style="width: 20%"
+              class="btn btn-info pull-right">
+        Post <span class="glyphicon glyphicon-ok"></span>
+      </button>
+      <br/>
+    </div>
+
 
     <div *ngIf="feedList && feedList.length > 0" class="col-lg-12 block-background" style="top:35px">
       <table style="width: 100%">
@@ -71,44 +89,58 @@
         </thead>
         <tbody>
 
-          <tr *ngFor="let f of feedList">
-            <td>
-              <div class="block-background div-white">
-                <button *ngIf="f.sender.id == auth.id" (click)="removeFeed(f)" type="submit" class="btn btn-default btn-md pull-right">
-                  <span class="glyphicon glyphicon-remove text-danger"></span>
-                </button>
-                <button *ngIf="f.toUser && f.toUser.id == auth.id" type="submit" class="btn btn-default btn-md pull-right">
-                  <span class="glyphicon glyphicon-remove text-danger"></span>
-                </button>
-                <a routerLink="{{'/user-home/' +  f.sender.id}}" style="color: white">
-                  {{f.sender.firstName}} {{f.sender.lastName}}
-                </a>
-                <span class="date-tweet">
+        <tr *ngFor="let f of feedList">
+          <td>
+            <div class="block-background div-white">
+              <button *ngIf="f.sender.id == auth.id || (f.toUser && f.toUser.id == auth.id)" type="submit"
+                      class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#feed-delete"
+                      (click)="beforeRemoveFeed(f)">
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+              </button>
+              <a routerLink="{{'/user-home/' +  f.sender.id}}" style="color: white">
+                {{f.sender.firstName}} {{f.sender.lastName}}
+              </a>
+              <span class="date-tweet">
                     {{f.date | date:'yyyy-MM-dd HH:mm:ss'}}
                 </span>
-                <div class="feed-link">
-                  <br/>
-                  <p>
-                    {{f.content}}
-                  </p>
-                </div>
-                <p>
-                  <a class="tweet-tags" *ngFor="let t of f.listTags">
-                    #{{t}}
-                  </a>
-                </p>
+              <div class="feed-link">
                 <br/>
+                <p>
+                  {{f.content}}
+                </p>
               </div>
+              <p>
+                <a class="tweet-tags" *ngFor="let t of f.listTags">
+                  #{{t}}
+                </a>
+              </p>
               <br/>
-            </td>
-          </tr>
+            </div>
+            <br/>
+          </td>
+        </tr>
 
         </tbody>
       </table>
     </div>
 
-
-
   </div>
+
+  <div class="modal fade" id="feed-delete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Are you sure ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger pull-left" (click)="removeFeed()" data-dismiss="modal">Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>

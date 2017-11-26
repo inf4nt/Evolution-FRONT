@@ -2,7 +2,7 @@
  * Created by Infant on 15.08.2017.
  */
 import {Injectable} from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
+import {Http, Headers, Response, RequestOptionsArgs} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -36,6 +36,17 @@ export class AuthenticationService {
           return false;
         }
       }).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getHeaders(): Headers {
+    return new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.getToken()
+    });
+  }
+
+  getRequestOptionsArgs(): RequestOptionsArgs {
+    return {headers: this.getHeaders()};
   }
 
   getAuthUser(): any {

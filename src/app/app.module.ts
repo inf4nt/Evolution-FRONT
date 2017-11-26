@@ -13,8 +13,11 @@ import {FriendsComponent} from './components/friends/friends.component';
 import {DialogComponent} from './components/dialog/dialog.component';
 import {MessageComponent} from './components/message/message.component';
 import {UserHomeComponent} from './components/user-home/user-home.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-
+import {RegistrationComponent} from './components/registration/registration.component';
+import {FriendService} from './service/friend.service';
+import {UserService} from './service/user.service';
+import {FeedService} from './service/feed.service';
+import {DataTransfer} from './service/data-transfer.service';
 
 
 const appRoutes: Routes = [
@@ -37,7 +40,7 @@ const appRoutes: Routes = [
     DialogComponent,
     MessageComponent,
     UserHomeComponent,
-    RegistrationComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

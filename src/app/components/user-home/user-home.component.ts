@@ -3,6 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
 import {serverUrl} from '../../common/const';
+import {FriendService} from '../../service/friend.service';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user.model';
+import {FeedService} from "../../service/feed.service";
 
 declare var NProgress: any;
 
@@ -11,17 +15,20 @@ declare var NProgress: any;
   templateUrl: './user-home.component.html',
   styleUrls: ['./user-home.component.css']
 })
-export class UserHomeComponent implements OnInit, OnDestroy {
+export class UserHomeComponent implements OnInit {
 
   id: number;
-  currentUser: any = {};
+  currentUser: User;
   auth: any = {};
   url: string = serverUrl + 'user/';
   server: string = serverUrl;
   isDone = false;
   feedList: any = [];
   friendStatus: any = '';
-
+  tweetText: any = null;
+  tempFeed: any = null;
+  friend: any = {};
+  actionUser = 0;
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -30,7 +37,10 @@ export class UserHomeComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient,
               private activatedRoute: ActivatedRoute,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private friendService: FriendService,
+              private userService: UserService,
+              private feedService: FeedService) {
   }
 
   ngOnInit(): void {
@@ -39,6 +49,7 @@ export class UserHomeComponent implements OnInit, OnDestroy {
     this.auth = this.authenticationService.getAuthUser();
 
     this.activatedRoute.params.subscribe(params => {
+      this.feedList = [];
       NProgress.start();
       this.isDone = false;
       this.id = +params['id'];
@@ -49,73 +60,100 @@ export class UserHomeComponent implements OnInit, OnDestroy {
 
   initData(): void {
 
-    if (this.id !== this.auth.id) {
-      this.http.get(this.server + 'friend/status/' + this.auth.id + '/' + this.id, {headers: this.httpHeaders})
+    if (this.auth.id !== this.id) {
+
+      this.userService
+        .findOne(this.id)
+        .subscribe(data => {
+          this.currentUser = data;
+          NProgress.done();
+          this.isDone = true;
+        });
+
+    }
+
+    this.userService
+      .findOne(this.id)
+      .subscribe(data => {
+        this.currentUser = data;
+      });
+
+    this.feedService
+      .findFeedsForMe(this.id)
+      .subscribe(data => {
+        if (data) {
+          this.feedList = data;
+          this.feedList.reverse();
+        } else {
+          this.feedList = [];
+        }
+        this.isDone = true;
+        NProgress.done();
+      });
+
+
+  }
+
+  postTweet(): void {
+    if (this.tweetText) {
+      NProgress.start();
+
+      const tweet: any = {
+        content: this.tweetText,
+        senderId: this.auth.id,
+        toUserId: this.id
+      };
+
+      this.http.post(this.server + 'feed', JSON.stringify(tweet), {headers: this.httpHeaders})
         .map(res => res).subscribe((data: any) => {
-          this.friendStatus = data.status;
-          console.log(data);
+          if (data) {
+            this.feedList.reverse();
+            this.feedList.push(data);
+            this.feedList.reverse();
+            NProgress.done();
+          }
         },
         (err) => {
           console.log(err);
+          NProgress.done();
         });
+
     }
+    this.tweetText = null;
+  }
 
-    // this.http.get(this.server + 'feed/user/' + this.id, {headers: this.httpHeaders}).subscribe(data => {
-    //   this.feedList = data;
-    // });
+  beforeRemoveFeed(feed: any): void {
+    this.tempFeed = feed;
+  }
 
+  removeFeed(): void {
+    if (this.tempFeed) {
+      const index = this.feedList.indexOf(this.tempFeed);
+      this.feedList.splice(index, 1);
 
-    this.http.get(this.url + this.id, {headers: this.httpHeaders}).subscribe(data => {
-      this.currentUser = data;
-      NProgress.done();
-      this.isDone = true;
-    });
+      this.http
+        .delete(this.server + 'feed/' + this.tempFeed.id, {headers: this.httpHeaders})
+        .subscribe(data => {
+        });
 
+      this.tempFeed = null;
+    }
   }
 
   actionFriend(): void {
-    // setInterval(() => {
-      NProgress.start();
-      const action = this.getActionByStatus(this.friendStatus);
-      this.friendStatus = this.getFriendStatus(action);
-      this.http.post(this.server + 'friend/action/user/' + this.id + '/' + action, null, {headers: this.httpHeaders}).subscribe((data: any) => {
+    NProgress.start();
+    this.friendService.actionFriend(this.friendStatus, this.id)
+      .subscribe(data => {
+        if (data) {
+          this.friendStatus = data.status;
+          this.actionUser = data.actionUser.id;
+        } else {
+          this.friendStatus = 'NOT_FOUND';
+          this.actionUser = 0;
+        }
+        NProgress.done();
       });
-      NProgress.done();
-    // }, 200);
-  }
 
-  getActionByStatus(status: string): string {
-    if (status === 'NOT_FOUND') {
-      return 'REQUEST_FRIEND';
-    } else if (status === 'PROGRESS') {
-      return 'DELETE_FRIEND';
-    } else if (status === 'FOLLOWER') {
-      return 'ACCEPT_REQUEST';
-    } else if (status === 'REQUEST') {
-      return 'DELETE_REQUEST';
-    }
-  }
-
-  getFriendStatus(action: string): string {
-    if (action === 'REQUEST_FRIEND') {
-      return 'REQUEST';
-    } else if (action === 'DELETE_FRIEND') {
-      return 'FOLLOWER';
-    } else if (action === 'ACCEPT_REQUEST') {
-      return 'PROGRESS';
-    } else if (action === 'DELETE_REQUEST') {
-      return 'NOT_FOUND';
-    }
-  }
-
-
-  ngOnDestroy(): void {
-    console.log('ngOnDestroy');
-  }
-
-  removeFeed(feed: any): void {
-    const index = this.feedList.indexOf(feed);
-    this.feedList.splice(index, 1);
   }
 
 }
