@@ -1,6 +1,6 @@
 <div class="col-lg-7 col-lg-offset-3 div-white block-background">
-  <a style="color: white" routerLink="{{ '/user-home/' + secondUser.id }}" >
-    <h1 class="text-center"> {{secondUser.firstName}} {{secondUser.lastName}}</h1>
+  <a style="color: white" routerLink="{{ '/user-home/' + interlocutorUser.id }}" >
+    <h1 class="text-center"> {{interlocutorUser.firstName}} {{interlocutorUser.lastName}}</h1>
   </a>
   <hr/>
 
@@ -24,7 +24,7 @@
               <span *ngIf="m.sender.id == authUser.id"
                  (click)="writeMessageToTemp(m)" class="pull-right cursor" style="color: white" data-toggle="modal" href="#modal-message-delete">X</span>
             </p>
-            {{ m.text }}
+            {{ m.content }}
           </td>
         </tr>
       </tbody>

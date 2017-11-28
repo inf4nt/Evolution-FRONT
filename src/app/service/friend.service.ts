@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {Friend} from '../model/friend.model';
 import {findMyFollowers, findMyProgress, findMyRequests, findOneFriend} from '../common/rest-url';
 import {DataTransfer} from './data-transfer.service';
+import {Page} from '../model/page';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FriendService {
   }
 
 
-  findOne(first: number, second: number): Observable<Friend> {
+  public findOne(first: number, second: number): Observable<Friend> {
     return this.http
       .get(findOneFriend + first + '/' + second, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
@@ -32,48 +33,27 @@ export class FriendService {
       });
   }
 
-  findMyProgress(iam: number): Observable<Array<Friend>> {
+  public findMyProgress(iam: number): Observable<Page<Friend>> {
     return this.http
       .get(findMyProgress + iam, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
-        if (response && response.json()) {
-          const list: Array<Friend> = [];
-          const content = response.json().content;
-          for (const a of content) {
-            list.push(this.transfer.jsonToModelFriend(a));
-          }
-          return list;
-        }
+        return this.transfer.responseToPage<Friend>(response);
       });
   }
 
-  findMyFollowers(iam: number): Observable<Array<Friend>> {
+  public findMyFollowers(iam: number): Observable<Page<Friend>> {
     return this.http
       .get(findMyFollowers + iam, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
-        if (response && response.json()) {
-          const list: Array<Friend> = [];
-          const content = response.json().content;
-          for (const a of content) {
-            list.push(this.transfer.jsonToModelFriend(a));
-          }
-          return list;
-        }
+        return this.transfer.responseToPage<Friend>(response);
       });
   }
 
-  findMyRequests(iam: number): Observable<Array<Friend>> {
+  public findMyRequests(iam: number): Observable<Page<Friend>> {
     return this.http
       .get(findMyRequests + iam, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
-        if (response && response.json()) {
-          const list: Array<Friend> = [];
-          const content = response.json().content;
-          for (const a of content) {
-            list.push(this.transfer.jsonToModelFriend(a));
-          }
-          return list;
-        }
+        return this.transfer.responseToPage<Friend>(response);
       });
   }
 

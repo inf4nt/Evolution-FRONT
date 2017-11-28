@@ -8,13 +8,15 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {serverUrl} from '../common/const';
+import {DataTransfer} from './data-transfer.service';
+import {User} from '../model/user.model';
 
 @Injectable()
 export class AuthenticationService {
   private authUrl = serverUrl + 'auth';
   private headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private transfer: DataTransfer) {
   }
 
   login(username: string, password: string): Observable<boolean> {
@@ -51,6 +53,10 @@ export class AuthenticationService {
 
   getAuthUser(): any {
     return JSON.parse(localStorage.getItem('currentUser')).user;
+  }
+
+  public getAuth(): User {
+    return this.transfer.jsonToModelUser(JSON.parse(localStorage.getItem('currentUser')).user);
   }
 
   isAuth(): boolean {

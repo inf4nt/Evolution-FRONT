@@ -66,7 +66,6 @@ export class UserHomeComponent implements OnInit {
         .findOne(this.id)
         .subscribe(data => {
           this.currentUser = data;
-          NProgress.done();
           this.isDone = true;
         });
 
@@ -78,11 +77,12 @@ export class UserHomeComponent implements OnInit {
         this.currentUser = data;
       });
 
+
     this.feedService
       .findFeedsForMe(this.id)
       .subscribe(data => {
-        if (data) {
-          this.feedList = data;
+        if (data.content) {
+          this.feedList = data.content;
           this.feedList.reverse();
         } else {
           this.feedList = [];

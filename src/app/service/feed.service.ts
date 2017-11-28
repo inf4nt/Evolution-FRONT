@@ -4,7 +4,8 @@ import {AuthenticationService} from './authentication.service';
 import {DataTransfer} from './data-transfer.service';
 import {Observable} from 'rxjs/Observable';
 import {Feed} from '../model/feed.model';
-import {findFeedsForMe} from '../common/rest-url';
+import {feed, findFeedsForMe} from '../common/rest-url';
+import {Page} from '../model/page';
 
 @Injectable()
 export class FeedService {
@@ -14,28 +15,32 @@ export class FeedService {
               private transfer: DataTransfer) {
   }
 
-  findFeedsForMe(iam: number): Observable<Array<Feed>> {
+  public findFeedsForMe(iam: number): Observable<Page<Feed>> {
     return this.http
       .get(findFeedsForMe + iam, {headers: this.authService.getHeaders()})
       .map((response: Response) => {
-        console.log(response);
-        const list: Array<Feed> = [];
-        if (response && response.json()) {
-          const content = response.json().content;
-          for (const a of content ) {
-            list.push(this.transfer.jsonToModelFeed(a));
-          }
-        }
-        return list;
+        return this.transfer.responseToPage<Feed>(response);
       });
   }
 
-  postFeed(feed: Feed): Feed {
+
+  public postFeed(feed: Feed): Feed {
     return null;
   }
 
-  updateFeed(feed: Feed): Feed {
+  public  updateFeed(feed: Feed): Feed {
     return null;
+  }
+
+  public deleteFeed(id: number): Observable<boolean> {
+    return this.http.delete(feed + '/' + id)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   }
 
 }

@@ -3,6 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
 import {maxListMessageLength, serverUrl} from '../../common/const';
+import {MessageService} from '../../service/message.service';
+import {Message} from '../../model/message.model';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user.model';
 
 declare var NProgress: any;
 
@@ -14,52 +18,45 @@ declare var NProgress: any;
 export class MessageComponent implements OnInit, OnDestroy {
 
   interlocutor: number;
-  url: string = serverUrl + 'message/interlocutor/';
   server: string = serverUrl;
-  messageList: any = [];
+  messageList: Array<Message> = [];
   model: any = {};
-  authUser: any = {};
+  authUser: User = new User();
   timer: any;
   maxListMessageLength = maxListMessageLength;
-  secondUser: any = {};
+  interlocutorUser: User = new User();
 
-  httpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + this.authenticationService.getToken()
-  });
 
-  constructor(private http: HttpClient,
-              private activatedRoute: ActivatedRoute,
-              private authenticationService: AuthenticationService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private authenticationService: AuthenticationService,
+              private messageService: MessageService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
     NProgress.start();
     this.model.tempMessage = {};
-    this.authUser = this.authenticationService.getAuthUser();
+
+    this.authUser = this.authenticationService.getAuth();
+
     this.activatedRoute.params.subscribe(params => {
 
       this.interlocutor = +params['interlocutor'];
 
-      this.http.get(this.url + this.interlocutor, {headers: this.httpHeaders})
-        .map(res => res).subscribe((data: any) => {
-          if (data) {
-            this.messageList = data.content;
-            this.startInterval();
-          } else {
-            this.messageList = null;
-          }
+      this.userService
+        .findOne(this.interlocutor)
+        .subscribe(data => {
+          this.interlocutorUser = data;
           NProgress.done();
-        },
-        (err) => {
-          console.log(err);
-          NProgress.done();
-        }
-      );
+        });
 
-      this.http.get(this.server + 'user/' + this.interlocutor, {headers: this.httpHeaders}).subscribe(data => {
-        this.secondUser = data;
-      });
+      this.messageService
+        .findMessageByInterlocutor(this.interlocutor)
+        .subscribe(data => {
+          this.messageList = data.content;
+        });
+
+      this.startInterval();
 
     });
 
@@ -68,20 +65,12 @@ export class MessageComponent implements OnInit, OnDestroy {
   startInterval(): void {
     this.timer = setInterval(() => {
 
-      this.http.get(this.url + this.interlocutor, {headers: this.httpHeaders})
-        .map(res => res).subscribe((data: any) => {
-          if (data) {
-            this.messageList = data.content;
-          } else {
-            this.messageList = null;
-          }
-          NProgress.done();
-        },
-        (err) => {
-          console.log(err);
-          NProgress.done();
-        }
-      );
+      this.messageService
+        .findMessageByInterlocutor(this.interlocutor)
+        .subscribe(data => {
+          this.messageList = data.content;
+        });
+
       console.log('interval');
     }, 7000);
   }
@@ -91,47 +80,22 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   postMessage(): void {
+
     if (this.model.newMessage.length > 0) {
       NProgress.start();
-      const message = {
-        text: this.model.newMessage,
-        senderId: this.authenticationService.getAuthUser().id,
-        recipientId: this.interlocutor
-      };
-
-
-      this.model.newMessage = undefined;
-      this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders})
-        .map(res => res).subscribe((data: any) => {
-          if (data) {
-            console.log(data);
-            if (!this.messageList) {
-              this.messageList = [];
-            }
-            this.messageList.push(data);
-            if (this.messageList.length >= this.maxListMessageLength) {
-              this.messageList.splice(0, 1);
-            }
+      this.messageService
+        .postMessage(this.model.newMessage, this.authenticationService.getAuth().id, this.interlocutor)
+        .subscribe(data => {
+          this.messageList.push(data);
+          if (this.messageList.length >= this.maxListMessageLength) {
+            this.messageList.splice(0, 1);
           }
-
           NProgress.done();
-        },
-        (err) => {
-          console.log(err);
-          NProgress.done();
-        }
-      );
+        });
 
-
-      // this.http.post(this.server + 'message', JSON.stringify(message), {headers: this.httpHeaders}).subscribe(data => {
-      //   this.messageList.push(data);
-      //   if (this.messageList.length >= this.maxListMessageLength) {
-      //     this.messageList.splice(0, 1);
-      //   }
-      //   NProgress.done();
-      // });
-
+      this.model.newMessage = null;
     }
+
   }
 
   writeMessageToTemp(message: any): void {
@@ -139,16 +103,16 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   deleteMessage(): void {
-    const index = this.messageList.indexOf(this.model.tempMessage);
-    this.messageList.splice(index, 1);
-
-    this.http
-      .delete(this.server + 'message/' + this.model.tempMessage.id, {headers: this.httpHeaders})
-      .map(res => res).subscribe((data: any) => {
-        console.log(data);
-      },
-      (err) => {
-        console.log(err);
+    NProgress.start();
+    this.messageService
+      .deleteMessage(this.model.tempMessage.id)
+      .subscribe(data => {
+        if (data) {
+          const index = this.messageList.indexOf(this.model.tempMessage);
+          this.messageList.splice(index, 1);
+        }
+        NProgress.doneAfterCloseModal();
       });
+
   }
 }

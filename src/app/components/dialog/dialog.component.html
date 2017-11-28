@@ -5,7 +5,7 @@
 
     <h4>
       <span class="glyphicon glyphicon-th-list"></span>
-      Dialog <span *ngIf="!message">not found</span>
+      Dialog <span *ngIf="!messageListInDialogs">not found</span>
       <a style="color: white" routerLink="{{ '/user-home/' + authUser.id}}">{{authUser.firstName}} {{authUser.lastName}}</a>
     </h4>
 
@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let m of message">
+        <tr *ngFor="let m of messageListInDialogs">
           <td style="width: 2%">
             <img data-src="holder.js/140x140" class="img-circle center-block" style="width: 100px; height: 100px;"
                  src="http://www.isu.edu.tw/upload/276e/9/coming-soon.jpg" data-holder-rendered="true">

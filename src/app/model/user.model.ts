@@ -4,12 +4,9 @@ export class User {
   private _firstName: string;
   private _lastName: string;
   private _nickname: string;
+  private _role: string;
 
-  constructor(id: number, firstName: string, lastName: string, nickname: string) {
-    this._id = id;
-    this._firstName = firstName;
-    this._lastName = lastName;
-    this._nickname = nickname;
+  constructor() {
   }
 
   get id(): number {
@@ -42,5 +39,14 @@ export class User {
 
   set nickname(value: string) {
     this._nickname = value;
+  }
+
+
+  get role(): string {
+    return this._role;
+  }
+
+  set role(value: string) {
+    this._role = value;
   }
 }

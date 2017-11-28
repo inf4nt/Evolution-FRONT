@@ -18,6 +18,7 @@ import {FriendService} from './service/friend.service';
 import {UserService} from './service/user.service';
 import {FeedService} from './service/feed.service';
 import {DataTransfer} from './service/data-transfer.service';
+import {MessageService} from './service/message.service';
 
 
 const appRoutes: Routes = [
@@ -48,7 +49,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule],
-  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService],
+  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -119,7 +119,6 @@
    */
   NProgress.start = function() {
     $(".btn").attr('disabled', 'disabled');
-
     if (!NProgress.status) NProgress.set(0);
 
     var work = function() {
@@ -150,6 +149,13 @@
   NProgress.done = function(force) {
     if (!force && !NProgress.status) return this;
       $(".btn").removeAttr('disabled');
+    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
+  };
+
+  NProgress.doneAfterCloseModal = function(force) {
+    if (!force && !NProgress.status) return this;
+    $(".btn").removeAttr('disabled');
+    $(".modal").modal('hide');
     return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
   };
 

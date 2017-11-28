@@ -4,6 +4,9 @@ import {AuthenticationService} from '../../service/authentication.service';
 import {ActivatedRoute} from '@angular/router';
 import {serverUrl} from '../../common/const';
 import {HttpHeaders} from '@angular/common/http';
+import {MessageService} from "../../service/message.service";
+import {Message} from "../../model/message.model";
+import {User} from "../../model/user.model";
 
 declare var NProgress: any;
 
@@ -14,40 +17,22 @@ declare var NProgress: any;
 })
 export class DialogComponent implements OnInit {
 
-  message: any = [];
-  url: string = serverUrl + 'message/last-message-dialog/user/' + this.authenticationService.getAuthUser().id;
-  authUser: any = {};
+  private messageListInDialogs: Array<Message> = [];
+  private authUser: User;
 
-  httpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + this.authenticationService.getToken()
-  });
-
-  constructor(private http: HttpClient,
-              private authenticationService: AuthenticationService,
-              private activatedRoute: ActivatedRoute) {
+  constructor(private authService: AuthenticationService,
+              private messageService: MessageService) {
   }
 
   ngOnInit() {
+    this.authUser = this.authService.getAuth();
     NProgress.start();
 
-
-    this.http.get(this.url, {headers: this.httpHeaders})
-      .map(res => res).subscribe((data: any) => {
-        if (data) {
-          this.message = data.content;
-          this.authUser = this.authenticationService.getAuthUser();
-          console.log(this.authUser);
-        } else {
-          this.message = null;
-        }
+    this.messageService.findLastMessageForMyDialog(this.authService.getAuthUser().id)
+      .subscribe(data => {
+        this.messageListInDialogs = data.content;
         NProgress.done();
-      },
-      (err) => {
-        console.log(err);
-        NProgress.done();
-      }
-    );
+      });
 
   }
 }
