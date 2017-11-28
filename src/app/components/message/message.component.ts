@@ -2,10 +2,10 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
-import {maxListMessageLength, serverUrl} from '../../common/const';
-import {MessageService} from '../../service/message.service';
+import {maxListMessageLength} from '../../common/const';
+import {MessageService} from '../../service/rest/message.service';
 import {Message} from '../../model/message.model';
-import {UserService} from '../../service/user.service';
+import {UserService} from '../../service/rest/user.service';
 import {User} from '../../model/user.model';
 
 declare var NProgress: any;
@@ -18,14 +18,12 @@ declare var NProgress: any;
 export class MessageComponent implements OnInit, OnDestroy {
 
   interlocutor: number;
-  server: string = serverUrl;
   messageList: Array<Message> = [];
   model: any = {};
   authUser: User = new User();
   timer: any;
   maxListMessageLength = maxListMessageLength;
   interlocutorUser: User = new User();
-
 
   constructor(private activatedRoute: ActivatedRoute,
               private authenticationService: AuthenticationService,
@@ -64,13 +62,13 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   startInterval(): void {
     this.timer = setInterval(() => {
-
-      this.messageService
-        .findMessageByInterlocutor(this.interlocutor)
-        .subscribe(data => {
-          this.messageList = data.content;
-        });
-
+      if (this.messageList.length > 0) {
+        this.messageService
+          .findMessageByInterlocutor(this.interlocutor)
+          .subscribe(data => {
+            this.messageList = data.content;
+          });
+      }
       console.log('interval');
     }, 7000);
   }

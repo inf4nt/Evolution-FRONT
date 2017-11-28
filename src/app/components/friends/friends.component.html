@@ -1,26 +1,27 @@
 <div class="col-md-10 col-lg-offset-2 div-white">
 
-
-
-  <div >
+  <div>
     <div class="col-md-3 pull-right">
       <div class="block-background" style="width: 70%">
         <p class="text-center">
           <br/>
-          <span class="glyphicon glyphicon-user"></span><a routerLink="{{ '/friend/user/' + userId + '/progress'}}" class="curs" style="color: white"> Friends</a>
+          <span class="glyphicon glyphicon-user"></span><a routerLink="{{ '/friend/user/' + userId + '/progress'}}"
+                                                           class="curs" style="color: white"> Friends</a>
           <br/>
-          <span class="glyphicon glyphicon-share-alt"></span><a routerLink="{{ '/friend/user/' + userId + '/followers'}}" class="curs" style="color: white"> Followers</a>
+          <span class="glyphicon glyphicon-share-alt"></span><a
+          routerLink="{{ '/friend/user/' + userId + '/followers'}}" class="curs" style="color: white"> Followers</a>
           <br/>
-          <span class="glyphicon glyphicon-question-sign"></span><a routerLink="{{ '/friend/user/' + userId + '/requests'}}" class="curs" style="color: white"> Friend request</a>
+          <span class="glyphicon glyphicon-question-sign"></span><a
+          routerLink="{{ '/friend/user/' + userId + '/requests'}}" class="curs" style="color: white"> Friend request</a>
         </p>
       </div>
     </div>
 
-    <div *ngIf="!listFriend">
+    <div *ngIf="listFriend.length === 0 && isDone">
       <h2 class="text-center" style="color: white">Not found</h2>
     </div>
 
-    <div class="friend" *ngIf="listFriend">
+    <div class="friend" *ngIf="listFriend.length > 0 && isDone">
       <div class="col-md-8 block-background">
         <p class="pull-left">Friends</p>
         <br/>
@@ -52,8 +53,6 @@
       </div>
     </div>
   </div>
-
-
 
 
 </div>

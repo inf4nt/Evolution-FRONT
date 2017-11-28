@@ -102,6 +102,7 @@ export class DataTransfer {
 
   public responseToPage<T> (response: Response): Page<T> {
     const page: Page<T> = new Page<T>();
+    console.log(response);
     if (response && response.json()) {
       page.content = response.json().content;
       page.totalPages = response.json().totalPages;

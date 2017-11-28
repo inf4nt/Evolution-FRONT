@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
-import {serverUrl} from '../../common/const';
 import {Http} from '@angular/http';
+import {serverUrl} from '../../common/rest-url';
+
 declare var NProgress: any;
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   error = '';
-  server: string = serverUrl;
+
   isRestLoad = false;
 
   constructor(private router: Router,
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   wakeUpRest(): void {
     this.http
-      .get(this.server + 'index')
+      .get(serverUrl + 'index')
       .map(res => res).subscribe((data) => {
         console.log(data);
         NProgress.done();
@@ -56,7 +57,7 @@ export class LoginComponent implements OnInit {
         console.log(result);
         if (result === true) {
           // login successful
-          this.router.navigate(['user-home/' + this.authenticationService.getAuthUser().id]);
+          this.router.navigate(['user-home/' + this.authenticationService.getAuth().id]);
         } else {
           // login failed
           this.error = 'Username or password is incorrect';

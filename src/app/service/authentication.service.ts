@@ -7,12 +7,13 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import {serverUrl} from '../common/const';
 import {DataTransfer} from './data-transfer.service';
 import {User} from '../model/user.model';
+import {serverUrl} from '../common/rest-url';
 
 @Injectable()
 export class AuthenticationService {
+
   private authUrl = serverUrl + 'auth';
   private headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
 

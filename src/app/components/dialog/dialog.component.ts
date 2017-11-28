@@ -1,12 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../service/authentication.service';
-import {ActivatedRoute} from '@angular/router';
-import {serverUrl} from '../../common/const';
 import {HttpHeaders} from '@angular/common/http';
-import {MessageService} from "../../service/message.service";
-import {Message} from "../../model/message.model";
-import {User} from "../../model/user.model";
+import {MessageService} from '../../service/rest/message.service';
+import {Message} from '../../model/message.model';
+import {User} from '../../model/user.model';
 
 declare var NProgress: any;
 

@@ -10,8 +10,12 @@
     <div class="col-lg-8 col-lg-offset-2">
       <form name="form" (ngSubmit)="f.form.valid && registration()" #f="ngForm" novalidate>
         <div>
-          <label class="control-label text-white">Email:</label>
-          <input name="username" [(ngModel)]="user.username" type="text" class="form-control"/>
+          <label class="control-label text-white">Email:
+            <span class="text-white" *ngIf="username.dirty && username.hasError('required')">Email is required</span>
+            <span class="text-white" *ngIf="username.dirty && username.hasError('pattern')">Email is not valid</span>
+          </label>
+          <input name="username" [(ngModel)]="user.username" #username="ngModel" type="text" class="form-control"
+                 pattern="^[a-zA-Z0-9._-]{1,40}@[a-zA-Z0-9.-]{1,40}\.[a-zA-Z]{2,6}$" required/>
         </div>
         <br/>
         <div>

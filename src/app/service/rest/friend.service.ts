@@ -1,25 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
-import {serverUrl} from '../common/const';
-import {AuthenticationService} from './authentication.service';
+import {AuthenticationService} from '../authentication.service';
 import {Observable} from 'rxjs/Observable';
-import {Friend} from '../model/friend.model';
-import {findMyFollowers, findMyProgress, findMyRequests, findOneFriend} from '../common/rest-url';
-import {DataTransfer} from './data-transfer.service';
-import {Page} from '../model/page';
+import {Friend} from '../../model/friend.model';
+import {findMyFollowers, findMyProgress, findMyRequests, findOneFriend, friendRest} from '../../common/rest-url';
+import {DataTransfer} from '../data-transfer.service';
+import {Page} from '../../model/page';
+import {friendStatusFollowers, friendStatusProgress, friendStatusRequests} from '../../common/friend-status';
 
 
 @Injectable()
 export class FriendService {
 
-  private url: string = serverUrl + 'friend';
-
-
   constructor(private http: Http,
               private authService: AuthenticationService,
               private transfer: DataTransfer) {
   }
-
 
   public findOne(first: number, second: number): Observable<Friend> {
     return this.http
@@ -57,6 +53,16 @@ export class FriendService {
       });
   }
 
+  public findFriends(status: string, iam: number): Observable<Page<Friend>> {
+    if (status.toLocaleUpperCase() === friendStatusProgress) {
+      return this.findMyProgress(iam);
+    } else if (status.toLocaleUpperCase() === friendStatusFollowers) {
+      return this.findMyFollowers(iam);
+    } else {
+      return this.findMyRequests(iam);
+    }
+  }
+
   actionFriend(status: string, recipient: number): Observable<any> {
     console.log('action friend');
     let action: any = '';
@@ -77,7 +83,7 @@ export class FriendService {
       action: action
     });
 
-    return this.http.post(this.url + '/action', a, this.authService.getRequestOptionsArgs())
+    return this.http.post(friendRest + '/action', a, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
         console.log(response);
         if (response && action !== 'DELETE_REQUEST') {

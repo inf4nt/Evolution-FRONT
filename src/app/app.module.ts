@@ -14,20 +14,21 @@ import {DialogComponent} from './components/dialog/dialog.component';
 import {MessageComponent} from './components/message/message.component';
 import {UserHomeComponent} from './components/user-home/user-home.component';
 import {RegistrationComponent} from './components/registration/registration.component';
-import {FriendService} from './service/friend.service';
-import {UserService} from './service/user.service';
-import {FeedService} from './service/feed.service';
+import {FriendService} from './service/rest/friend.service';
+import {UserService} from './service/rest/user.service';
+import {FeedService} from './service/rest/feed.service';
 import {DataTransfer} from './service/data-transfer.service';
-import {MessageService} from './service/message.service';
+import {MessageService} from './service/rest/message.service';
+import {PreAuthorizeGuard} from './guard/pre-authorize-guard';
 
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'friend/user/:id/:status', component: FriendsComponent},
-  {path: 'dialog', component: DialogComponent},
-  {path: 'message/interlocutor/:interlocutor', component: MessageComponent},
-  {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full'},
+  {path: 'friend/user/:id/:status', component: FriendsComponent, canActivate: [PreAuthorizeGuard]},
+  {path: 'dialog', component: DialogComponent, canActivate: [PreAuthorizeGuard]},
+  {path: 'message/interlocutor/:interlocutor', component: MessageComponent, canActivate: [PreAuthorizeGuard]},
+  {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full', canActivate: [PreAuthorizeGuard]},
   {path: 'registration', component: RegistrationComponent},
 ];
 
@@ -49,7 +50,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule],
-  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService],
+  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService, PreAuthorizeGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

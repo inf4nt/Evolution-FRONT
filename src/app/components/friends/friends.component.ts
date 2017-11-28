@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../service/authentication.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {serverUrl} from '../../common/const';
+import {Friend} from '../../model/friend.model';
+import {FriendService} from '../../service/rest/friend.service';
+
 
 declare var NProgress: any;
 
@@ -13,45 +13,28 @@ declare var NProgress: any;
 })
 export class FriendsComponent implements OnInit {
 
-  status = {};
-  userId = {};
-  server: string = serverUrl;
-  listFriend: any = [];
-  authUser: any = {};
-
-  httpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + this.authenticationService.getToken()
-  });
-
-  constructor(private authenticationService: AuthenticationService,
-              private activatedRoute: ActivatedRoute,
-              private httpClient: HttpClient) {
+  status: string;
+  userId: number;
+  listFriend: Array<Friend> = [];
+  isDone: boolean;
+  constructor(private activatedRoute: ActivatedRoute,
+              private friendService: FriendService) {
   }
 
   ngOnInit() {
-    this.authUser = this.authenticationService.getAuthUser();
-
     this.activatedRoute.params.subscribe(params => {
-      NProgress.start();
-      this.status = params['status'].toString();
+      this.isDone = false;
       this.userId = +params['id'];
+      this.status = params['status'].toString();
 
-      this.httpClient.get(this.server + 'friend/find/' + this.status + '/' + this.userId, {headers: this.httpHeaders})
-        .map(res => res).subscribe((data: any) => {
-          if (data) {
-            console.log(data);
-            this.listFriend = data.content;
-          } else {
-            this.listFriend = null;
-          }
+      NProgress.start();
+
+      this.friendService.findFriends(this.status, this.userId)
+        .subscribe(data => {
+          this.listFriend = data.content;
           NProgress.done();
-        },
-        (err) => {
-          console.log(err);
-          NProgress.done();
-        }
-      );
+          this.isDone = true;
+        });
 
     });
 
