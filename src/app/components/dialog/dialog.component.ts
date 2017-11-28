@@ -17,8 +17,8 @@ declare var NProgress: any;
 })
 export class DialogComponent implements OnInit {
 
-  private messageListInDialogs: Array<Message> = [];
-  private authUser: User;
+  messageListInDialogs: Array<Message> = [];
+  authUser: User;
 
   constructor(private authService: AuthenticationService,
               private messageService: MessageService) {
@@ -35,4 +35,6 @@ export class DialogComponent implements OnInit {
       });
 
   }
+
+
 }
