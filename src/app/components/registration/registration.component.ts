@@ -26,6 +26,7 @@ export class RegistrationComponent implements OnInit {
           confirm('Registration successful');
         } else if (data === 3) {
           confirm('Registration failed, user is already exist');
+          this.user = new UserForSaveDto();
         } else if (data === 4) {
           confirm('Registration failed. Server error');
         }

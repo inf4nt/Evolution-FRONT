@@ -3,10 +3,14 @@ import {Http, Headers, Response} from '@angular/http';
 import {AuthenticationService} from '../authentication.service';
 import {Observable} from 'rxjs/Observable';
 import {Friend} from '../../model/friend.model';
-import {findMyFollowers, findMyProgress, findMyRequests, findOneFriend, friendRest} from '../../common/rest-url';
+import {
+  findMyFollowers, findMyProgress, findMyRequests, findOneFriend, friendNextAction,
+  friendRest
+} from '../../common/rest-url';
 import {DataTransfer} from '../data-transfer.service';
 import {Page} from '../../model/page';
 import {friendStatusFollowers, friendStatusProgress, friendStatusRequests} from '../../common/friend-status';
+import {FriendResultAction} from '../../model/friend-result-action.model';
 
 
 @Injectable()
@@ -27,6 +31,22 @@ export class FriendService {
           return null;
         }
       });
+  }
+
+  public findNextAction(first: number, second: number): Observable<FriendResultAction> {
+    return this.http
+      .get(friendNextAction + first + '/' + second, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToModelFriendResultAction(response);
+      }).catch((error: any) => Observable.throw(error + ' server error'));
+  }
+
+  public findNextAction2(second: number): Observable<FriendResultAction> {
+    return this.http
+      .get(friendNextAction + '/' + second, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToModelFriendResultAction(response);
+      }).catch((error: any) => Observable.throw(error + ' server error'));
   }
 
   public findMyProgress(iam: number): Observable<Page<Friend>> {
@@ -63,32 +83,17 @@ export class FriendService {
     }
   }
 
-  actionFriend(status: string, recipient: number): Observable<any> {
-    console.log('action friend');
-    let action: any = '';
-
-    if (status === 'NOT_FOUND') {
-      action = 'SEND_REQUEST_FRIEND';
-    } else if (status === 'PROGRESS') {
-      action = 'DELETE_FRIEND';
-    } else if (status === 'FOLLOWER') {
-      action = 'ACCEPT_REQUEST';
-    } else if (status === 'REQUEST') {
-      action = 'DELETE_REQUEST';
-    }
-
-    const a = JSON.stringify({
-      actionUserId: this.authService.getAuthUser().id,
-      recipientUserId: recipient,
-      action: action
-    });
+  actionFriend(actionUser: number, recipientUser: number, friend: FriendResultAction): Observable<FriendResultAction> {
+    const a = {
+      actionUserId: actionUser,
+      recipientUserId: recipientUser,
+      action: friend.nextAction
+    };
 
     return this.http.post(friendRest + '/action', a, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
         console.log(response);
-        if (response && action !== 'DELETE_REQUEST') {
-          return response.json();
-        }
+        return this.transfer.responseToModelFriendResultAction(response);
       }).catch((error: any) => Observable.throw(error + ' server error'));
   }
 

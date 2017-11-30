@@ -6,6 +6,8 @@ export let findOneUser = serverUrl + 'user/';
 
 export let friendRest = serverUrl + 'friend';
 
+export let friendNextAction = serverUrl + 'friend/next-action/';
+
 export let findOneFeed = serverUrl + 'feed/';
 
 export let findAllFeed = serverUrl + 'feed';

@@ -3,6 +3,7 @@
   <div>
     <div class="col-md-3 pull-right">
       <div class="block-background" style="width: 70%">
+        <a class="text-white" routerLink="{{ '/user-home/' + currentUser.id }}">{{currentUser.firstName}} {{currentUser.lastName}}</a>
         <p class="text-center">
           <br/>
           <span class="glyphicon glyphicon-user"></span><a routerLink="{{ '/friend/user/' + userId + '/progress'}}"
@@ -17,7 +18,7 @@
       </div>
     </div>
 
-    <div *ngIf="listFriend.length === 0 && isDone">
+    <div *ngIf="listFriend.length === 0 && isDone" class="col-md-8">
       <h2 class="text-center" style="color: white">Not found</h2>
     </div>
 

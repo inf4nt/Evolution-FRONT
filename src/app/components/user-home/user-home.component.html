@@ -1,4 +1,4 @@
-<div class="col-lg-12" *ngIf="isDone">
+<div class="col-lg-12">
 
   <div class="col-lg-4">
 
@@ -27,22 +27,22 @@
       <div *ngIf="currentUser.id !== authUser.id">
         <p class="text-center">
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus === 'NOT_FOUND'">
+          <button class="btn btn-md btn-success" (click)="actionFriend()" *ngIf="friendResultAction.nextAction === 'SEND_REQUEST_FRIEND'">
             <span class="glyphicon glyphicon-plus"></span> Add friend
           </button>
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()" *ngIf="friendStatus === 'PROGRESS'">
-            <span class="glyphicon glyphicon-plus"></span> Remove friend
+          <button class="btn btn-md btn-danger" (click)="actionFriend()" *ngIf="friendResultAction.nextAction === 'DELETE_FRIEND'">
+            <span class="glyphicon glyphicon-remove"></span> Remove friend
           </button>
 
           <button class="btn btn-md btn-info" (click)="actionFriend()"
-                  *ngIf="friendStatus === 'REQUEST' && actionUser !== authUser.id ">
-            <span class="glyphicon glyphicon-plus"></span> Accept request
+                  *ngIf="friendResultAction.nextAction === 'ACCEPT_REQUEST'">
+            <span class="glyphicon glyphicon-ok"></span> Accept request
           </button>
 
-          <button class="btn btn-md btn-info" (click)="actionFriend()"
-                  *ngIf="friendStatus === 'REQUEST' && actionUser === authUser.id ">
-            <span class="glyphicon glyphicon-plus"></span> Remove request
+          <button class="btn btn-md btn-danger" (click)="actionFriend()"
+                  *ngIf="friendResultAction.nextAction === 'DELETE_REQUEST'">
+            <span class="glyphicon glyphicon-remove"></span> Remove request
           </button>
 
         </p>
@@ -72,7 +72,7 @@
       <textarea [(ngModel)]="tweetText" placeholder="What's new ?" name="tweet-content" class="form-control"
                 style="height: 100px " rows="5"></textarea>
       <br/>
-      <button (click)="postTweet()" type="submit" id="btn-tweet-post" style="width: 20%"
+      <button [ngClass]="{disabled : !tweetText}" (click)="postTweet()" type="submit" id="btn-tweet-post" style="width: 20%"
               class="btn btn-info pull-right">
         Post <span class="glyphicon glyphicon-ok"></span>
       </button>
@@ -101,7 +101,7 @@
                 {{f.sender.firstName}} {{f.sender.lastName}}
               </a>
               <span class="date-tweet">
-                    {{f.date | date:'yyyy-MM-dd HH:mm:ss'}}
+                    {{f.createdDateTimestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}
                 </span>
               <div class="feed-link">
                 <br/>

@@ -19,17 +19,22 @@ import {UserService} from './service/rest/user.service';
 import {FeedService} from './service/rest/feed.service';
 import {DataTransfer} from './service/data-transfer.service';
 import {MessageService} from './service/rest/message.service';
-import {PreAuthorizeGuard} from './guard/pre-authorize-guard';
+import {IsAuthGuard} from './guard/is-auth-guard';
+import {RestErrorService} from './service/rest/rest-error.service';
+import {NoContentComponent} from './components/no-content/no-content.component';
+import {UserSearchComponent} from './components/user-search/user-search.component';
 
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'friend/user/:id/:status', component: FriendsComponent, canActivate: [PreAuthorizeGuard]},
-  {path: 'dialog', component: DialogComponent, canActivate: [PreAuthorizeGuard]},
-  {path: 'message/interlocutor/:interlocutor', component: MessageComponent, canActivate: [PreAuthorizeGuard]},
-  {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full', canActivate: [PreAuthorizeGuard]},
+  {path: 'friend/user/:id/:status', component: FriendsComponent, canActivate: [IsAuthGuard]},
+  {path: 'dialog', component: DialogComponent, canActivate: [IsAuthGuard]},
+  {path: 'message/interlocutor/:interlocutor', component: MessageComponent, canActivate: [IsAuthGuard]},
+  {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full', canActivate: [IsAuthGuard]},
   {path: 'registration', component: RegistrationComponent},
+  {path: 'search-user', component: UserSearchComponent},
+  {path: 'status/204', component: NoContentComponent},
 ];
 
 @NgModule({
@@ -42,7 +47,9 @@ const appRoutes: Routes = [
     DialogComponent,
     MessageComponent,
     UserHomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    NoContentComponent,
+    UserSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +57,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule],
-  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService, PreAuthorizeGuard],
+  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService, IsAuthGuard, RestErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
