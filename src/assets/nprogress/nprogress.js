@@ -55,7 +55,7 @@
   NProgress.status = null;
 
   /**
-   * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
+   * Sets the progress bar actionStatus, where `n` is a number from `0.0` to `1.0`.
    *
    *     NProgress.set(0.4);
    *     NProgress.set(1.0);
@@ -113,7 +113,7 @@
 
   /**
    * Shows the progress bar.
-   * This is the same as setting the status to 0%, except that it doesn't go backwards.
+   * This is the same as setting the actionStatus to 0%, except that it doesn't go backwards.
    *
    *     NProgress.start();
    *
@@ -137,7 +137,7 @@
 
   /**
    * Hides the progress bar.
-   * This is the *sort of* the same as setting the status to 100%, with the
+   * This is the *sort of* the same as setting the actionStatus to 100%, with the
    * difference being `done()` makes some placebo effect of some realistic motion.
    *
    *     NProgress.done();

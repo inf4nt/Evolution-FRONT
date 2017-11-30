@@ -42,7 +42,7 @@ export class FriendsComponent implements OnInit {
           if (data) {
             this.currentUser = data;
           } else {
-            this.router.navigate(['status/204']);
+            this.router.navigate(['actionStatus/204']);
           }
         });
 

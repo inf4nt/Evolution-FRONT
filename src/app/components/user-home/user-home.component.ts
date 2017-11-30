@@ -53,7 +53,7 @@ export class UserHomeComponent implements OnInit {
             this.currentUser = data;
           } else {
             // maybe user not found
-            this.router.navigate(['status/204']);
+            this.router.navigate(['actionStatus/204']);
           }
         });
 
