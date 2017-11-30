@@ -21,7 +21,8 @@
               <a style="color: white" routerLink="{{ '/user-home/' + m.sender.id }}">
                 {{m.sender.firstName}} {{m.sender.lastName}}
               </a>
-              <span *ngIf="m.sender.id == authUser.id"
+              <span class="text-white"> {{m.createdDateTimestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
+              <span *ngIf="m.sender.id === authUser.id"
                  (click)="writeMessageToTemp(m)" class="pull-right cursor" style="color: white" data-toggle="modal" href="#modal-message-delete">X</span>
             </p>
             {{ m.content }}

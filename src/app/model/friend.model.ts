@@ -10,11 +10,7 @@ export class Friend {
 
   private _status: string;
 
-  constructor(first: User, second: User, action: User, status: string) {
-    this._first = first;
-    this._second = second;
-    this._action = action;
-    this._status = status;
+  constructor() {
   }
 
   get action(): User {
@@ -47,6 +43,15 @@ export class Friend {
 
   set second(value: User) {
     this._second = value;
+  }
+
+  public static build(first: User, second: User, action: User, status: string): Friend {
+    const friend: Friend = new Friend();
+    friend.first = first;
+    friend.second = second;
+    friend.action = action;
+    friend.status = status;
+    return friend;
   }
 
 }

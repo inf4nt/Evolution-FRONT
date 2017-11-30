@@ -1,10 +1,12 @@
-export let serverUrl = 'http://localhost:8585/';
+// export let serverUrl = 'http://localhost:8585/';
 
-// export let serverUrl = 'https://evolution-social-rest-server.herokuapp.com/';
+export let serverUrl = 'https://evolution-social-rest-server.herokuapp.com/';
 
 export let findOneUser = serverUrl + 'user/';
 
 export let friendRest = serverUrl + 'friend';
+
+export let friendNextAction = serverUrl + 'friend/next-action/';
 
 export let findOneFeed = serverUrl + 'feed/';
 

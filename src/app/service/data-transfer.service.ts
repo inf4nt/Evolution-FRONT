@@ -6,6 +6,7 @@ import {Friend} from '../model/friend.model';
 import {Page} from '../model/page';
 import {Message} from '../model/message.model';
 import {Dialog} from '../model/dialog.model';
+import {FriendResultAction} from '../model/friend-result-action.model';
 
 @Injectable()
 export class DataTransfer {
@@ -61,7 +62,7 @@ export class DataTransfer {
       const first: User = this.jsonToModelUser(json.first);
       const second: User = this.jsonToModelUser(json.second);
       const action: User = this.jsonToModelUser(json.action);
-      return new Friend(first, second, action, json.status);
+      return Friend.build(first, second, action, json.status);
     }
     return null;
   }
@@ -72,7 +73,18 @@ export class DataTransfer {
       const first: User = this.jsonToModelUser(json.first);
       const second: User = this.jsonToModelUser(json.second);
       const action: User = this.jsonToModelUser(json.action);
-      return new Friend(first, second, action, json.status);
+      return Friend.build(first, second, action, json.status);
+    }
+    return null;
+  }
+
+  public responseToModelFriendResultAction(response: Response): FriendResultAction {
+    if (response && response.json()) {
+      const json: any = response.json();
+      const first: User = this.jsonToModelUser(json.first);
+      const second: User = this.jsonToModelUser(json.second);
+      const action: User = this.jsonToModelUser(json.action);
+      return FriendResultAction.build(first, second, action, json.status, json.nextAction);
     }
     return null;
   }
