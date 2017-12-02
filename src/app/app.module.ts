@@ -28,7 +28,7 @@ import {UserSearchComponent} from './components/user-search/user-search.componen
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'friend/user/:id/:actionStatus', component: FriendsComponent, canActivate: [IsAuthGuard]},
+  {path: 'friend/user/:id/:status', component: FriendsComponent, canActivate: [IsAuthGuard]},
   {path: 'dialog', component: DialogComponent, canActivate: [IsAuthGuard]},
   {path: 'message/interlocutor/:interlocutor', component: MessageComponent, canActivate: [IsAuthGuard]},
   {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full', canActivate: [IsAuthGuard]},

@@ -62,7 +62,7 @@ export class DataTransfer {
       const first: User = this.jsonToModelUser(json.first);
       const second: User = this.jsonToModelUser(json.second);
       const action: User = this.jsonToModelUser(json.action);
-      return Friend.build(first, second, action, json.actionStatus);
+      return Friend.build(first, second, action, json.status);
     }
     return null;
   }

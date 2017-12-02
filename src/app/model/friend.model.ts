@@ -8,7 +8,7 @@ export class Friend {
 
   private _action: User;
 
-  private _actionStatus: string;
+  private _status: string;
 
   constructor() {
   }
@@ -21,12 +21,12 @@ export class Friend {
     this._action = value;
   }
 
-  get actionStatus(): string {
-    return this._actionStatus;
+  get status(): string {
+    return this._status;
   }
 
-  set actionStatus(value: string) {
-    this._actionStatus = value;
+  set status(value: string) {
+    this._status = value;
   }
 
   get first(): User {
@@ -45,12 +45,12 @@ export class Friend {
     this._second = value;
   }
 
-  public static build(first: User, second: User, action: User, actionStatus: string): Friend {
+  public static build(first: User, second: User, action: User, status: string): Friend {
     const friend: Friend = new Friend();
     friend.first = first;
     friend.second = second;
     friend.action = action;
-    friend.actionStatus = actionStatus;
+    friend.status = status;
     return friend;
   }
 
