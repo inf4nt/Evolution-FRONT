@@ -1,8 +1,6 @@
-<div class="col-lg-10 col-lg-offset-2 div-white">
+<div class="col-lg-10 col-lg-offset-2 div-white" *ngIf="pageUser.content.length > 0">
 
-  <div class="col-lg-9">
-
-
+  <div class="col-lg-9" >
       <div class="col-md-14 block-background">
         <table class="table">
           <thead>
@@ -22,10 +20,15 @@
                 <a routerLink="{{ '/user-home/' + u.id }}" routerLinkActive="active" class="text-white">{{u.firstName}} {{u.lastName}}</a>
               </td>
             </tr>
-
           </tbody>
         </table>
       </div>
 
   </div>
+
+  <div class="col-lg-9 text-center">
+    <br/>
+    <button (click)="nextPage()" class="btn btn-default">more</button>
+  </div>
+
 </div>

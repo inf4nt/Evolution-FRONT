@@ -23,6 +23,8 @@ import {IsAuthGuard} from './guard/is-auth-guard';
 import {RestErrorService} from './service/rest/rest-error.service';
 import {NoContentComponent} from './components/no-content/no-content.component';
 import {UserListComponent} from './components/user-list/user-list.component';
+import {UserSettingsComponent} from './components/user-settings/user-settings.component';
+
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -34,6 +36,7 @@ const appRoutes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'actionStatus/204', component: NoContentComponent},
   {path: 'user-list', component: UserListComponent, canActivate: [IsAuthGuard]},
+  {path: 'user-settings', component: UserSettingsComponent, canActivate: [IsAuthGuard]},
 ];
 
 @NgModule({
@@ -48,7 +51,8 @@ const appRoutes: Routes = [
     UserHomeComponent,
     RegistrationComponent,
     NoContentComponent,
-    UserListComponent
+    UserListComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,

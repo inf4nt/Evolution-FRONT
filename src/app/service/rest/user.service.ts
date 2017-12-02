@@ -7,6 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import {findAllUser, findOneUser, userRest} from '../../common/rest-url';
 import {Page} from '../../model/page';
 import {UserForSaveDto} from '../../dto/user-for-save.dto';
+import {UserFull} from "../../model/user-full.model";
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,15 @@ export class UserService {
       .catch((error: any) => Observable.throw(error.json().error));
   }
 
+  public findOneLazy(id: number): Observable<UserFull> {
+    return this.http
+      .get(findOneUser + id + '/lazy', this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToModelUserFull(response);
+      })
+      .catch((error: any) => Observable.throw(error.json().error));
+  }
+
   public findAll(): Observable<Page<User>> {
     return this.http
       .get(findAllUser, this.authService.getRequestOptionsArgs())
@@ -38,6 +48,14 @@ export class UserService {
   public findAllPageable(page: number, size: number): Observable<Page<User>> {
     return this.http
       .get(findAllUser + '?page=' + page + '&size=' + size, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToPage<User>(response);
+      });
+  }
+
+  public findAllPageableAndSort(page: number, size: number, sortType: string): Observable<Page<User>> {
+    return this.http
+      .get(findAllUser + '?page=' + page + '&size=' + size + '&sort=' + sortType, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
         return this.transfer.responseToPage<User>(response);
       });

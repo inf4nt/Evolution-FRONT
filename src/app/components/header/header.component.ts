@@ -1,9 +1,10 @@
 /**
  * Created by Infant on 31.08.2017.
  */
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
+import {User} from "../../model/user.model";
 
 
 @Component({
@@ -11,13 +12,14 @@ import {Router} from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: []
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  auth: User = new User();
 
   constructor(private authService: AuthenticationService, private router: Router) {
   }
 
-  getUserid(): any {
-    return this.authService.getAuthUser().id;
+  ngOnInit(): void {
+    this.auth = this.authService.getAuth();
   }
 
   logout(): void {

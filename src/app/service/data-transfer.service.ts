@@ -7,6 +7,7 @@ import {Page} from '../model/page';
 import {Message} from '../model/message.model';
 import {Dialog} from '../model/dialog.model';
 import {FriendResultAction} from '../model/friend-result-action.model';
+import {UserFull} from "../model/user-full.model";
 
 @Injectable()
 export class DataTransfer {
@@ -112,7 +113,7 @@ export class DataTransfer {
     return null;
   }
 
-  public responseToPage<T> (response: Response): Page<T> {
+  public responseToPage<T>(response: Response): Page<T> {
     const page: Page<T> = new Page<T>();
     console.log(response);
     if (response && response.json()) {
@@ -122,6 +123,23 @@ export class DataTransfer {
     }
     return page;
   }
+
+  public responseToModelUserFull(response: Response): UserFull {
+    if (response && response.json()) {
+      const r: UserFull = new UserFull();
+      r.id = response.json().id;
+      r.firstName = response.json().firstName;
+      r.lastName = response.json().lastName;
+      r.nickname = response.json().nickname;
+      r.country = response.json().userAdditionalData.country;
+      r.state = response.json().userAdditionalData.state;
+      r.gender = response.json().userAdditionalData.gender;
+      return r;
+    } else {
+      return null;
+    }
+  }
+
 
 
 }

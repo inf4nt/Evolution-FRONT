@@ -14,6 +14,8 @@ declare var NProgress: any;
 export class UserListComponent implements OnInit {
 
   pageUser: Page<User> = new Page<User>();
+  currentPage = 0;
+  isNext: boolean = false;
 
   constructor(private userService: UserService) {
   }
@@ -21,10 +23,25 @@ export class UserListComponent implements OnInit {
   ngOnInit() {
     NProgress.start();
     this.userService
-      .findAllPageable(0, 100)
+      .findAllPageable(0, userDefaultPageableSize)
       .subscribe(data => {
         this.pageUser = data;
-        console.log(data.totalElement);
+        this.currentPage = 0;
+        console.log(data);
+        NProgress.done();
+      });
+  }
+
+  public nextPage() {
+    NProgress.start();
+    this.currentPage = this.currentPage + 1;
+    this.userService
+      .findAllPageable(this.currentPage, userDefaultPageableSize)
+      .subscribe(data => {
+        for (const a of data.content) {
+          this.pageUser.content.push(a);
+        }
+        this.pageUser.totalElement = data.totalElement;
         NProgress.done();
       });
   }
