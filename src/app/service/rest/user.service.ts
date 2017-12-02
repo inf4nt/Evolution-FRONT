@@ -35,6 +35,14 @@ export class UserService {
       });
   }
 
+  public findAllPageable(page: number, size: number): Observable<Page<User>> {
+    return this.http
+      .get(findAllUser + '?page=' + page + '&size=' + size, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToPage<User>(response);
+      });
+  }
+
   public postUser(user: UserForSaveDto): Observable<number> {
     return this.http.post(userRest + '/post', user.values, this.headers)
       .map((response: Response) => {

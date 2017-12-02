@@ -3,3 +3,5 @@
  */
 
 export let maxListMessageLength = 7;
+
+export let userDefaultPageableSize = 2;

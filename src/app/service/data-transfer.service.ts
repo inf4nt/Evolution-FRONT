@@ -118,7 +118,7 @@ export class DataTransfer {
     if (response && response.json()) {
       page.content = response.json().content;
       page.totalPages = response.json().totalPages;
-      page.totalElement = response.json().totalElement;
+      page.totalElement = response.json().totalElements;
     }
     return page;
   }
