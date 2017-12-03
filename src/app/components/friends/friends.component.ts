@@ -15,8 +15,8 @@ declare var NProgress: any;
 })
 export class FriendsComponent implements OnInit {
 
-  status: string;
   userId: number;
+  status: string;
   listFriend: Array<Friend> = [];
   isDone: boolean;
   currentUser: User = new User();

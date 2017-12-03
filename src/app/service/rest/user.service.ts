@@ -86,7 +86,18 @@ export class UserService {
       .map((response: Response) => {
         return this.transfer.responseToModelUserFull(response);
       });
+  }
 
+  public exist(username: string): Observable<boolean> {
+    return this.http
+      .get(userRest + '/exist?username=' + username, this.headers)
+      .map((response: Response) => {
+        if (response.status === 200) {
+          return true;
+        } else if (response.status === 204) {
+          return false;
+        }
+      });
   }
 
 }

@@ -53,10 +53,6 @@ export class AuthenticationService {
     return {headers: this.getHeaders()};
   }
 
-  public getAuthUser(): any {
-    return JSON.parse(localStorage.getItem('currentUser')).user;
-  }
-
   public getAuth(): User {
     return this.transfer.jsonToModelUser(JSON.parse(localStorage.getItem('currentUser')).user);
   }

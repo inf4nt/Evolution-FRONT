@@ -1,11 +1,11 @@
 <div class="col-md-10 col-lg-offset-2 div-white">
 
   <div>
-    <div class="col-md-3 pull-right">
+    <div class="col-md-4 pull-right">
       <div class="block-background" style="width: 70%">
-        <a class="text-white" routerLink="{{ '/user-home/' + currentUser.id }}">{{currentUser.firstName}} {{currentUser.lastName}}</a>
         <p class="text-center">
-          <br/>
+          <a class="text-white" routerLink="{{ '/user-home/' + currentUser.id }}">{{currentUser.firstName}} {{currentUser.lastName}}</a>
+          <br/><br/>
           <span class="glyphicon glyphicon-user"></span><a routerLink="{{ '/friend/user/' + userId + '/progress'}}"
                                                            class="curs" style="color: white"> Friends</a>
           <br/>
@@ -23,8 +23,8 @@
     </div>
 
     <div class="friend" *ngIf="listFriend.length > 0 && isDone">
-      <div class="col-md-8 block-background">
-        <p class="pull-left">Friends</p>
+      <div class="col-md-7 block-background">
+        <p class="pull-left">{{status.toLowerCase()}}</p>
         <br/>
         <table id="table-friend" class="table">
           <thead>

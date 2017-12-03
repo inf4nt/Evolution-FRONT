@@ -1,5 +1,5 @@
 <div id="app-component" class="container">
   <app-header *ngIf="isAuth()"></app-header>
-  <router-outlet></router-outlet>
-  <app-footer *ngIf="isAuth()"></app-footer>
+  <router-outlet id="content"></router-outlet>
+  <app-footer id="footer" *ngIf="isAuth()"></app-footer>
 </div>

@@ -25,7 +25,7 @@ export class DialogComponent implements OnInit {
     this.authUser = this.authService.getAuth();
     NProgress.start();
 
-    this.messageService.findLastMessageForMyDialog(this.authService.getAuthUser().id)
+    this.messageService.findLastMessageForMyDialog(this.authService.getAuth().id)
       .subscribe(data => {
         this.messageListInDialogs = data.content;
         NProgress.done();

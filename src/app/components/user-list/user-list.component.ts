@@ -50,4 +50,8 @@ export class UserListComponent implements OnInit {
       });
   }
 
+  public sortById(): void {
+
+  }
+
 }
