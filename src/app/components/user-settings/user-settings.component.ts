@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../service/rest/user.service';
-import {AuthenticationService} from '../../service/authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {UserFull} from '../../model/user-full.model';
 
 declare var NProgress: any;
@@ -27,6 +27,17 @@ export class UserSettingsComponent implements OnInit {
         this.currentUser = data;
         this.isDone = true;
         NProgress.done();
+      });
+  }
+
+  public putUser(): void {
+    NProgress.start();
+    console.log(this.currentUser);
+    this.userService
+      .putUser(this.currentUser)
+      .subscribe(data => {
+        this.currentUser = data;
+        NProgress.doneAfterCloseModal();
       });
   }
 

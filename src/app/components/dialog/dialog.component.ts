@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../service/authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {HttpHeaders} from '@angular/common/http';
 import {MessageService} from '../../service/rest/message.service';
 import {Message} from '../../model/message.model';

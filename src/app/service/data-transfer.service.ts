@@ -8,6 +8,7 @@ import {Message} from '../model/message.model';
 import {Dialog} from '../model/dialog.model';
 import {FriendResultAction} from '../model/friend-result-action.model';
 import {UserFull} from "../model/user-full.model";
+import {UserForUpdate} from "../model/user-for-update.model";
 
 @Injectable()
 export class DataTransfer {
@@ -131,6 +132,7 @@ export class DataTransfer {
       r.firstName = response.json().firstName;
       r.lastName = response.json().lastName;
       r.nickname = response.json().nickname;
+      r.username = response.json().userAdditionalData.username;
       r.country = response.json().userAdditionalData.country;
       r.state = response.json().userAdditionalData.state;
       r.gender = response.json().userAdditionalData.gender;
@@ -140,6 +142,17 @@ export class DataTransfer {
     }
   }
 
+  public userFullToUserForUpdate(user: UserFull): UserForUpdate {
+    const a: UserForUpdate = new UserForUpdate();
+    a.id = user.id;
+    a.firstName = user.firstName;
+    a.lastName = user.lastName;
+    a.nickname = user.nickname;
+    a.country = user.country;
+    a.state = user.state;
+    a.gender = user.gender;
+    return a;
+  }
 
 
 }

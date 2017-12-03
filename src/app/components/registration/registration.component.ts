@@ -34,8 +34,6 @@ export class RegistrationComponent implements OnInit {
 
   }
 
-  public exist(): Boolean {
-    return true;
-  }
+
 
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {AuthenticationService} from '../authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {DataTransfer} from '../data-transfer.service';
 import {Observable} from 'rxjs/Observable';
 import {Feed} from '../../model/feed.model';

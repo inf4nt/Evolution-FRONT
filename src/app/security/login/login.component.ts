@@ -1,22 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../../service/authentication.service';
+import {AuthenticationService} from '../authentication.service';
 import {Http} from '@angular/http';
 import {serverUrl} from '../../common/rest-url';
+import {AuthenticationRequest} from '../../model/authentication-request.model';
 
 declare var NProgress: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: []
 })
 export class LoginComponent implements OnInit {
 
   model: any = {};
   loading = false;
   error = '';
-
+  authenticationRequest: AuthenticationRequest = new AuthenticationRequest();
   isRestLoad = false;
 
   constructor(private router: Router,
@@ -26,12 +27,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.isRestLoad = false;
-
     NProgress.start();
     this.authenticationService.logout();
-
     this.wakeUpRest();
-
   }
 
   wakeUpRest(): void {
@@ -49,10 +47,9 @@ export class LoginComponent implements OnInit {
       });
   }
 
-
   login() {
     NProgress.start();
-    this.authenticationService.login(this.model.username, this.model.password)
+    this.authenticationService.login(this.authenticationRequest.username, this.authenticationRequest.password)
       .subscribe(result => {
         console.log(result);
         if (result === true) {

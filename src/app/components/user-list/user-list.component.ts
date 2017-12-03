@@ -15,7 +15,7 @@ export class UserListComponent implements OnInit {
 
   pageUser: Page<User> = new Page<User>();
   currentPage = 0;
-  isNext: boolean = false;
+  isNext = true;
 
   constructor(private userService: UserService) {
   }
@@ -38,6 +38,10 @@ export class UserListComponent implements OnInit {
     this.userService
       .findAllPageable(this.currentPage, userDefaultPageableSize)
       .subscribe(data => {
+        console.log(data);
+        if (data.content.length < userDefaultPageableSize) {
+          this.isNext = false;
+        }
         for (const a of data.content) {
           this.pageUser.content.push(a);
         }

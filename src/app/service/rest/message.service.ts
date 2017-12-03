@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Message} from '../../model/message.model';
-import {AuthenticationService} from '../authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {messageRest} from '../../common/rest-url';
 import {DataTransfer} from '../data-transfer.service';
 import {Http, Response} from '@angular/http';

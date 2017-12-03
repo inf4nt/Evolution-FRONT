@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import {DataTransfer} from './data-transfer.service';
+import {DataTransfer} from '../service/data-transfer.service';
 import {User} from '../model/user.model';
 import {serverUrl} from '../common/rest-url';
 
@@ -17,10 +17,11 @@ export class AuthenticationService {
   private authUrl = serverUrl + 'auth';
   private headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
 
-  constructor(private http: Http, private transfer: DataTransfer) {
+  constructor(private http: Http,
+              private transfer: DataTransfer) {
   }
 
-  login(username: string, password: string): Observable<boolean> {
+  public login(username: string, password: string): Observable<boolean> {
     return this.http.post(this.authUrl, JSON.stringify({
       username: username,
       password: password
@@ -41,18 +42,18 @@ export class AuthenticationService {
       }).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHeaders(): Headers {
+  public getHeaders(): Headers {
     return new Headers({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + this.getToken()
     });
   }
 
-  getRequestOptionsArgs(): RequestOptionsArgs {
+  public getRequestOptionsArgs(): RequestOptionsArgs {
     return {headers: this.getHeaders()};
   }
 
-  getAuthUser(): any {
+  public getAuthUser(): any {
     return JSON.parse(localStorage.getItem('currentUser')).user;
   }
 
@@ -60,17 +61,25 @@ export class AuthenticationService {
     return this.transfer.jsonToModelUser(JSON.parse(localStorage.getItem('currentUser')).user);
   }
 
-  isAuth(): boolean {
+  public isAuth(): boolean {
     return this.getToken() != null;
   }
 
-  getToken(): String {
+  public getToken(): String {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const token = currentUser && currentUser.token;
     return token ? token : null;
   }
 
-  logout(): void {
+  public logout(): void {
     localStorage.removeItem('currentUser');
   }
+
+  public getUsername(): string {
+    if (this.isAuth()) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      return currentUser.username;
+    }
+  }
+
 }

@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
 import {User} from '../../model/user.model';
-import {AuthenticationService} from '../authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {DataTransfer} from '../data-transfer.service';
 import {Observable} from 'rxjs/Observable';
 import {findAllUser, findOneUser, userRest} from '../../common/rest-url';
 import {Page} from '../../model/page';
 import {UserForSaveDto} from '../../dto/user-for-save.dto';
 import {UserFull} from "../../model/user-full.model";
+import {UserForUpdate} from "../../model/user-for-update.model";
 
 @Injectable()
 export class UserService {
@@ -76,6 +77,16 @@ export class UserService {
         }
 
       });
+  }
+
+  public putUser(user: UserFull): Observable<UserFull> {
+    const a: UserForUpdate = this.transfer.userFullToUserForUpdate(user);
+    return this.http
+      .put(userRest, a.values, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToModelUserFull(response);
+      });
+
   }
 
 }

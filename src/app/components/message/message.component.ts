@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {AuthenticationService} from '../../service/authentication.service';
+import {AuthenticationService} from '../../security/authentication.service';
 import {maxListMessageLength} from '../../common/const';
 import {MessageService} from '../../service/rest/message.service';
 import {Message} from '../../model/message.model';

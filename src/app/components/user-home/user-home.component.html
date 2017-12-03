@@ -13,10 +13,17 @@
       <br/>
 
       <div>
+        <a routerLink="{{ '/friend/user/' + currentUser.id + '/progress'}}" style="width: 100%" class="btn btn-info">Friends
+          <span class="glyphicon glyphicon-user"></span></a>
+        <br/><br/>
+      </div>
+
+      <div>
         <a routerLink="/dialog" *ngIf="currentUser.id === authUser.id" class="btn btn-success" style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
-        <a *ngIf="currentUser.id !== authUser.id" routerLink="{{'/message/interlocutor/' + currentUser.id}}" class="btn btn-success"
+        <a *ngIf="currentUser.id !== authUser.id" routerLink="{{'/message/interlocutor/' + currentUser.id}}"
+           class="btn btn-success"
            style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
@@ -27,11 +34,13 @@
       <div *ngIf="currentUser.id !== authUser.id">
         <p class="text-center">
 
-          <button class="btn btn-md btn-success" (click)="actionFriend()" *ngIf="friendResultAction.nextAction === 'SEND_REQUEST_TO_FRIEND'">
+          <button class="btn btn-md btn-success" (click)="actionFriend()"
+                  *ngIf="friendResultAction.nextAction === 'SEND_REQUEST_TO_FRIEND'">
             <span class="glyphicon glyphicon-plus"></span> Add friend
           </button>
 
-          <button class="btn btn-md btn-danger" (click)="actionFriend()" *ngIf="friendResultAction.nextAction === 'DELETE_FRIEND'">
+          <button class="btn btn-md btn-danger" (click)="actionFriend()"
+                  *ngIf="friendResultAction.nextAction === 'DELETE_FRIEND'">
             <span class="glyphicon glyphicon-remove"></span> Remove friend
           </button>
 
@@ -72,7 +81,8 @@
       <textarea [(ngModel)]="tweetText" placeholder="What's new ?" name="tweet-content" class="form-control"
                 style="height: 100px " rows="5"></textarea>
       <br/>
-      <button [ngClass]="{disabled : !tweetText}" (click)="postTweet()" type="submit" id="btn-tweet-post" style="width: 20%"
+      <button [ngClass]="{disabled : !tweetText}" (click)="postTweet()" type="submit" id="btn-tweet-post"
+              style="width: 20%"
               class="btn btn-info pull-right">
         Post <span class="glyphicon glyphicon-ok"></span>
       </button>

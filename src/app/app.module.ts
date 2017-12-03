@@ -4,8 +4,8 @@ import {AppComponent} from './app.component';
 import {Routes, RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {FormGroup, FormsModule} from '@angular/forms';
-import {LoginComponent} from './components/login/login.component';
-import {AuthenticationService} from './service/authentication.service';
+import {LoginComponent} from './security/login/login.component';
+import {AuthenticationService} from './security/authentication.service';
 import {HttpModule} from '@angular/http';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
@@ -24,7 +24,6 @@ import {RestErrorService} from './service/rest/rest-error.service';
 import {NoContentComponent} from './components/no-content/no-content.component';
 import {UserListComponent} from './components/user-list/user-list.component';
 import {UserSettingsComponent} from './components/user-settings/user-settings.component';
-
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},

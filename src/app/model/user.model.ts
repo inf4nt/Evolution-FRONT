@@ -5,8 +5,17 @@ export class User {
   private _lastName: string;
   private _nickname: string;
   private _role: string;
+  private _username: string;
 
   constructor() {
+  }
+
+  get username(): string {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
   }
 
   get id(): number {

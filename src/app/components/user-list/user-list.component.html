@@ -28,7 +28,7 @@
 
   <div class="col-lg-9 text-center">
     <br/>
-    <button (click)="nextPage()" class="btn btn-default">more</button>
+    <button (click)="nextPage()" *ngIf="isNext" class="btn btn-default">more</button>
   </div>
 
 </div>
