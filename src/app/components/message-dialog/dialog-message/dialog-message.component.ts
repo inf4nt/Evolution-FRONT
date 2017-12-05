@@ -47,8 +47,21 @@ export class DialogMessageComponent implements OnInit {
           this.messageList = data.content;
         });
 
+      this.interval(interlocutor);
+
     });
 
+  }
+
+  public interval(interlocutor: number): void {
+    setInterval(o => {
+      this.messageService
+        .findMessageByInterlocutor(interlocutor)
+        .subscribe(data => {
+          this.messageList = data.content;
+        });
+      console.log('interval');
+    }, 7000);
   }
 
   public writeMessageToTemp(message: Message): void {
