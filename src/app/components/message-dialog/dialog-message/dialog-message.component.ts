@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Message} from "../../../model/message.model";
 import {MessageService} from "../../../service/rest/message.service";
 import {AuthenticationService} from "../../../security/authentication.service";
@@ -13,12 +13,13 @@ declare var NProgress: any;
   templateUrl: './dialog-message.component.html',
   styleUrls: ['./dialog-message.component.css']
 })
-export class DialogMessageComponent implements OnInit {
+export class DialogMessageComponent implements OnInit, OnDestroy {
 
   messageList: Array<Message> = [];
   interlocutorUser: User = new User();
   authUser: User = new User();
   tempMessage: Message = new Message();
+  private timer: any;
 
   constructor(private messageService: MessageService,
               private authService: AuthenticationService,
@@ -47,21 +48,27 @@ export class DialogMessageComponent implements OnInit {
           this.messageList = data.content;
         });
 
-      this.interval(interlocutor);
+      this.startInterval(interlocutor);
 
     });
 
   }
 
-  public interval(interlocutor: number): void {
-    setInterval(o => {
-      this.messageService
-        .findMessageByInterlocutor(interlocutor)
-        .subscribe(data => {
-          this.messageList = data.content;
-        });
+  startInterval(interlocutor): void {
+    this.timer = setInterval(() => {
+      if (this.messageList.length > 0) {
+        this.messageService
+          .findMessageByInterlocutor(interlocutor)
+          .subscribe(data => {
+            this.messageList = data.content;
+          });
+      }
       console.log('interval');
-    }, 7000);
+    }, 5000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 
   public writeMessageToTemp(message: Message): void {
