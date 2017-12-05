@@ -15,14 +15,7 @@ export class DataTransfer {
 
   public responseToModelUser(response: Response): User {
     if (response && response.json()) {
-      const json: any = response.json();
-      const u: User = new User();
-      u.id = json.id;
-      u.firstName = json.firstName;
-      u.lastName = json.lastName;
-      u.nickname = json.nickname;
-      u.role = json.role;
-      return u;
+      return this.jsonToModelUser(response.json());
     }
     return null;
   }
@@ -31,7 +24,15 @@ export class DataTransfer {
     if (json) {
       const sender: User = this.jsonToModelUser(json.sender);
       const toUser: User = this.jsonToModelUser(json.toUser);
-      return new Feed(json.id, json.content, json.createdDateTimestamp, json.createdDateString, sender, toUser, json.tags);
+      let feed: Feed = new Feed();
+      feed.id = json.id;
+      feed.content = json.content;
+      feed.createdDateTimestamp = json.createdDateTimestamp;
+      feed.createdDateString = json.createdDateString;
+      feed.sender = sender;
+      feed.toUser = toUser;
+      feed.tags = json.tags;
+      return feed;
     }
     return null;
   }
@@ -51,10 +52,7 @@ export class DataTransfer {
 
   public responseToModelFeed(response: Response): Feed {
     if (response && response.json()) {
-      const json: any = response.json();
-      const sender: User = this.jsonToModelUser(json.sender);
-      const toUser: User = this.jsonToModelUser(json.toUser);
-      return new Feed(json.id, json.content, json.createdDateTimestamp, json.createdDateString, sender, toUser, json.tags);
+      return this.jsonToModelFeed(response.json());
     }
     return null;
   }
@@ -71,11 +69,7 @@ export class DataTransfer {
 
   public responseToModelFriend(response: Response): Friend {
     if (response && response.json()) {
-      const json: any = response.json();
-      const first: User = this.jsonToModelUser(json.first);
-      const second: User = this.jsonToModelUser(json.second);
-      const action: User = this.jsonToModelUser(json.action);
-      return Friend.build(first, second, action, json.status);
+      return this.jsonToModelFriend(response.json());
     }
     return null;
   }

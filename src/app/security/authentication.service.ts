@@ -15,6 +15,7 @@ import {serverUrl} from '../common/rest-url';
 export class AuthenticationService {
 
   private authUrl = serverUrl + 'auth';
+
   private headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
 
   constructor(private http: Http,

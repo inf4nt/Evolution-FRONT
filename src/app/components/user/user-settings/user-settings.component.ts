@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../service/rest/user.service';
-import {AuthenticationService} from '../../security/authentication.service';
-import {UserFull} from '../../model/user-full.model';
+import {UserService} from '../../../service/rest/user.service';
+import {AuthenticationService} from '../../../security/authentication.service';
+import {UserFull} from '../../../model/user-full.model';
 
 declare var NProgress: any;
 

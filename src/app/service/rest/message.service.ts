@@ -6,6 +6,7 @@ import {messageRest} from '../../common/rest-url';
 import {DataTransfer} from '../data-transfer.service';
 import {Http, Response} from '@angular/http';
 import {Page} from '../../model/page';
+import {MessageForSave} from "../../model/message-for-save.model";
 
 @Injectable()
 export class MessageService {
@@ -37,6 +38,16 @@ export class MessageService {
     });
     return this.http
       .post(messageRest, message, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        if (response.status === 201) {
+          return this.transfer.responseToModelMessage(response);
+        }
+      });
+  }
+
+  public postMessage2(message: MessageForSave): Observable<Message> {
+    return this.http
+      .post(messageRest, message.values, this.authService.getRequestOptionsArgs())
       .map((response: Response) => {
         if (response.status === 201) {
           return this.transfer.responseToModelMessage(response);

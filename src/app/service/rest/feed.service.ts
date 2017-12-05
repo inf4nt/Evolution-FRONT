@@ -7,6 +7,7 @@ import {Feed} from '../../model/feed.model';
 import {feedRest, findFeedsForMe} from '../../common/rest-url';
 import {Page} from '../../model/page';
 import {User} from '../../model/user.model';
+import {FeedForSave} from "../../model/feed-for-save.model";
 
 @Injectable()
 export class FeedService {
@@ -34,6 +35,15 @@ export class FeedService {
       });
 
       return this.http.post(feedRest, tweet, this.authService.getRequestOptionsArgs())
+        .map((response: Response) => {
+          return this.transfer.responseToModelFeed(response);
+        });
+    }
+  }
+
+  public postFeed2(feed: FeedForSave): Observable<Feed> {
+    if (feed && feed.content) {
+      return this.http.post(feedRest, feed.values, this.authService.getRequestOptionsArgs())
         .map((response: Response) => {
           return this.transfer.responseToModelFeed(response);
         });

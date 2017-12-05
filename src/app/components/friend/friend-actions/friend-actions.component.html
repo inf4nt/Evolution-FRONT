@@ -1,0 +1,21 @@
+<div>
+  <button class="btn btn-md btn-success" (click)="actionFriend()"
+          *ngIf="friendResultAction.nextAction === 'SEND_REQUEST_TO_FRIEND'">
+    <span class="glyphicon glyphicon-plus"></span> Add friend
+  </button>
+
+  <button class="btn btn-md btn-danger" (click)="actionFriend()"
+          *ngIf="friendResultAction.nextAction === 'DELETE_FRIEND'">
+    <span class="glyphicon glyphicon-remove"></span> Remove friend
+  </button>
+
+  <button class="btn btn-md btn-info" (click)="actionFriend()"
+          *ngIf="friendResultAction.nextAction === 'ACCEPT_REQUEST'">
+    <span class="glyphicon glyphicon-ok"></span> Accept request
+  </button>
+
+  <button class="btn btn-md btn-danger" (click)="actionFriend()"
+          *ngIf="friendResultAction.nextAction === 'DELETE_REQUEST'">
+    <span class="glyphicon glyphicon-remove"></span> Remove request
+  </button>
+</div>

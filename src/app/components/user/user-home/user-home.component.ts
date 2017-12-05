@@ -1,14 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '../../security/authentication.service';
-import {FriendService} from '../../service/rest/friend.service';
-import {UserService} from '../../service/rest/user.service';
-import {User} from '../../model/user.model';
-import {FeedService} from '../../service/rest/feed.service';
-import {Feed} from '../../model/feed.model';
-import {Friend} from '../../model/friend.model';
-import {FriendResultAction} from '../../model/friend-result-action.model';
-
+import {AuthenticationService} from '../../../security/authentication.service';
+import {FriendService} from '../../../service/rest/friend.service';
+import {UserService} from '../../../service/rest/user.service';
+import {User} from '../../../model/user.model';
+import {FeedService} from '../../../service/rest/feed.service';
+import {Feed} from '../../../model/feed.model';
+import {Friend} from '../../../model/friend.model';
+import {FriendResultAction} from '../../../model/friend-result-action.model';
 
 declare var NProgress: any;
 
@@ -24,8 +23,8 @@ export class UserHomeComponent implements OnInit {
   authUser: User = new User();
   currentUserId: number;
   feedList: Array<Feed> = [];
-  tweetText: string = null;
-  tempFeed: Feed;
+
+
   friendResultAction: FriendResultAction = new FriendResultAction();
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -41,7 +40,7 @@ export class UserHomeComponent implements OnInit {
     this.authUser = this.authenticationService.getAuth();
 
     this.activatedRoute.params.subscribe(params => {
-      const id = +params['id'];
+      let id: number = +params['id'];
       this.currentUserId = id;
 
       NProgress.start();
@@ -73,41 +72,9 @@ export class UserHomeComponent implements OnInit {
           this.feedList.reverse();
           NProgress.done();
         });
+
     });
 
-  }
-
-  postTweet(): void {
-    NProgress.start();
-    if (this.tweetText) {
-      this.feedService.postFeed(this.tweetText, this.authenticationService.getAuth(), this.currentUser)
-        .subscribe(data => {
-          this.feedList.reverse();
-          this.feedList.push(data);
-          this.feedList.reverse();
-          NProgress.done();
-        });
-    } else {
-      NProgress.done();
-    }
-    this.tweetText = null;
-  }
-
-  beforeRemoveFeed(feed: Feed): void {
-    this.tempFeed = feed;
-  }
-
-  removeFeed(): void {
-    NProgress.start();
-    this.feedService.deleteFeed(this.tempFeed.id)
-      .subscribe(data => {
-        if (data) {
-          const index = this.feedList.indexOf(this.tempFeed);
-          this.feedList.splice(index, 1);
-        }
-        NProgress.doneAfterCloseModal();
-        this.tempFeed = null;
-      });
   }
 
   actionFriend(): void {

@@ -10,10 +10,7 @@ import {HttpModule} from '@angular/http';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {FriendsComponent} from './components/friends/friends.component';
-import {DialogComponent} from './components/dialog/dialog.component';
-import {MessageComponent} from './components/message/message.component';
-import {UserHomeComponent} from './components/user-home/user-home.component';
-import {RegistrationComponent} from './components/registration/registration.component';
+import {RegistrationComponent} from './components/user/user-registration/registration.component';
 import {FriendService} from './service/rest/friend.service';
 import {UserService} from './service/rest/user.service';
 import {FeedService} from './service/rest/feed.service';
@@ -22,15 +19,24 @@ import {MessageService} from './service/rest/message.service';
 import {IsAuthGuard} from './guard/is-auth-guard';
 import {RestErrorService} from './service/rest/rest-error.service';
 import {NoContentComponent} from './components/no-content/no-content.component';
-import {UserListComponent} from './components/user-list/user-list.component';
-import {UserSettingsComponent} from './components/user-settings/user-settings.component';
+import {UserListComponent} from './components/user/user-list/user-list.component';
+import {FeedListComponent} from "./components/feed/feed-list/feed-list.component";
+import {FeedPostComponent} from "./components/feed/feed-post/feed-post.component";
+import {FriendActionsComponent} from "./components/friend/friend-actions/friend-actions.component";
+import {UserHomeComponent} from "./components/user/user-home/user-home.component";
+import {UserSettingsComponent} from "./components/user/user-settings/user-settings.component";
+import {FriendListComponent} from "./components/friend/friend-list/friend-list.component";
+import {DialogUserListComponent} from "./components/message-dialog/dialog-user-list/dialog-user-list.component";
+import {MessagePostComponent} from "./components/message-dialog/message-post/message-post.component";
+import {DialogMessageComponent} from "./components/message-dialog/dialog-message/dialog-message.component";
+
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'friend/user/:id/:status', component: FriendsComponent, canActivate: [IsAuthGuard]},
-  {path: 'dialog', component: DialogComponent, canActivate: [IsAuthGuard]},
-  {path: 'message/interlocutor/:interlocutor', component: MessageComponent, canActivate: [IsAuthGuard]},
+  {path: 'friend/user/:id/:status', component: FriendListComponent, canActivate: [IsAuthGuard]},
+  {path: 'dialog', component: DialogUserListComponent, canActivate: [IsAuthGuard]},
+  {path: 'message/interlocutor/:interlocutor', component: DialogMessageComponent, canActivate: [IsAuthGuard]},
   {path: 'user-home/:id', component: UserHomeComponent, pathMatch: 'full', canActivate: [IsAuthGuard]},
   {path: 'registration', component: RegistrationComponent},
   {path: 'actionStatus/204', component: NoContentComponent},
@@ -45,13 +51,18 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     FriendsComponent,
-    DialogComponent,
-    MessageComponent,
     UserHomeComponent,
     RegistrationComponent,
     NoContentComponent,
     UserListComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    FeedListComponent,
+    FeedPostComponent,
+    FriendListComponent,
+    FriendActionsComponent,
+    DialogUserListComponent,
+    DialogMessageComponent,
+    MessagePostComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +70,15 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule],
-  providers: [AuthenticationService, DataTransfer, FriendService, UserService, FeedService, MessageService, IsAuthGuard, RestErrorService],
+  providers: [
+    AuthenticationService,
+    DataTransfer,
+    FriendService,
+    UserService,
+    FeedService,
+    MessageService,
+    IsAuthGuard,
+    RestErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

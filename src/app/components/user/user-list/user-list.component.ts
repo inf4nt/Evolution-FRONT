@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../model/user.model';
-import {UserService} from '../../service/rest/user.service';
-import {Page} from '../../model/page';
-import {userDefaultPageableSize} from '../../common/const';
+import {Page} from "../../../model/page";
+import {User} from "../../../model/user.model";
+import {UserService} from "../../../service/rest/user.service";
+import {userDefaultPageableSize} from "../../../common/const";
+
 
 declare var NProgress: any;
 

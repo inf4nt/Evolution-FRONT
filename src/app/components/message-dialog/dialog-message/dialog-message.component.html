@@ -1,0 +1,63 @@
+<div class="col-lg-7 col-lg-offset-3 div-white block-background">
+
+  <div>
+    <a style="color: white" routerLink="{{ '/user-home/' + interlocutorUser.id }}">
+      <h1 class="text-center"> {{interlocutorUser.firstName}} {{interlocutorUser.lastName}}</h1>
+    </a>
+    <hr/>
+  </div>
+
+  <div style="overflow: scroll; overflow-x: hidden" #scrollMe [scrollTop]="scrollMe.scrollHeight"
+       class="form-group block-sms scroll-down">
+    <table class="table">
+      <thead>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let m of messageList">
+        <td>
+          <p style="color: white">
+            <a style="color: white" routerLink="{{ '/user-home/' + m.sender.id }}">
+              {{m.sender.firstName}} {{m.sender.lastName}}
+            </a>
+            <span class="text-white"> {{m.createdDateTimestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
+            <span *ngIf="m.sender.id === authUser.id"
+                  (click)="writeMessageToTemp(m)" class="pull-right cursor" style="color: white" data-toggle="modal"
+                  href="#modal-message-delete">X</span>
+          </p>
+          {{ m.content }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <app-message-post [listMessage]="messageList" [sender]="authUser" [recipient]="interlocutorUser"></app-message-post>
+  </div>
+
+
+</div>
+
+<div class="modal fade" id="modal-message-delete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 style="color: black" class="modal-title">Delete message by id {{tempMessage.id}}</h4>
+      </div>
+      <div style="color: black" class="modal-body">
+        Are you sure ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" (click)="deleteMessage()" data-dismiss="modal" class="btn btn-danger pull-left">Delete
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

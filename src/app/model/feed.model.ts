@@ -16,14 +16,7 @@ export class Feed {
 
   private _tags: Array<string>;
 
-  constructor(id: number, content: string, createdDateTimestamp: number, createdDateString: string, sender: User, toUser: User, tags: Array<string>) {
-    this._id = id;
-    this._content = content;
-    this._createdDateTimestamp = createdDateTimestamp;
-    this._createdDateString = createdDateString;
-    this._sender = sender;
-    this._toUser = toUser;
-    this._tags = tags;
+  constructor() {
   }
 
   get id(): number {
