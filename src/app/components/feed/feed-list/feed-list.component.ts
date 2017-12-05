@@ -14,7 +14,7 @@ declare var NProgress: any;
 export class FeedListComponent implements OnInit {
 
   @Input()
-  private feedList: Array<Feed> = [];
+  feedList: Array<Feed> = [];
 
   @Input()
   private currentUser: User = new User();

@@ -13,7 +13,7 @@ declare var NProgress: any;
 export class FriendActionsComponent implements OnInit {
 
   @Input()
-  private friendResultAction: FriendResultAction;
+  friendResultAction: FriendResultAction;
 
   @Input()
   private authUser: User;

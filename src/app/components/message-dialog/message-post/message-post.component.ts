@@ -23,7 +23,7 @@ export class MessagePostComponent implements OnInit {
   @Input()
   private listMessage: Array<Message> = [];
 
-  private messagePost: MessageForSave = new MessageForSave();
+  messagePost: MessageForSave = new MessageForSave();
 
   constructor(private messageService: MessageService) {
   }
