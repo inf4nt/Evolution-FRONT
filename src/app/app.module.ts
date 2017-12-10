@@ -29,7 +29,6 @@ import {FriendListComponent} from "./components/friend/friend-list/friend-list.c
 import {DialogUserListComponent} from "./components/message-dialog/dialog-user-list/dialog-user-list.component";
 import {MessagePostComponent} from "./components/message-dialog/message-post/message-post.component";
 import {DialogMessageComponent} from "./components/message-dialog/dialog-message/dialog-message.component";
-import {MessageDetailsComponent} from "./components/message-dialog/message-details/message-details.component";
 import {TechnicalService} from "./service/technical.service";
 
 
@@ -64,8 +63,7 @@ const appRoutes: Routes = [
     FriendActionsComponent,
     DialogUserListComponent,
     DialogMessageComponent,
-    MessagePostComponent,
-    MessageDetailsComponent
+    MessagePostComponent
   ],
   imports: [
     BrowserModule,
