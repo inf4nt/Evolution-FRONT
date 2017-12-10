@@ -19,27 +19,67 @@
       <tbody>
 
       <tr *ngFor="let m of messageList">
-        <td>
-          <p style="color: white">
-            <a style="color: white" routerLink="{{ '/user-home/' + m.sender.id }}">
-              {{m.sender.firstName}} {{m.sender.lastName}}
-            </a>
-            <span class="text-white"> {{m.createdDateTimestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
-            <span *ngIf="m.sender.id === authUser.id"
-                  (click)="writeMessageToTemp(m)" class="pull-right cursor" style="color: white" data-toggle="modal"
-                  href="#modal-message-delete">X</span>
-          </p>
-          {{ m.content }}
+        <td style="width: 100%" (click)="selectMessage(m)">
+
+          <div class="col-lg-8 pull-right block-background" *ngIf="m.sender.id === authUser.id"
+               style="text-align: right">
+            <p>
+              <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
+                {{m.sender.firstName}} {{m.sender.lastName}}
+              </a>
+              <span class="text-white"> {{m.createdDateTimestamp | date:'yyyy-MM-dd HH:mm'}}</span>
+            </p>
+            <div (click)="selectMessage(m)">
+              {{m.content}}
+            </div>
+          </div>
+
+          <div class="col-lg-8 pull-left block-background" *ngIf="m.sender.id !== authUser.id" style="text-align: left">
+            <p>
+              <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
+                {{m.sender.firstName}} {{m.sender.lastName}}
+              </a>
+              <span class="text-white"> {{m.createdDateTimestamp | date:'yyyy-MM-dd HH:mm'}}</span>
+            </p>
+            <div >
+              {{m.content}}
+            </div>
+          </div>
+
         </td>
       </tr>
       </tbody>
     </table>
   </div>
 
-  <div>
+  <div *ngIf="!isAction">
     <app-message-post [listMessage]="messageList" [sender]="authUser" [recipient]="interlocutorUser"></app-message-post>
   </div>
 
+  <div *ngIf="isAction">
+    <form>
+      <div class="form-group">
+      </div>
+      <textarea placeholder="write message..." [(ngModel)]="selectedMessage.content" required name="message"
+                class="form-control" style="height: 100px " rows="5"></textarea>
+
+      <div class="col-lg-12">
+        <br/>
+        <div class="col-lg-12">
+          <button class="btn btn-primary" (click)="cancel()" style="width: 15%">Cancel
+            <span class="glyphicon glyphicon-share-alt"></span>
+          </button>
+          <button class="btn btn-success" (click)="edit()" style="width: 69%">Edit
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+          <button class="btn btn-danger  pull-right"
+                  (click)="writeMessageToTemp(selectedMessage)" style="color: white; width: 15%" data-toggle="modal"
+                  href="#modal-message-delete">Delete <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 
 </div>
 

@@ -5,6 +5,8 @@ import {AuthenticationService} from "../../../security/authentication.service";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../../../model/user.model";
 import {UserService} from "../../../service/rest/user.service";
+import {DataTransfer} from "../../../service/data-transfer.service";
+import {TechnicalService} from "../../../service/technical.service";
 
 declare var NProgress: any;
 
@@ -19,12 +21,16 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
   interlocutorUser: User = new User();
   authUser: User = new User();
   tempMessage: Message = new Message();
+  selectedMessage: Message = new Message();
+  initialStateSelectedMessage: Message = new Message();
+  isAction: boolean = false;
   private timer: any;
 
   constructor(private messageService: MessageService,
               private authService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private techService: TechnicalService) {
   }
 
   ngOnInit() {
@@ -71,6 +77,16 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
+  public selectMessage(message: Message): void {
+    if (message.sender.id === this.authUser.id) {
+      this.initialStateSelectedMessage = message;
+      this.selectedMessage = this.techService.cloneMessage(message);
+      this.isAction = true;
+    } else {
+      this.isAction = false;
+    }
+  }
+
   public writeMessageToTemp(message: Message): void {
     this.tempMessage = message;
   }
@@ -86,8 +102,28 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
             this.messageList.splice(index, 1);
           }
           NProgress.doneAfterCloseModal();
+          this.isAction = false;
         });
     }
+  }
+
+  public edit(): void {
+    if (this.selectedMessage && this.selectedMessage.content && this.selectedMessage.content.length > 0) {
+      NProgress.start();
+      this.messageService
+        .put(this.techService.messageToMessageForUpdate(this.selectedMessage))
+        .subscribe(data => {
+          this.techService.updateListMessage(this.messageList, data);
+          NProgress.done();
+          this.isAction = false;
+        });
+    } else {
+      this.isAction = false;
+    }
+  }
+
+  public cancel(): void {
+    this.isAction = false;
   }
 
 }

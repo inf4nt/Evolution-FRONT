@@ -7,6 +7,7 @@ import {DataTransfer} from '../data-transfer.service';
 import {Http, Response} from '@angular/http';
 import {Page} from '../../model/page';
 import {MessageForSave} from "../../model/message-for-save.model";
+import {MessageForUpdate} from "../../model/message-for-update.model";
 
 @Injectable()
 export class MessageService {
@@ -75,5 +76,12 @@ export class MessageService {
       });
   }
 
+  public put(message: MessageForUpdate): Observable<Message> {
+    return this.http
+      .put(messageRest, message.values, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToModelMessage(response);
+      });
+  }
 
 }

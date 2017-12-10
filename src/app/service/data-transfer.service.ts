@@ -105,7 +105,7 @@ export class DataTransfer {
     d.first = this.jsonToModelUser(json.first);
     d.createdDateString = json.createdDateString;
     d.createdDateTimestamp = json.createdDateTimestamp;
-    return null;
+    return d;
   }
 
   public responseToPage<T>(response: Response): Page<T> {
@@ -147,6 +147,4 @@ export class DataTransfer {
     a.gender = user.gender;
     return a;
   }
-
-
 }
