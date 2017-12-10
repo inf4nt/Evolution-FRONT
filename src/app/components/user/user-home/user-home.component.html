@@ -38,10 +38,19 @@
 
       <div *ngIf="currentUser.id !== authUser.id">
         <p class="text-center">
-          <app-friend-actions [authUser]="authUser" [currentUser]="currentUser" [friendResultAction]="friendResultAction"></app-friend-actions>
+          <app-friend-actions [authUser]="authUser" [currentUser]="currentUser"
+                              [friendResultAction]="friendResultAction"></app-friend-actions>
         </p>
       </div>
 
+    </div>
+
+    <div class="col-lg-12">
+      <br/>
+    </div>
+
+    <div>
+      <app-friend-random-panel [pageFriends]="pageFriends"></app-friend-random-panel>
     </div>
 
   </div>
@@ -72,8 +81,6 @@
     </div>
 
   </div>
-
-
 
 
 </div>

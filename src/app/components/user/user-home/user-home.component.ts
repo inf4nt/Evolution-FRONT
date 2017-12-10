@@ -8,6 +8,7 @@ import {FeedService} from '../../../service/rest/feed.service';
 import {Feed} from '../../../model/feed.model';
 import {Friend} from '../../../model/friend.model';
 import {FriendResultAction} from '../../../model/friend-result-action.model';
+import {Page} from "../../../model/page";
 
 declare var NProgress: any;
 
@@ -23,7 +24,7 @@ export class UserHomeComponent implements OnInit {
   authUser: User = new User();
   currentUserId: number;
   feedList: Array<Feed> = [];
-
+  pageFriends: Page<Friend> = new Page<Friend>();
 
   friendResultAction: FriendResultAction = new FriendResultAction();
 
@@ -56,14 +57,12 @@ export class UserHomeComponent implements OnInit {
           }
         });
 
-      if (this.currentUserId !== this.authUser.id) {
-        this.friendService
-          .findNextAction2(this.currentUserId)
-          .subscribe(data => {
-            console.log(data);
-            this.friendResultAction = data;
-          });
-      }
+      this.friendService
+        .findRandomFriendByUser(id)
+        .subscribe(data => {
+          console.log(data);
+          this.pageFriends = data;
+        });
 
       this.feedService
         .findFeedsForMe(id)
@@ -73,18 +72,19 @@ export class UserHomeComponent implements OnInit {
           NProgress.done();
         });
 
+      if (this.currentUserId !== this.authUser.id) {
+        this.friendService
+          .findNextAction2(this.currentUserId)
+          .subscribe(data => {
+            console.log(data);
+            this.friendResultAction = data;
+          });
+
+      }
+
+
     });
 
-  }
-
-  actionFriend(): void {
-    NProgress.start();
-    this.friendService
-      .actionFriend(this.authUser.id, this.currentUser.id, this.friendResultAction)
-      .subscribe(data => {
-        this.friendResultAction = data;
-        NProgress.done();
-      });
   }
 
 }

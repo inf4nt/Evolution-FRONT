@@ -30,6 +30,8 @@ import {DialogUserListComponent} from "./components/message-dialog/dialog-user-l
 import {MessagePostComponent} from "./components/message-dialog/message-post/message-post.component";
 import {DialogMessageComponent} from "./components/message-dialog/dialog-message/dialog-message.component";
 import {TechnicalService} from "./service/technical.service";
+import {FriendRandomPanelComponent} from "./components/friend/friend-random-panel/friend-random-panel.component";
+
 
 
 const appRoutes: Routes = [
@@ -63,7 +65,8 @@ const appRoutes: Routes = [
     FriendActionsComponent,
     DialogUserListComponent,
     DialogMessageComponent,
-    MessagePostComponent
+    MessagePostComponent,
+    FriendRandomPanelComponent
   ],
   imports: [
     BrowserModule,

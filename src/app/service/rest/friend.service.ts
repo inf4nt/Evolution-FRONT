@@ -97,4 +97,11 @@ export class FriendService {
       }).catch((error: any) => Observable.throw(error + ' server error'));
   }
 
+  public findRandomFriendByUser(id: number): Observable<Page<Friend>> {
+    return this.http
+      .get(friendRest + '/find/random/progress/' + id, this.authService.getRequestOptionsArgs())
+      .map((response: Response) => {
+        return this.transfer.responseToPage<Friend>(response);
+      });
+  }
 }

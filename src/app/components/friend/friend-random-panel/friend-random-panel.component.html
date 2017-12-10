@@ -1,0 +1,16 @@
+<div *ngIf="pageFriends.content.length > 0" class="col-lg-12 block-background">
+  <p class="text-white">
+    Friends
+  </p>
+
+  <div class="col-lg-4" *ngFor="let f of pageFriends.content">
+    <a routerLink="/user-home/{{f.second.id}}" class="block-link" style="color: white">
+      <img data-src="holder.js/140x140" class="img-circle center-block" style="width: 100%;"
+           src="http://www.isu.edu.tw/upload/276e/9/coming-soon.jpg" data-holder-rendered="true">
+      <p class="text-center" style="width: 100%">
+        {{f.second.firstName}}
+      </p>
+    </a>
+  </div>
+
+</div>
