@@ -59,3 +59,8 @@ li {
 .block-message-content-recipient {
 
 }
+
+
+.is-active {
+  color: red;
+}

@@ -5,6 +5,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../security/authentication.service';
 import {Router} from '@angular/router';
 import {User} from "../../model/user.model";
+import {UserDto} from "../../dto/user.dto";
 
 
 @Component({
@@ -13,7 +14,7 @@ import {User} from "../../model/user.model";
   styleUrls: []
 })
 export class HeaderComponent implements OnInit {
-  auth: User = new User();
+  auth: UserDto = new UserDto();
   username: string;
 
   constructor(private authService: AuthenticationService,
@@ -21,8 +22,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('HeaderComponent ' + this.authService.getUsername());
-    this.username = this.authService.getUsername();
     this.auth = this.authService.getAuth();
   }
 

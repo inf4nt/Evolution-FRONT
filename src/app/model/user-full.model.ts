@@ -1,95 +1,33 @@
 export class UserFull {
 
-  private _id: number;
+  public id: number;
 
-  private _firstName: string;
+  public firstName: string;
 
-  private _lastName: string;
+  public lastName: string;
 
-  private _nickname: string;
+  public nickname: string;
 
-  private _username: string;
+  public username: string;
 
-  private _password: string;
+  public password: string;
 
-  private _country: string;
+  public country: string;
 
-  private _state: string;
+  public state: string;
 
-  private _gender: string;
+  public gender: string;
 
-  constructor() {
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  get firstName(): string {
-    return this._firstName;
-  }
-
-  set firstName(value: string) {
-    this._firstName = value;
-  }
-
-  get lastName(): string {
-    return this._lastName;
-  }
-
-  set lastName(value: string) {
-    this._lastName = value;
-  }
-
-  get nickname(): string {
-    return this._nickname;
-  }
-
-  set nickname(value: string) {
-    this._nickname = value;
-  }
-
-  get username(): string {
-    return this._username;
-  }
-
-  set username(value: string) {
-    this._username = value;
-  }
-
-  get password(): string {
-    return this._password;
-  }
-
-  set password(value: string) {
-    this._password = value;
-  }
-
-  get country(): string {
-    return this._country;
-  }
-
-  set country(value: string) {
-    this._country = value;
-  }
-
-  get state(): string {
-    return this._state;
-  }
-
-  set state(value: string) {
-    this._state = value;
-  }
-
-  get gender(): string {
-    return this._gender;
-  }
-
-  set gender(value: string) {
-    this._gender = value;
+  constructor(id: number = 0, firstName: string = null, lastName: string = null, nickname: string = null,
+              username: string = null, password: string = null, country: string = null, state: string = null, gender: string = null) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.nickname = nickname;
+    this.username = username;
+    this.password = password;
+    this.country = country;
+    this.state = state;
+    this.gender = gender;
   }
 }

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Message} from "../../../model/message.model";
-import {User} from "../../../model/user.model";
-import {MessageService} from "../../../service/rest/message.service";
 import {AuthenticationService} from "../../../security/authentication.service";
+import {MessageDataService} from "../../../service/data/message-data.service";
+import {UserDto} from "../../../dto/user.dto";
 declare var NProgress: any;
 
 
@@ -14,17 +14,19 @@ declare var NProgress: any;
 export class DialogUserListComponent implements OnInit {
 
   messageListInDialogs: Array<Message> = [];
-  authUser: User = new User();
+  authUser: UserDto = new UserDto();
 
   constructor(private authService: AuthenticationService,
-              private messageService: MessageService) {
+              private messageDataService: MessageDataService) {
   }
 
   ngOnInit() {
     this.authUser = this.authService.getAuth();
+    NProgress.done();
     NProgress.start();
 
-    this.messageService.findLastMessageForMyDialog(this.authService.getAuth().id)
+    this.messageDataService
+      .findLastMessageForMyDialog(this.authService.getAuth().id)
       .subscribe(data => {
         this.messageListInDialogs = data.content;
         NProgress.done();

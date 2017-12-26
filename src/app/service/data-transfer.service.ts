@@ -9,16 +9,12 @@ import {Dialog} from '../model/dialog.model';
 import {FriendResultAction} from '../model/friend-result-action.model';
 import {UserFull} from "../model/user-full.model";
 import {UserForUpdate} from "../model/user-for-update.model";
+import {HttpResponse} from '@angular/common/http';
+import {UserUpdateDto} from "../dto/user-update.dto";
+import {UserDto} from "../dto/user.dto";
 
 @Injectable()
 export class DataTransfer {
-
-  public responseToModelUser(response: Response): User {
-    if (response && response.json()) {
-      return this.jsonToModelUser(response.json());
-    }
-    return null;
-  }
 
   public jsonToModelFeed(json: any): Feed {
     if (json) {
@@ -45,6 +41,21 @@ export class DataTransfer {
       u.lastName = json.lastName;
       u.nickname = json.nickname;
       u.role = json.role;
+      u.username = json.username;
+      return u;
+    }
+    return null;
+  }
+
+  public jsonToModelUserDTO(json: any): UserDto {
+    if (json) {
+      const u: UserDto = new UserDto();
+      u.id = json.id;
+      u.firstName = json.firstName;
+      u.lastName = json.lastName;
+      u.nickname = json.nickname;
+      u.role = json.role;
+      u.username = json.username;
       return u;
     }
     return null;
@@ -110,7 +121,6 @@ export class DataTransfer {
 
   public responseToPage<T>(response: Response): Page<T> {
     const page: Page<T> = new Page<T>();
-    console.log(response);
     if (response && response.json()) {
       page.content = response.json().content;
       page.totalPages = response.json().totalPages;
@@ -146,5 +156,28 @@ export class DataTransfer {
     a.state = user.state;
     a.gender = user.gender;
     return a;
+  }
+
+  public jsonToPage<T>(body: any): Page<T> {
+    const page: Page<T> = new Page<T>();
+    if (body) {
+      page.content = body.content;
+      page.totalPages = body.totalPages;
+      page.totalElement = body.totalElements;
+      page.numberOfElements = body.numberOfElements;
+    }
+    return page;
+  }
+
+  public userDtoToUserUpdateDto(userDTO: UserDto): UserUpdateDto {
+    let u: UserUpdateDto = new UserUpdateDto();
+    u.id = userDTO.id;
+    u.lastName = userDTO.lastName;
+    u.firstName = userDTO.firstName;
+    u.nickname = userDTO.nickname;
+    u.country = userDTO.country;
+    u.state = userDTO.state;
+    u.gender = userDTO.gender;
+    return u;
   }
 }

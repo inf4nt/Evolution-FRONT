@@ -2,81 +2,74 @@
  * Created by Infant on 15.08.2017.
  */
 import {Injectable} from '@angular/core';
-import {Http, Headers, Response, RequestOptionsArgs} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {DataTransfer} from '../service/data-transfer.service';
 import {User} from '../model/user.model';
 import {serverUrl} from '../common/rest-url';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {AuthenticationRequestDto} from '../dto/authentication-request.dto';
+import {Observable} from 'rxjs/Observable';
+import {EvolutionJwtTokenService} from "./jwt-token.service";
+import {UserDto} from "../dto/user.dto";
 
 @Injectable()
 export class AuthenticationService {
 
   private authUrl = serverUrl + 'auth';
 
-  private headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'});
-
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
+              private jwtTokenService: EvolutionJwtTokenService,
               private transfer: DataTransfer) {
   }
 
-  public login(username: string, password: string): Observable<boolean> {
-    return this.http.post(this.authUrl, JSON.stringify({
-      username: username,
-      password: password
-    }), {headers: this.headers})
-      .map((response: Response) => {
-        const token = response.json() && response.json().token;
+  public login(authenticationRequest: AuthenticationRequestDto): Observable<boolean> {
+    return this.httpClient
+      .post(this.authUrl, authenticationRequest)
+      .map((response: HttpResponse<any>) => {
+        let json: any = response;
+        const token = json && json.token;
         if (token) {
-          localStorage.setItem('currentUser', JSON.stringify({
-            username: username,
-            user: response.json().user,
-            token: token
-          }));
+          let u: User = this.transfer.jsonToModelUser(json.user);
+          u.username = authenticationRequest.username;
+          this.setAuthUser(u.values);
 
+          this.jwtTokenService.setToken(token);
           return true;
         } else {
           return false;
         }
-      }).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+      })
+      .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
-  public getHeaders(): Headers {
-    return new Headers({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.getToken()
-    });
-  }
-
-  public getRequestOptionsArgs(): RequestOptionsArgs {
-    return {headers: this.getHeaders()};
-  }
-
-  public getAuth(): User {
-    return this.transfer.jsonToModelUser(JSON.parse(localStorage.getItem('currentUser')).user);
-  }
-
-  public isAuth(): boolean {
-    return this.getToken() != null;
-  }
-
-  public getToken(): String {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const token = currentUser && currentUser.token;
-    return token ? token : null;
-  }
-
-  public logout(): void {
-    localStorage.removeItem('currentUser');
-  }
-
-  public getUsername(): string {
-    if (this.isAuth()) {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser.username;
+  public getAuth(): UserDto {
+    let item: any = localStorage.getItem('authUser');
+    if (item) {
+      const u = JSON.parse(localStorage.getItem('authUser')).user;
+      return this.transfer.jsonToModelUserDTO(u);
+    } else {
+      return new UserDto();
     }
   }
 
+  public isAuth(): boolean {
+    return this.jwtTokenService.getToken() != null;
+  }
+
+  public getToken(): String {
+    return this.jwtTokenService.getToken();
+  }
+
+  public logout(): void {
+    localStorage.removeItem('authUser');
+    this.jwtTokenService.cleanToken();
+  }
+
+  private setAuthUser(user: any): void {
+    localStorage.setItem('authUser', JSON.stringify({
+      user: user
+    }));
+  }
 }

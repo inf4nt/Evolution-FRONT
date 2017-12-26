@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Message} from "../../../model/message.model";
-import {MessageService} from "../../../service/rest/message.service";
 import {AuthenticationService} from "../../../security/authentication.service";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../../../model/user.model";
-import {UserService} from "../../../service/rest/user.service";
-import {DataTransfer} from "../../../service/data-transfer.service";
 import {TechnicalService} from "../../../service/technical.service";
+import {MessageDataService} from "../../../service/data/message-data.service";
+import {UserDataService} from "../../../service/data/user-data.service";
+import {UserDto} from "../../../dto/user.dto";
 
 declare var NProgress: any;
 
@@ -18,18 +18,18 @@ declare var NProgress: any;
 export class DialogMessageComponent implements OnInit, OnDestroy {
 
   messageList: Array<Message> = [];
-  interlocutorUser: User = new User();
-  authUser: User = new User();
+  interlocutorUser: UserDto = new UserDto();
+  authUser: UserDto = new UserDto();
   tempMessage: Message = new Message();
   selectedMessage: Message = new Message();
   initialStateSelectedMessage: Message = new Message();
   isAction: boolean = false;
   private timer: any;
 
-  constructor(private messageService: MessageService,
+  constructor(private messageDataService: MessageDataService,
+              private userDataService: UserDataService,
               private authService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
-              private userService: UserService,
               private techService: TechnicalService) {
   }
 
@@ -41,20 +41,24 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
 
       let interlocutor: number = +params['interlocutor'];
 
-      this.userService
+      this.userDataService
         .findOne(interlocutor)
         .subscribe(data => {
-          this.interlocutorUser = data;
-          NProgress.done();
-        });
-
-      this.messageService
-        .findMessageByInterlocutor(interlocutor)
-        .subscribe(data => {
-          this.messageList = data.content;
-        });
-
-      this.startInterval(interlocutor);
+          if (data) {
+            this.interlocutorUser = data;
+            this.messageDataService
+              .findMessageByInterlocutor(interlocutor)
+              .subscribe(data => {
+                this.messageList = data.content;
+                NProgress.done();
+                if (data.content.length > 0) {
+                  this.startInterval(interlocutor);
+                }
+              })
+          } else {
+            NProgress.done();
+          }
+        })
 
     });
 
@@ -62,13 +66,11 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
 
   startInterval(interlocutor): void {
     this.timer = setInterval(() => {
-      if (this.messageList.length > 0) {
-        this.messageService
-          .findMessageByInterlocutor(interlocutor)
-          .subscribe(data => {
-            this.messageList = data.content;
-          });
-      }
+      this.messageDataService
+        .findMessageByInterlocutor(interlocutor)
+        .subscribe(data => {
+          this.messageList = data.content;
+        })
       console.log('interval');
     }, 5000);
   }
@@ -94,7 +96,7 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
   public deleteMessage(): void {
     if (this.tempMessage) {
       NProgress.start();
-      this.messageService
+      this.messageDataService
         .deleteMessage(this.tempMessage.id)
         .subscribe(data => {
           if (data) {
@@ -110,7 +112,7 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
   public edit(): void {
     if (this.selectedMessage && this.selectedMessage.content && this.selectedMessage.content.length > 0) {
       NProgress.start();
-      this.messageService
+      this.messageDataService
         .put(this.techService.messageToMessageForUpdate(this.selectedMessage))
         .subscribe(data => {
           this.techService.updateListMessage(this.messageList, data);
