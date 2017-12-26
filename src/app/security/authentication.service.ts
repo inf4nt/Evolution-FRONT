@@ -31,9 +31,9 @@ export class AuthenticationService {
         let json: any = response;
         const token = json && json.token;
         if (token) {
-          let u: User = this.transfer.jsonToModelUser(json.user);
+          let u: UserDto = this.transfer.jsonToModelUserDTO(json.user);
           u.username = authenticationRequest.username;
-          this.setAuthUser(u.values);
+          this.setAuthUser(u);
 
           this.jwtTokenService.setToken(token);
           return true;
