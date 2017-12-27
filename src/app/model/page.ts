@@ -7,10 +7,13 @@ export class Page<T> {
 
   private _totalElement: number;
 
-  constructor() {
-    this._content = [];
-    this._totalPages = 0;
-    this._totalElement = 0;
+  private _numberOfElements: number;
+
+  constructor(content: Array<T> = [], totalPages: number = 0, totalElement: number = 0, numberOfElements: number = 0) {
+    this._content = content;
+    this._totalPages = totalPages;
+    this._totalElement = totalElement;
+    this._numberOfElements = numberOfElements;
   }
 
   get content(): Array<T> {
@@ -35,5 +38,13 @@ export class Page<T> {
 
   set totalElement(value: number) {
     this._totalElement = value;
+  }
+
+  get numberOfElements(): number {
+    return this._numberOfElements;
+  }
+
+  set numberOfElements(value: number) {
+    this._numberOfElements = value;
   }
 }

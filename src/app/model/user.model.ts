@@ -58,4 +58,15 @@ export class User {
   set role(value: string) {
     this._role = value;
   }
+
+  get values(): any {
+    return {
+      id: this.id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      nickname: this.nickname,
+      role: this.role,
+      username: this.username
+    };
+  }
 }

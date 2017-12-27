@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MessageService} from "../../../service/rest/message.service";
 import {MessageForSave} from "../../../model/message-for-save.model";
 import {User} from "../../../model/user.model";
 import {Message} from "../../../model/message.model";
 import {maxListMessageLength} from "../../../common/const";
+import {MessageDataService} from "../../../service/data/message-data.service";
 
 declare var NProgress: any;
 
@@ -25,32 +25,32 @@ export class MessagePostComponent implements OnInit {
 
   messagePost: MessageForSave = new MessageForSave();
 
-  constructor(private messageService: MessageService) {
-  }
+  constructor(private messageDataService: MessageDataService) {}
 
   ngOnInit() {
   }
 
   postMessage(): void {
-    if (this.messagePost && this.messagePost.text.length > 0) {
+    if (this.messagePost.text.length > 0) {
       NProgress.start();
-
       this.messagePost
         .senderId = this.sender.id;
       this.messagePost
         .recipientId = this.recipient.id;
 
-      this.messageService
-        .postMessage2(this.messagePost)
+      this.messageDataService
+        .postMessage(this.messagePost)
         .subscribe(data => {
-          this.listMessage.push(data);
-          if (this.listMessage.length >= maxListMessageLength) {
-            this.listMessage.splice(0, 1);
+          if (data) {
+            this.listMessage.push(data);
+            if (this.listMessage.length >= maxListMessageLength) {
+              this.listMessage.splice(0, 1);
+            }
           }
           NProgress.done();
         });
-    }
 
+    }
     this.messagePost = new MessageForSave();
   }
 

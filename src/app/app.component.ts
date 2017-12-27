@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {AuthenticationService} from './security/authentication.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,17 +8,10 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(private authService: AuthenticationService,
-              private router: Router) {
+  constructor(private authService: AuthenticationService) {
   }
 
   isAuth(): boolean {
     return this.authService.getToken() !== null;
   }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['']);
-  }
-
 }

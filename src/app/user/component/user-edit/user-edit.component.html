@@ -1,0 +1,45 @@
+<div class="col-lg-10 col-lg-offset-1 block-background">
+  <div class="form-group">
+    <form (ngSubmit)="edit()">
+      <h3 class="text-center text-white">Settings</h3>
+      <label>Id</label>
+      <input name="id" class="form-control" [(ngModel)]="currentUser.id" value="{{currentUser.id}}"
+             placeholder="{{currentUser.id}}"/>
+
+      <label>Username</label>
+      <input name="username" disabled class="form-control" [(ngModel)]="currentUser.username" value="{{currentUser.username}}"
+             placeholder="{{currentUser.username}}"/>
+
+      <label>First name</label>
+      <input name="first-name" class="form-control" [(ngModel)]="currentUser.firstName" value="{{currentUser.firstName}}"
+             placeholder="{{currentUser.firstName}}"/>
+
+      <label>Last name</label>
+      <input name="last-name" class="form-control" [(ngModel)]="currentUser.lastName" value="{{currentUser.lastName}}"
+             placeholder="{{currentUser.lastName}}"/>
+
+      <label>Nickname</label>
+      <input name="nick-name" class="form-control" [(ngModel)]="currentUser.nickname" value="{{currentUser.nickname}}"
+             placeholder="{{currentUser.nickname}}"/>
+
+      <label>Country</label>
+      <input name="country" class="form-control" [(ngModel)]="currentUser.country" value="{{currentUser.country}}"
+             placeholder="{{currentUser.country}}"/>
+
+      <label>State</label>
+      <input name="state" class="form-control" [(ngModel)]="currentUser.state" value="{{currentUser.state}}"
+             placeholder="{{currentUser.state}}"/>
+
+      <label class="control-label text-white">Gender:</label>
+      <select name="gender" [(ngModel)]="currentUser.gender" class="form-control">
+        <option value="MALE">Male</option>
+        <option value="FEMALE">Female</option>
+      </select>
+
+      <br/>
+      <button type="submit" class="btn btn-success" style="width: 100%">
+        Save
+      </button>
+    </form>
+  </div>
+</div>
