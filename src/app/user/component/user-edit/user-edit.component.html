@@ -3,7 +3,7 @@
     <form (ngSubmit)="edit()">
       <h3 class="text-center text-white">Settings</h3>
       <label>Id</label>
-      <input name="id" class="form-control" [(ngModel)]="currentUser.id" value="{{currentUser.id}}"
+      <input name="id" disabled class="form-control" [(ngModel)]="currentUser.id" value="{{currentUser.id}}"
              placeholder="{{currentUser.id}}"/>
 
       <label>Username</label>
