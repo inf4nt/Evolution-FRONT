@@ -27,7 +27,7 @@
           <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
             <label class="text-white">Password&nbsp;</label>
             <input type="password" class="form-control" name="password" [(ngModel)]="authenticationRequest.password"
-                   #password="ngModel" required pattern="^[a-zA-Z0-9]{4,40}$"/>
+                   #password="ngModel" required pattern="^[a-zA-Z0-9._-]{4,40}$"/>
             <span *ngIf="password.hasError('pattern')" class="text-white">Password is not valid</span>
           </div>
           <div class="form-group">
