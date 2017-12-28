@@ -31,7 +31,7 @@
             <span class="text-white"
                   *ngIf="password.hasError('required')">Password is required</span>
           </label>
-          <input [ngModelOptions]="{updateOn: 'blur'}"  pattern="^[a-zA-Z0-9]{4,40}$" [type]="typePassword" required name="password" #password="ngModel" [(ngModel)]="user.password" class="form-control"/>
+          <input [ngModelOptions]="{updateOn: 'blur'}"  pattern="^[a-zA-Z0-9._-]{4,40}$" [type]="typePassword" required name="password" #password="ngModel" [(ngModel)]="user.password" class="form-control"/>
           <label class="text-white cursor" (click)="showHidePassword()">{{typePassword == 'password' ? 'Show password' : 'Hide password'}}</label>
         </div>
 
