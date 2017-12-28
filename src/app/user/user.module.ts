@@ -12,6 +12,7 @@ import {FeedListComponent} from "../feed/component/feed-list/feed-list.component
 import {FriendModule} from "../friend/friend.module";
 import {FeedModule} from "../feed/feed.module";
 import {RegistrationComponent} from "./component/user-registration/registration.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const appRoutes: Routes = [
   {path: 'user-list', component: UserListComponent},
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
     FriendModule,
     FeedModule,
     RouterModule.forRoot(appRoutes),
+    NgxPaginationModule,
   ],
   exports: [
     UserCreateComponent,

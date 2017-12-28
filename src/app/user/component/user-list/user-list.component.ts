@@ -3,6 +3,7 @@ import {Page} from "../../../model/page";
 import {User} from "../../../model/user.model";
 import {userDefaultPageableSize} from "../../../common/const";
 import {UserDataService} from "../../../service/data/user-data.service";
+import {UserDto} from "../../../dto/user.dto";
 
 
 declare var NProgress: any;
@@ -14,9 +15,7 @@ declare var NProgress: any;
 })
 export class UserListComponent implements OnInit {
 
-  pageUser: Page<User> = new Page<User>();
-  currentPage = 0;
-  isNext = true;
+  listUser: Array<UserDto> = [];
 
   constructor(private userDataService: UserDataService) {
   }
@@ -25,33 +24,11 @@ export class UserListComponent implements OnInit {
     NProgress.done();
     NProgress.start();
     this.userDataService
-      .findAllPageable(0, userDefaultPageableSize)
+      .findAllList()
       .subscribe(data => {
-        this.pageUser = data;
-        this.currentPage = 0;
+        this.listUser = data;
         NProgress.done();
       });
-  }
-
-  public nextPage() {
-    NProgress.start();
-    this.currentPage = this.currentPage + 1;
-    this.userDataService
-      .findAllPageable(this.currentPage, userDefaultPageableSize)
-      .subscribe(data => {
-        console.log(data);
-        if (data.content.length < userDefaultPageableSize) {
-          this.isNext = false;
-        }
-        for (const a of data.content) {
-          this.pageUser.content.push(a);
-        }
-        this.pageUser.totalElement = data.totalElement;
-        NProgress.done();
-      });
-  }
-
-  public sortById(): void {
 
   }
 

@@ -1,34 +1,34 @@
-<div class="col-lg-10 col-lg-offset-2 div-white" *ngIf="pageUser.content.length > 0">
+<div class="col-lg-10 col-lg-offset-2 div-white" *ngIf="listUser.length > 0">
 
-  <div class="col-lg-9" >
-      <div class="col-md-14 block-background">
-        <table class="table">
-          <thead>
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
-          </thead>
-          <tbody>
-
-            <tr *ngFor="let u of pageUser.content">
-              <td style="width: 2%">
-                <img data-src="holder.js/140x140" class="img-circle center-block" style="width: 100px; height: 100px;"
-                     src="http://www.isu.edu.tw/upload/276e/9/coming-soon.jpg" data-holder-rendered="true">
-              </td>
-              <td style="width: 10%">
-                <a routerLink="{{ '/user-home/' + u.id }}" routerLinkActive="active" class="text-white">{{u.firstName}} {{u.lastName}}</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="col-lg-9">
+    <div class="col-md-14 block-background">
+      <div class="text-center">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
+      <table class="table">
+        <thead>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let u of listUser | paginate: { itemsPerPage: 3, currentPage: p }">
+          <td style="width: 2%">
+            <img data-src="holder.js/140x140" class="img-circle center-block" style="width: 100px; height: 100px;"
+                 src="http://www.isu.edu.tw/upload/276e/9/coming-soon.jpg" data-holder-rendered="true">
+          </td>
+          <td style="width: 10%">
+            <a routerLink="{{ '/user-home/' + u.id }}" routerLinkActive="active" class="text-white">{{u.firstName}}
+              {{u.lastName}}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 
-  <div class="col-lg-9 text-center">
-    <br/>
-    <button (click)="nextPage()" *ngIf="isNext" class="btn btn-default">more</button>
-  </div>
 
 </div>

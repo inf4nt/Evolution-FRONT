@@ -33,7 +33,12 @@ export class UserDataService {
       });
   }
 
-  public findAll(): Observable<Page<User>> {
+  public findAllList(): Observable<Array<UserDto>> {
+    return this.httpClient
+      .get<Array<UserDto>>(this.usersRest + '/list');
+  }
+
+  public findAllPage(): Observable<Page<User>> {
     return this.httpClient
       .get(this.usersRest)
       .map(response => {
