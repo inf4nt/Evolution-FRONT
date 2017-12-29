@@ -26,7 +26,7 @@ export class UserPasswordEditComponent implements OnInit {
   }
 
   public setPassword(): void {
-    if (this.user.oldPassword.length === 0 || this.user.newPassword.length === 0 || this.confirmPassword.length === 0) {
+    if (this.user.oldPassword.length === 0 || this.user.newPassword.length === 0 || this.confirmPassword.length === 0 || this.user.newPassword != this.confirmPassword) {
       return;
     }
 
