@@ -1,23 +1,23 @@
 {
-  "name": "front-evolution",
-  "version": "2.0.0",
+  "name": "evolution-front",
+  "version": "3.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --aot --target=production"
+    "postinstall": "ng build --aot -prod"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.1.2",
     "@angular/cli": "1.6.2",
+    "@angular/compiler-cli": "^5.1.2",
+    "@angular/animations": "^5.1.2",
     "@angular/common": "^5.1.2",
     "@angular/compiler": "^5.1.2",
-    "@angular/compiler-cli": "^5.1.2",
     "@angular/core": "^5.1.2",
     "@angular/forms": "^5.1.2",
     "@angular/http": "^5.1.2",
@@ -25,9 +25,10 @@
     "@angular/platform-browser-dynamic": "^5.1.2",
     "@angular/router": "^5.1.2",
     "core-js": "^2.4.1",
-    "ngx-pagination": "^3.0.3",
     "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "typescript": "~2.4.2",
+    "ngx-pagination": "^3.0.3"
   },
   "devDependencies": {
     "@angular/language-service": "^5.1.2",
@@ -45,8 +46,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
-    "tslint": "~5.7.0",
-    "typescript": "~2.5.3"
+    "tslint": "~5.7.0"
   },
   "engines": {
     "node": "8.9.3",
