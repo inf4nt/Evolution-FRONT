@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../security/authentication.service';
 import {Friend} from '../../../model/friend.model';
@@ -18,6 +18,8 @@ import {NProgressService} from "../../../service/nprogress.service";
   styleUrls: ['./user-home.component.css']
 })
 export class UserHomeComponent implements OnInit {
+
+
 
   currentUser: UserDto = new UserDto();
   friend: Friend = new Friend();

@@ -27,11 +27,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isRestLoad = false;
-    this.loading = false;
-    NProgress.start();
-    this.authenticationService.logout();
-    this.wakeUpRest();
+    if(this.authenticationService.isAuth()) {
+      this.router.navigate(['user-home/' + this.authenticationService.getAuth().id]);
+    } else {
+      this.isRestLoad = false;
+      this.loading = false;
+      NProgress.start();
+      this.authenticationService.logout();
+      this.wakeUpRest();
+    }
   }
 
   wakeUpRest(): void {

@@ -1,3 +1,14 @@
-<p>
-  user-profile works!
-</p>
+<div>
+  <div class="col-lg-10 col-lg-offset-1">
+    <ul class="nav nav-tabs">
+      <li role="presentation" [routerLinkActive]="['active']">
+        <a [routerLink]="['/user-profile', {outlets: {'user-profile': ['edit']}}]" class="text-white">Edit</a>
+      </li>
+      <li role="presentation" [routerLinkActive]="['active']">
+        <a [routerLink]="['/user-profile', {outlets: {'user-profile': ['edit-password']}}]" class="text-white">Edit password</a>
+      </li>
+    </ul>
+    <br/>
+  </div>
+  <router-outlet name="user-profile"></router-outlet>
+</div>

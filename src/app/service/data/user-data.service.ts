@@ -9,6 +9,7 @@ import {DataTransfer} from "../data-transfer.service";
 import {UserDto} from "../../dto/user.dto";
 import {UserUpdateDto} from "../../dto/user-update.dto";
 import {UserCreateDto} from "../../dto/user-create.dto";
+import {UserSetPassword} from "../../dto/user-set-password";
 
 @Injectable()
 export class UserDataService {
@@ -95,6 +96,20 @@ export class UserDataService {
         } else if (error.status === 500) {
           return 4;
         }
+      });
+  }
+
+  public setPassword(user: UserSetPassword): Observable<boolean> {
+    return this.httpClient
+      .put(this.usersRest + '/set-password', user, {observe: 'response'})
+      .map(response => {
+        if (response.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
+      }, err => {
+        return false;
       });
   }
 

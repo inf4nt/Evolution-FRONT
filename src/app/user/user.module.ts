@@ -17,7 +17,11 @@ const appRoutes: Routes = [
   {path: 'user-list', component: UserListComponent},
   {path: 'registration', component: RegistrationComponent, pathMatch: 'full'},
   {path: 'user-home/:id', component: UserHomeComponent},
-  {path: 'user-settings', component: UserSettingsComponent},
+  {path: 'user-profile', component: UserProfileComponent, children: [
+      {path: 'edit', component: UserEditComponent, outlet: 'user-profile'},
+      {path: 'edit-password', component: UserPasswordEditComponent, outlet: 'user-profile'},
+    ]},
+
 ];
 
 @NgModule({
