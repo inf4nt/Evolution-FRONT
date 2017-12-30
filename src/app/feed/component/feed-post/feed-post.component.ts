@@ -34,12 +34,12 @@ export class FeedPostComponent implements OnInit {
   }
 
   public postTweet(): void {
-    NProgress.start();
+
 
     if (this.feedPosted.content && this.feedPosted.content.length > 0) {
       this.feedPosted.senderId = this.authService.getAuth().id;
       this.feedPosted.toUserId = this.currentUser.id;
-
+      NProgress.start();
       this.feedDataService
         .postFeed(this.feedPosted)
         .subscribe(data => {

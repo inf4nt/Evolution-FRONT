@@ -6,7 +6,7 @@ export class MessageForSave {
 
   private _recipientId: number;
 
-  constructor(text: string = "", senderId: number = 0, recipientId: number = 0) {
+  constructor(text: string = '', senderId: number = 0, recipientId: number = 0) {
     this._text = text;
     this._senderId = senderId;
     this._recipientId = recipientId;
