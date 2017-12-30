@@ -5,13 +5,13 @@ import {UserListComponent} from "./component/user-list/user-list.component";
 import {RouterModule, Routes} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import {UserHomeComponent} from "./component/user-home/user-home.component";
-import {UserSettingsComponent} from "./component/user-settings/user-settings.component";
 import {FriendModule} from "../friend/friend.module";
 import {FeedModule} from "../feed/feed.module";
 import {RegistrationComponent} from "./component/user-registration/registration.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {UserPasswordEditComponent} from "./component/user-password-edit/user-password-edit.component";
 import {UserProfileComponent} from "./component/user-profile/user-profile.component";
+import { UserSecurityComponent } from './component/user-security/user-security.component';
 
 const appRoutes: Routes = [
   {path: 'user-list', component: UserListComponent},
@@ -20,6 +20,7 @@ const appRoutes: Routes = [
   {path: 'user-profile', component: UserProfileComponent, children: [
       {path: 'edit', component: UserEditComponent, outlet: 'user-profile'},
       {path: 'edit-password', component: UserPasswordEditComponent, outlet: 'user-profile'},
+      {path: 'edit-security', component: UserSecurityComponent, outlet: 'user-profile'},
     ]},
 
 ];
@@ -36,7 +37,6 @@ const appRoutes: Routes = [
     UserCreateComponent,
     UserEditComponent,
     UserListComponent,
-    UserSettingsComponent,
     UserHomeComponent,
   ],
   declarations: [
@@ -44,10 +44,10 @@ const appRoutes: Routes = [
     UserEditComponent,
     RegistrationComponent,
     UserListComponent,
-    UserSettingsComponent,
     UserHomeComponent,
     UserPasswordEditComponent,
     UserProfileComponent,
+    UserSecurityComponent,
   ]
 })
 export class UserModule {

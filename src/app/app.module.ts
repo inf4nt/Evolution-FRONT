@@ -27,6 +27,7 @@ import {UserListComponent} from "./user/component/user-list/user-list.component"
 import {FriendModule} from "./friend/friend.module";
 import {FeedModule} from "./feed/feed.module";
 import { Status500Component } from './components/error/status-500/status-500.component';
+import {AuthenticationService} from "./security/authentication.service";
 
 
 const appRoutes: Routes = [
@@ -79,6 +80,7 @@ const appRoutes: Routes = [
     IsAuthGuard,
     TechnicalService,
     FriendDataService,
+    AuthenticationService,
     MessageDataService],
   bootstrap: [AppComponent]
 })

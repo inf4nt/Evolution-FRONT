@@ -54,6 +54,14 @@ export class AuthenticationService {
     }
   }
 
+  public terminateAllSessions(json: any): Observable<boolean> {
+    return this.httpClient
+      .post(serverUrl + 'auth/clean-auth-session', json, {observe: 'response'})
+      .map((response: any) => {
+        return response.status === 200;
+      });
+  }
+
   public isAuth(): boolean {
     return this.jwtTokenService.getToken() != null;
   }

@@ -1,7 +1,6 @@
 import {
   HttpInterceptor,
   HttpRequest,
-  HttpResponse,
   HttpErrorResponse,
   HttpHandler,
   HttpEvent
@@ -9,14 +8,18 @@ import {
 
 import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
-import {Injectable} from "@angular/core";
+import {Injectable, Injector} from "@angular/core";
 import 'rxjs/add/operator/do';
+import {AuthenticationService} from "../security/authentication.service";
 declare var NProgress: any;
 
 @Injectable()
 export class ResponseStatusInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router) {}
+  private authService: AuthenticationService;
+
+  constructor(private router: Router) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).do(event => {
