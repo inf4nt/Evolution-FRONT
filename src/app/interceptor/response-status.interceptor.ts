@@ -11,14 +11,14 @@ import {Router} from "@angular/router";
 import {Injectable, Injector} from "@angular/core";
 import 'rxjs/add/operator/do';
 import {AuthenticationService} from "../security/authentication.service";
+
 declare var NProgress: any;
 
 @Injectable()
 export class ResponseStatusInterceptor implements HttpInterceptor {
 
-  private authService: AuthenticationService;
-
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private inj: Injector) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -27,8 +27,10 @@ export class ResponseStatusInterceptor implements HttpInterceptor {
     }, err => {
       console.log(err);
       if (err instanceof HttpErrorResponse) {
+        let authService: AuthenticationService = this.inj.get(AuthenticationService);
         NProgress.done();
         if (err.status === 401) {
+          authService.logout();
           this.router.navigate(['/']);
         } else if (err.status === 403) {
           this.router.navigate(['/status-403']);
