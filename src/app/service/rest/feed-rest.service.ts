@@ -9,7 +9,7 @@ import {DataTransfer} from "../data-transfer.service";
 import {FeedDto} from "../../dto/feed.dto";
 
 @Injectable()
-export class FeedDataService {
+export class FeedRestService {
 
   constructor(private httpClient: HttpClient,
               private transfer: DataTransfer) {

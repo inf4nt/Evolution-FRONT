@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from "../../../model/page";
 import {User} from "../../../model/user.model";
 import {userDefaultPageableSize} from "../../../common/const";
-import {UserDataService} from "../../../service/data/user-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 import {UserDto} from "../../../dto/user.dto";
 
 
@@ -17,7 +17,7 @@ export class UserListComponent implements OnInit {
 
   listUser: Array<UserDto> = [];
 
-  constructor(private userDataService: UserDataService) {
+  constructor(private userDataService: UserRestService) {
   }
 
   ngOnInit() {

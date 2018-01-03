@@ -13,6 +13,8 @@ import {AuthenticationRequestDto} from '../dto/authentication-request.dto';
 import {Observable} from 'rxjs/Observable';
 import {EvolutionJwtTokenService} from "./jwt-token.service";
 import {UserDto} from "../dto/user.dto";
+import {UserDtoLazy} from "../dto/user-lazy.dto";
+import {AuthenticationUserDto} from "../dto/authentication-user.dto";
 
 @Injectable()
 export class AuthenticationService {
@@ -31,7 +33,7 @@ export class AuthenticationService {
         let json: any = response;
         const token = json && json.token;
         if (token) {
-          let u: UserDto = this.transfer.jsonToModelUserDTO(json.user);
+          let u: AuthenticationUserDto = this.transfer.jsonToModelAuthenticationUserDto(json.user);
           u.username = authenticationRequest.username;
           this.setAuthUser(u);
 
@@ -44,13 +46,13 @@ export class AuthenticationService {
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
-  public getAuth(): UserDto {
+  public getAuth(): AuthenticationUserDto {
     let item: any = localStorage.getItem('authUser');
     if (item) {
       const u = JSON.parse(localStorage.getItem('authUser')).user;
-      return this.transfer.jsonToModelUserDTO(u);
+      return this.transfer.jsonToModelAuthenticationUserDto(u);
     } else {
-      return new UserDto();
+      return new AuthenticationUserDto();
     }
   }
 

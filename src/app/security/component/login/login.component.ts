@@ -59,12 +59,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log('start login');
     NProgress.start();
     this.loading = true;
     this.authenticationService.login(this.authenticationRequest)
       .subscribe(result => {
-        console.log(result);
         if (result === true) {
           // login successful
           this.router.navigate(['user-home/' + this.authenticationService.getAuth().id]);

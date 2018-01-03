@@ -24,7 +24,6 @@ export class UserSecurityComponent implements OnInit {
       username: this.authService.getAuth().username
     };
 
-
     this.authService
       .terminateAllSessions(json)
       .subscribe(data => {

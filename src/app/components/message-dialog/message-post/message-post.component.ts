@@ -3,7 +3,7 @@ import {MessageForSave} from "../../../model/message-for-save.model";
 import {User} from "../../../model/user.model";
 import {Message} from "../../../model/message.model";
 import {maxListMessageLength} from "../../../common/const";
-import {MessageDataService} from "../../../service/data/message-data.service";
+import {MessageRestService} from "../../../service/rest/message-rest.service";
 
 declare var NProgress: any;
 
@@ -25,7 +25,7 @@ export class MessagePostComponent implements OnInit {
 
   messagePost: MessageForSave = new MessageForSave();
 
-  constructor(private messageDataService: MessageDataService) {}
+  constructor(private messageDataService: MessageRestService) {}
 
   ngOnInit() {
   }

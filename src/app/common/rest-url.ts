@@ -31,3 +31,7 @@ export let findMyProgress = serverUrl + 'friend/find/progress/';
 export let findOneFriend = serverUrl + 'friend/';
 
 export let messageRest = serverUrl + 'message';
+
+export let dialogByUser = serverUrl + 'dialog/user/';
+
+export let messageByDialogId = serverUrl + 'dialog/';

@@ -12,10 +12,10 @@ import {DialogUserListComponent} from './components/message-dialog/dialog-user-l
 import {MessagePostComponent} from './components/message-dialog/message-post/message-post.component';
 import {DialogMessageComponent} from './components/message-dialog/dialog-message/dialog-message.component';
 import {TechnicalService} from './service/technical.service';
-import {FeedDataService} from './service/data/feed-data.service';
-import {UserDataService} from './service/data/user-data.service';
-import {FriendDataService} from './service/data/friend-data.service';
-import {MessageDataService} from "./service/data/message-data.service";
+import {FeedRestService} from './service/rest/feed-rest.service';
+import {UserRestService} from './service/rest/user-rest.service';
+import {FriendRestService} from './service/rest/friend-rest.service';
+import {MessageRestService} from "./service/rest/message-rest.service";
 import {JwtTokenInterceptor} from "./interceptor/jwt-token.interceptor";
 import {ResponseStatusInterceptor} from "./interceptor/response-status.interceptor";
 import { Status403Component } from './components/error/status-403/status-403.component';
@@ -28,6 +28,7 @@ import {FriendModule} from "./friend/friend.module";
 import {FeedModule} from "./feed/feed.module";
 import { Status500Component } from './components/error/status-500/status-500.component';
 import {AuthenticationService} from "./security/authentication.service";
+import {MessageModule} from "./message/message.module";
 
 
 const appRoutes: Routes = [
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
     UserModule,
     FriendModule,
     FeedModule,
+    MessageModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
@@ -75,13 +77,13 @@ const appRoutes: Routes = [
       multi: true
     },
     DataTransfer,
-    UserDataService,
-    FeedDataService,
+    UserRestService,
+    FeedRestService,
     IsAuthGuard,
     TechnicalService,
-    FriendDataService,
+    FriendRestService,
     AuthenticationService,
-    MessageDataService],
+    MessageRestService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

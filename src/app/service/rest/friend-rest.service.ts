@@ -13,7 +13,7 @@ import {friendStatusFollowers, friendStatusProgress} from "../../common/friend-s
 import {DataTransfer} from "../data-transfer.service";
 
 @Injectable()
-export class FriendDataService {
+export class FriendRestService {
 
   private friendRest: string = serverUrl + 'friend';
 

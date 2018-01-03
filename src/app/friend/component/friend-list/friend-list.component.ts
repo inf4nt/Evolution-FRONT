@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Friend} from "../../../model/friend.model";
-import {UserDataService} from "../../../service/data/user-data.service";
-import {FriendDataService} from "../../../service/data/friend-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
+import {FriendRestService} from "../../../service/rest/friend-rest.service";
 import {UserDto} from "../../../dto/user.dto";
 
 declare var NProgress: any;
@@ -23,9 +23,9 @@ export class FriendListComponent implements OnInit {
 
 
   constructor(private activatedRoute: ActivatedRoute,
-              private userDataService: UserDataService,
+              private userDataService: UserRestService,
               private router: Router,
-              private friendDataService: FriendDataService,) {
+              private friendDataService: FriendRestService,) {
   }
 
   ngOnInit() {

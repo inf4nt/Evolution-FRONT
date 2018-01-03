@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Feed} from '../../../model/feed.model';
 import {User} from "../../../model/user.model";
-import {FeedDataService} from "../../../service/data/feed-data.service";
+import {FeedRestService} from "../../../service/rest/feed-rest.service";
 import {FeedDto} from "../../../dto/feed.dto";
+import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
+import {UserDto} from "../../../dto/user.dto";
 
 declare var NProgress: any;
 
@@ -17,20 +19,20 @@ export class FeedListComponent implements OnInit {
   feedList: Array<FeedDto> = [];
 
   @Input()
-  private currentUser: User = new User();
+  private currentUser: UserDto = new UserDto();
 
   @Input()
-  private authUser: User = new User();
+  private authUser: AuthenticationUserDto = new AuthenticationUserDto();
 
-  private tempFeed: Feed;
+  private tempFeed: FeedDto;
 
-  constructor(private feedDataService: FeedDataService) {
+  constructor(private feedDataService: FeedRestService) {
   }
 
   ngOnInit() {
   }
 
-  beforeRemoveFeed(feed: Feed): void {
+  beforeRemoveFeed(feed: FeedDto): void {
     this.tempFeed = feed;
   }
 
@@ -45,7 +47,7 @@ export class FeedListComponent implements OnInit {
           this.feedList.splice(index, 1);
         }
         NProgress.doneAfterCloseModal();
-        this.tempFeed = new Feed();
+        this.tempFeed = new FeedDto();
       });
 
   }

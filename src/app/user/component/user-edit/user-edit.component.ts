@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserDto} from "../../../dto/user.dto";
-import {UserDataService} from "../../../service/data/user-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 import {UserUpdateDto} from "../../../dto/user-update.dto";
 import {DataTransfer} from "../../../service/data-transfer.service";
 import {AuthenticationService} from "../../../security/authentication.service";
 import {NProgressService} from "../../../service/nprogress.service";
+import {UserDtoLazy} from "../../../dto/user-lazy.dto";
 
 
 declare var NProgress: any;
@@ -16,9 +17,9 @@ declare var NProgress: any;
 })
 export class UserEditComponent implements OnInit {
 
-  currentUser: UserDto = new UserDto();
+  currentUser: UserDtoLazy = new UserDtoLazy();
 
-  constructor(private userDataService: UserDataService,
+  constructor(private userDataService: UserRestService,
               private transfer: DataTransfer,
               private authService: AuthenticationService) { }
 

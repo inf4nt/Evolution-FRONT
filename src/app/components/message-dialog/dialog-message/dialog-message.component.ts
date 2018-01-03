@@ -4,9 +4,11 @@ import {AuthenticationService} from "../../../security/authentication.service";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../../../model/user.model";
 import {TechnicalService} from "../../../service/technical.service";
-import {MessageDataService} from "../../../service/data/message-data.service";
-import {UserDataService} from "../../../service/data/user-data.service";
+import {MessageRestService} from "../../../service/rest/message-rest.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 import {UserDto} from "../../../dto/user.dto";
+import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
+import {MessageDto} from "../../../dto/message.dto";
 
 declare var NProgress: any;
 
@@ -17,17 +19,17 @@ declare var NProgress: any;
 })
 export class DialogMessageComponent implements OnInit, OnDestroy {
 
-  messageList: Array<Message> = [];
+  messageList: Array<MessageDto> = [];
   interlocutorUser: UserDto = new UserDto();
-  authUser: UserDto = new UserDto();
-  tempMessage: Message = new Message();
-  selectedMessage: Message = new Message();
-  initialStateSelectedMessage: Message = new Message();
+  authUser: AuthenticationUserDto = new AuthenticationUserDto();
+  tempMessage: MessageDto = new MessageDto();
+  selectedMessage: MessageDto = new MessageDto();
+  initialStateSelectedMessage: MessageDto = new MessageDto();
   isAction: boolean = false;
   private timer: any;
 
-  constructor(private messageDataService: MessageDataService,
-              private userDataService: UserDataService,
+  constructor(private messageDataService: MessageRestService,
+              private userDataService: UserRestService,
               private authService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
               private techService: TechnicalService) {
@@ -47,13 +49,15 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
           if (data) {
             this.interlocutorUser = data;
             this.messageDataService
-              .findMessageByInterlocutor(interlocutor)
+              .findMessageByInterlocutorPage(interlocutor)
               .subscribe(data => {
-                this.messageList = data.content;
-                NProgress.done();
-                if (data.content.length > 0) {
-                  this.startInterval(interlocutor);
+                if (data && data.content) {
+                  if (data.content.length > 0) {
+                    this.messageList = data.content;
+                    this.startInterval(interlocutor);
+                  }
                 }
+                NProgress.done();
               })
           } else {
             NProgress.done();
@@ -67,9 +71,11 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
   startInterval(interlocutor): void {
     this.timer = setInterval(() => {
       this.messageDataService
-        .findMessageByInterlocutor(interlocutor)
+        .findMessageByInterlocutorPage(interlocutor)
         .subscribe(data => {
-          this.messageList = data.content;
+          if (data) {
+            this.messageList = data.content;
+          }
         })
       console.log('interval');
     }, 5000);
@@ -79,7 +85,7 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
-  public selectMessage(message: Message): void {
+  public selectMessage(message: MessageDto): void {
     if (message.sender.id === this.authUser.id) {
       this.initialStateSelectedMessage = message;
       this.selectedMessage = this.techService.cloneMessage(message);
@@ -89,7 +95,7 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  public writeMessageToTemp(message: Message): void {
+  public writeMessageToTemp(message: MessageDto): void {
     this.tempMessage = message;
   }
 
@@ -110,7 +116,7 @@ export class DialogMessageComponent implements OnInit, OnDestroy {
   }
 
   public edit(): void {
-    if (this.selectedMessage && this.selectedMessage.content && this.selectedMessage.content.length > 0) {
+    if (this.selectedMessage && this.selectedMessage.message && this.selectedMessage.message.length > 0) {
       NProgress.start();
       this.messageDataService
         .put(this.techService.messageToMessageForUpdate(this.selectedMessage))

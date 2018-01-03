@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserSetPassword} from "../../../dto/user-set-password";
-import {UserDataService} from "../../../service/data/user-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 import {AuthenticationService} from "../../../security/authentication.service";
 import {NProgressService} from "../../../service/nprogress.service";
 
@@ -17,7 +17,7 @@ export class UserPasswordEditComponent implements OnInit {
 
   confirmPassword: string;
 
-  constructor(private userDataService: UserDataService,
+  constructor(private userDataService: UserRestService,
               private authService: AuthenticationService) {
   }
 

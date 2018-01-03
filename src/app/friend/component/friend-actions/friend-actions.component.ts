@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FriendResultAction} from "../../../model/friend-result-action.model";
 import {User} from "../../../model/user.model";
-import {FriendDataService} from "../../../service/data/friend-data.service";
+import {FriendRestService} from "../../../service/rest/friend-rest.service";
 import {FriendAction} from "../../../model/friend-action.model";
 import {UserDto} from "../../../dto/user.dto";
 
@@ -23,7 +23,7 @@ export class FriendActionsComponent implements OnInit {
   @Input()
   private currentUser: UserDto;
 
-  constructor(private friendDataService: FriendDataService) { }
+  constructor(private friendDataService: FriendRestService) { }
 
   ngOnInit() {
   }

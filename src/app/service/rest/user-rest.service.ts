@@ -10,9 +10,10 @@ import {UserDto} from "../../dto/user.dto";
 import {UserUpdateDto} from "../../dto/user-update.dto";
 import {UserCreateDto} from "../../dto/user-create.dto";
 import {UserSetPassword} from "../../dto/user-set-password";
+import {UserDtoLazy} from "../../dto/user-lazy.dto";
 
 @Injectable()
-export class UserDataService {
+export class UserRestService {
 
   private usersRest: string = serverUrl + 'user';
 
@@ -25,18 +26,17 @@ export class UserDataService {
       .get<UserDto>(this.usersRest + '/' + id);
   }
 
-  public findOneLazy(id: number): Observable<UserDto> {
+  public findOneLazy(id: number): Observable<UserDtoLazy> {
     return this.httpClient
-      .get<UserDto>(this.usersRest + '/' + id + '/lazy', {observe: 'response'})
+      .get<UserDtoLazy>(this.usersRest + '/' + id + '/lazy')
       .map(response => {
-        console.log(response);
-        return response.body;
+        return response;
       });
   }
 
   public findAllList(): Observable<Array<UserDto>> {
     return this.httpClient
-      .get<Array<UserDto>>(this.usersRest + '/list');
+      .get<Array<UserDto>>(this.usersRest);
   }
 
   public findAllPage(): Observable<Page<User>> {
@@ -47,9 +47,9 @@ export class UserDataService {
       });
   }
 
-  public postUser(user: UserCreateDto): Observable<UserDto> {
+  public postUser(user: UserCreateDto): Observable<UserDtoLazy> {
     return this.httpClient
-      .post<UserDto>(this.usersRest + '/post', user, {observe: 'response'})
+      .post<UserDtoLazy>(this.usersRest + '/post', user, {observe: 'response'})
       .map(response => {
         if (response.status === 201) {
           return response.body;
@@ -57,9 +57,9 @@ export class UserDataService {
       });
   }
 
-  public putUser(user: UserUpdateDto): Observable<UserDto> {
+  public putUser(user: UserUpdateDto): Observable<UserDtoLazy> {
     return this.httpClient
-      .put<UserDto>(this.usersRest, user);
+      .put<UserDtoLazy>(this.usersRest, user);
   }
 
   public exist(username: string): Observable<boolean> {

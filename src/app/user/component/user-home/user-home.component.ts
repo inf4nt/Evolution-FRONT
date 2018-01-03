@@ -4,12 +4,13 @@ import {AuthenticationService} from '../../../security/authentication.service';
 import {Friend} from '../../../model/friend.model';
 import {FriendResultAction} from '../../../model/friend-result-action.model';
 import {Page} from '../../../model/page';
-import {UserDataService} from '../../../service/data/user-data.service';
-import {FeedDataService} from '../../../service/data/feed-data.service';
-import {FriendDataService} from '../../../service/data/friend-data.service';
+import {UserRestService} from '../../../service/rest/user-rest.service';
+import {FeedRestService} from '../../../service/rest/feed-rest.service';
+import {FriendRestService} from '../../../service/rest/friend-rest.service';
 import {FeedDto} from "../../../dto/feed.dto";
 import {UserDto} from "../../../dto/user.dto";
 import {NProgressService} from "../../../service/nprogress.service";
+import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class UserHomeComponent implements OnInit {
 
   currentUser: UserDto = new UserDto();
   friend: Friend = new Friend();
-  authUser: UserDto = new UserDto();
+  authUser: AuthenticationUserDto = new AuthenticationUserDto();
   currentUserId: number;
   feedList: Array<FeedDto> = [];
   pageFriends: Page<Friend> = new Page<Friend>();
@@ -33,9 +34,9 @@ export class UserHomeComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private userDataService: UserDataService,
-              private feedDataService: FeedDataService,
-              private friendDataService: FriendDataService,
+              private userDataService: UserRestService,
+              private feedDataService: FeedRestService,
+              private friendDataService: FriendRestService,
               private authenticationService: AuthenticationService,) {
   }
 

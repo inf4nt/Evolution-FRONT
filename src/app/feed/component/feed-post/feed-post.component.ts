@@ -3,7 +3,7 @@ import {Feed} from "../../../model/feed.model";
 import {FeedForSave} from "../../../model/feed-for-save.model";
 import {AuthenticationService} from "../../../security/authentication.service";
 import {User} from "../../../model/user.model";
-import {FeedDataService} from "../../../service/data/feed-data.service";
+import {FeedRestService} from "../../../service/rest/feed-rest.service";
 import {UserDto} from "../../../dto/user.dto";
 
 declare var NProgress: any;
@@ -27,7 +27,7 @@ export class FeedPostComponent implements OnInit {
   private feedList: Array<Feed> = [];
 
   constructor(private authService: AuthenticationService,
-              private feedDataService: FeedDataService) {
+              private feedDataService: FeedRestService) {
   }
 
   ngOnInit() {

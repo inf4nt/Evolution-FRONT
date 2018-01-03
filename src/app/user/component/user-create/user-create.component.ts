@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserCreateDto} from "../../../dto/user-create.dto";
-import {UserDataService} from "../../../service/data/user-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 
 
 declare var NProgress: any;
@@ -17,7 +17,7 @@ export class UserCreateComponent implements OnInit {
   message: string;
   typePassword: string;
 
-  constructor(private userDataService: UserDataService) {
+  constructor(private userDataService: UserRestService) {
   }
 
   ngOnInit() {

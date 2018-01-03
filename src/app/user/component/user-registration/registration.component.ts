@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserForSaveDto} from '../../../model/user-for-save.dto';
-import {UserDataService} from "../../../service/data/user-data.service";
+import {UserRestService} from "../../../service/rest/user-rest.service";
 
 declare var NProgress: any;
 

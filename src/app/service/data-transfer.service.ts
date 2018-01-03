@@ -9,9 +9,11 @@ import {Dialog} from '../model/dialog.model';
 import {FriendResultAction} from '../model/friend-result-action.model';
 import {UserFull} from "../model/user-full.model";
 import {UserForUpdate} from "../model/user-for-update.model";
-import {HttpResponse} from '@angular/common/http';
 import {UserUpdateDto} from "../dto/user-update.dto";
 import {UserDto} from "../dto/user.dto";
+import {AuthenticationUserDto} from "../dto/authentication-user.dto";
+import {AuthenticationRequestDto} from "../dto/authentication-request.dto";
+import {UserDtoLazy} from "../dto/user-lazy.dto";
 
 @Injectable()
 export class DataTransfer {
@@ -54,7 +56,18 @@ export class DataTransfer {
       u.firstName = json.firstName;
       u.lastName = json.lastName;
       u.nickname = json.nickname;
-      u.role = json.role;
+      return u;
+    }
+    return null;
+  }
+
+  public jsonToModelAuthenticationUserDto(json: any): AuthenticationUserDto {
+    if (json) {
+      const u: AuthenticationUserDto = new AuthenticationUserDto();
+      u.id = json.id;
+      u.firstName = json.firstName;
+      u.lastName = json.lastName;
+      u.nickname = json.nickname;
       u.username = json.username;
       return u;
     }
@@ -169,7 +182,7 @@ export class DataTransfer {
     return page;
   }
 
-  public userDtoToUserUpdateDto(userDTO: UserDto): UserUpdateDto {
+  public userDtoToUserUpdateDto(userDTO: UserDtoLazy): UserUpdateDto {
     let u: UserUpdateDto = new UserUpdateDto();
     u.id = userDTO.id;
     u.lastName = userDTO.lastName;

@@ -1,18 +1,18 @@
 import {Message} from "../model/message.model";
 import {Injectable} from "@angular/core";
 import {MessageForUpdate} from "../model/message-for-update.model";
+import {MessageDto} from "../dto/message.dto";
 
 @Injectable()
 export class TechnicalService {
 
-  public cloneMessage(message: Message): Message {
-    let selectedMessage: Message = new Message();
+  public cloneMessage(message: MessageDto): MessageDto {
+    let selectedMessage: MessageDto = new MessageDto();
     selectedMessage.id = message.id;
     selectedMessage.sender = message.sender;
-    selectedMessage.content = message.content;
+    selectedMessage.message = message.message;
     selectedMessage.dialog = message.dialog;
-    selectedMessage.createdDateTimestamp = message.createdDateTimestamp;
-    selectedMessage.createdDateString = message.createdDateString;
+    selectedMessage.dateDispatch = message.dateDispatch;
     return selectedMessage;
   }
 
@@ -24,16 +24,16 @@ export class TechnicalService {
     }
   }
 
-  public messageToMessageForUpdate(message: Message): MessageForUpdate {
+  public messageToMessageForUpdate(message: MessageDto): MessageForUpdate {
     let m: MessageForUpdate = new MessageForUpdate();
-    m.content = message.content;
+    m.message = message.message;
     m.id = message.id;
     return m;
   }
 
-  public updateListMessage(list: Array<Message>, message: Message): void {
+  public updateListMessage(list: Array<MessageDto>, message: MessageDto): void {
     for (let i = 0; i < list.length; i++) {
-      let el: Message = list[i];
+      let el: MessageDto = list[i];
       if (el.id === message.id) {
         list[i] = message;
         break;
