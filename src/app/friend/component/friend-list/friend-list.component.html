@@ -14,7 +14,7 @@
       <li role="presentation" [routerLinkActive]="['active']">
         <a routerLink="{{ '/friend/user/' + userId + '/followers'}}" class="text-white">Followers</a>
       </li>
-      <li role="presentation" [routerLinkActive]="['active']">
+      <li role="presentation" [routerLinkActive]="['active']" *ngIf="authUser.id === currentUser.id">
         <a routerLink="{{ '/friend/user/' + userId + '/requests'}}" class="text-white">Requests</a>
       </li>
     </ul>

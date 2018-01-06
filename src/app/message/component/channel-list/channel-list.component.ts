@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ChannelDto} from "../../../dto/channel.dto";
 
 @Component({
   selector: 'app-channel-list',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./channel-list.component.css']
 })
 export class ChannelListComponent implements OnInit {
+
+  @Input()
+  listChannel: Array<ChannelDto> = [];
 
   constructor() { }
 

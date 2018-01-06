@@ -30,9 +30,9 @@ export class MessageRestService {
       .get<Array<MessageDto>>(serverUrl + 'dialog/' + id + '/message');
   }
 
-  public postMessage(message: MessageForSave): Observable<Message> {
+  public postMessage(message: MessageForSave): Observable<MessageDto> {
     return this.httpClient
-      .post<Message>(messageRest, message.values, {observe: 'response'})
+      .post<MessageDto>(messageRest, message.values, {observe: 'response'})
       .map(response => {
         if (response.status === 201) {
           return response.body;

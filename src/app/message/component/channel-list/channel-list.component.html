@@ -1,7 +1,7 @@
 <div>
   <h3 class="text-white text-center">
     <li>
-      <a routerLink="{{ '/user-home/' + 5 }}" class="text-white">    Channels</a>
+      <a routerLink="{{ '/user-home/' + 5 }}" class="text-white"> Channels</a>
     </li>
   </h3>
   <table class="table">
@@ -11,34 +11,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr *ngFor="let c of listChannel">
       <td>
         <li routerLinkActive="active">
-          <a routerLink="{{ '/user-home/' + 5 }}" class="text-white">#vj_spartan</a>
+          <button [routerLink]="['/channel', {outlets: {'channel-router': '' + c.id + '/name/' + c.channelName}}]" class="text-white btn-link">
+            {{c.channelName}}
+          </button>
         </li>
       </td>
-    </tr>
-    <tr>
-      <td>
-        <li routerLinkActive="active">
-          <a routerLink="{{ '/user-home/' + 5 }}" class="text-white">#general</a>
-        </li>
-      </td>
-    </tr>
-    <tr>
-      <td>user2</td>
-    </tr>
-    <tr>
-      <td>user2</td>
-    </tr>
-    <tr>
-      <td>user2</td>
-    </tr>
-    <tr>
-      <td>user2</td>
-    </tr>
-    <tr>
-      <td>user2</td>
     </tr>
     </tbody>
   </table>

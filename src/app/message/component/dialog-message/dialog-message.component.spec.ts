@@ -1,25 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogMessageComponent } from './dialog-message.component';
+import { MessageInDialogComponent } from './dialog-message.component';
 
 describe('MessageInDialogComponent', () => {
-  let component: DialogMessageComponent;
-  let fixture: ComponentFixture<DialogMessageComponent>;
+  let component: MessageInDialogComponent;
+  let fixture: ComponentFixture<MessageInDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogMessageComponent ]
+      declarations: [ MessageInDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogMessageComponent);
+    fixture = TestBed.createComponent(MessageInDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
