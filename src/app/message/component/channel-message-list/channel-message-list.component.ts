@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserDto} from "../../../dto/user.dto";
 import {MessageForSave} from "../../../model/message-for-save.model";
 import {MessageDto} from "../../../dto/message.dto";
@@ -7,6 +7,8 @@ import {MessageChannelDto} from "../../../dto/message-channel.dto";
 import {ChannelRestService} from "../../../service/rest/channel-rest.service";
 import {ActivatedRoute} from "@angular/router";
 import {NProgressService} from "../../../service/nprogress.service";
+import {MessageChannelSaveDto} from "../../../dto/message-channel-save.dto";
+import {AuthenticationService} from "../../../security/authentication.service";
 
 @Component({
   selector: 'app-channel-message-list',
@@ -23,19 +25,22 @@ export class ChannelMessageListComponent implements OnInit {
   initialStateSelectedMessage: MessageChannelDto = new MessageChannelDto();
   isAction: boolean = false;
   isLoad = false;
-  messagePost: MessageForSave = new MessageForSave();
+  messagePost: MessageChannelSaveDto = new MessageChannelSaveDto();
   private timer: any;
   channelId: number;
   channelName: string;
 
 
   constructor(private channelRest: ChannelRestService,
-              private activatedRoute: ActivatedRoute) { }
+              private authService: AuthenticationService,
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       NProgressService.start();
       this.isLoad = true;
+      this.authUser = this.authService.getAuth();
       this.channelId = +params['id'];
       this.channelName = params['name'].toString();
       this.channelRest
@@ -48,6 +53,24 @@ export class ChannelMessageListComponent implements OnInit {
           this.isLoad = false;
         });
     });
+  }
+
+  public postMessage(): void {
+    if (this.messagePost && this.messagePost.text.length > 0) {
+      NProgressService.start();
+      this.messagePost.channelId = this.channelId;
+      this.messagePost.senderId = this.authUser.id;
+      console.log(this.messagePost);
+      this.channelRest
+        .postMessageChannel(this.messagePost)
+        .subscribe(data => {
+          if (data) {
+            this.listMessage.push(data);
+          }
+          NProgressService.done();
+          this.messagePost = new MessageChannelSaveDto();
+        });
+    }
   }
 
 }

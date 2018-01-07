@@ -35,3 +35,5 @@ export let messageRest = serverUrl + 'message';
 export let dialogByUser = serverUrl + 'dialog/for-user/';
 
 export let messageByDialogId = serverUrl + 'dialog/';
+
+export let channelRestUrl = serverUrl + 'channel';

@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {ChannelDto} from "../../dto/channel.dto";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
-import {serverUrl} from "../../common/rest-url";
+import {channelRestUrl, serverUrl} from "../../common/rest-url";
 import {MessageChannelDto} from "../../dto/message-channel.dto";
+import {MessageChannelSaveDto} from "../../dto/message-channel-save.dto";
 
 @Injectable()
 export class ChannelRestService {
@@ -33,4 +34,15 @@ export class ChannelRestService {
       httpClient
       .get<Array<MessageChannelDto>>(serverUrl + 'channel/' + channelId + '/message');
   }
+
+  public postMessageChannel(message: MessageChannelSaveDto): Observable<MessageChannelDto> {
+    return this.httpClient
+      .post<MessageChannelDto>(channelRestUrl + '/message', message, {observe: 'response'})
+      .map(response => {
+        if (response.status === 201) {
+          return response.body;
+        }
+      });
+  }
+
 }

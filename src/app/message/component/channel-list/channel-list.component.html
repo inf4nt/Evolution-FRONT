@@ -1,25 +1,30 @@
+
 <div>
   <h3 class="text-white text-center">
     <li>
       <a routerLink="{{ '/user-home/' + 5 }}" class="text-white"> Channels</a>
     </li>
   </h3>
-  <table class="table">
-    <thead>
-    <tr>
-      <td></td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let c of listChannel">
-      <td>
-        <li routerLinkActive="active">
-          <button [routerLink]="['/channel', {outlets: {'channel-router': '' + c.id + '/name/' + c.channelName}}]" class="text-white btn-link">
-            {{c.channelName}}
-          </button>
-        </li>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+
+  <div class="block-channel-direct-list">
+    <table class="table">
+      <thead>
+      <tr>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let c of listChannel">
+        <td>
+          <li routerLinkActive="active">
+            <button [routerLink]="['/channel', {outlets: {'channel-router': '' + c.id + '/name/' + c.channelName}}]" class="text-white btn-link">
+              {{c.channelName}}
+            </button>
+          </li>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
