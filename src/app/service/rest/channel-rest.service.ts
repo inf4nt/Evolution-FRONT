@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {channelRestUrl, serverUrl} from "../../common/rest-url";
 import {MessageChannelDto} from "../../dto/message-channel.dto";
 import {MessageChannelSaveDto} from "../../dto/message-channel-save.dto";
+import {ChannelSaveDto} from "../../dto/channel-save.dto";
 
 @Injectable()
 export class ChannelRestService {
@@ -45,4 +46,21 @@ export class ChannelRestService {
       });
   }
 
+  public postChannel(channel: ChannelSaveDto): Observable<ChannelDto> {
+    return this.httpClient
+      .post<ChannelDto>(channelRestUrl, channel, {observe: 'response'})
+      .map(res => {
+        if (res && res.status === 201) {
+          return res.body;
+        }
+      });
+  }
+
+  public deleteChannel(id: number): Observable<boolean> {
+    return this.httpClient
+      .delete(channelRestUrl + '/' + id, {observe: 'response'})
+      .map(response => {
+        return response.status === 204;
+      })
+  }
 }

@@ -44,11 +44,7 @@ export class MessageRestService {
     return this.httpClient
       .delete(messageRest + '/' + id, {observe: 'response'})
       .map(response => {
-        if (response.status === 204) {
-          return true;
-        } else {
-          return false;
-        }
+        return response.status === 204;
       })
   }
 

@@ -3,7 +3,11 @@
 
     <div>
       <h3 class="text-white text-center">{{channelName}}</h3>
-      <hr/>
+      <div class="text-center">
+        <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
+        <button class="btn btn-info">Add user</button>
+      </div>
+      <br/>
     </div>
 
     <div style="overflow: scroll; overflow-x: hidden" #scrollMe [scrollTop]="scrollMe.scrollHeight"

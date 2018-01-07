@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DialogDto} from "../../../dto/dialog.dto";
 
 @Component({
-  selector: 'app-direct-message-list',
-  templateUrl: './direct-message-list.component.html',
-  styleUrls: ['./direct-message-list.component.css']
+  selector: 'app-direct-message',
+  templateUrl: './direct-message.component.html',
+  styleUrls: ['./direct-message.component.css']
 })
-export class DirectMessageUserListComponent implements OnInit {
+export class DirectMessageComponent implements OnInit {
 
   @Input()
   listDialog: Array<DialogDto> = [];

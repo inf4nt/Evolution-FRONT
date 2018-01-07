@@ -1,21 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {UserDto} from "../../../dto/user.dto";
-import {MessageForSave} from "../../../model/message-for-save.model";
 import {MessageDto} from "../../../dto/message.dto";
 import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
 import {MessageChannelDto} from "../../../dto/message-channel.dto";
 import {ChannelRestService} from "../../../service/rest/channel-rest.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NProgressService} from "../../../service/nprogress.service";
 import {MessageChannelSaveDto} from "../../../dto/message-channel-save.dto";
 import {AuthenticationService} from "../../../security/authentication.service";
+import {ChannelDto} from "../../../dto/channel.dto";
+import {ChannelComponent} from "../channel/channel.component";
+import {TechnicalService} from "../../../service/technical.service";
 
 @Component({
-  selector: 'app-channel-message-list',
-  templateUrl: './channel-message-list.component.html',
-  styleUrls: ['./channel-message-list.component.css']
+  selector: 'app-channel-message',
+  templateUrl: './channel-message.component.html',
+  styleUrls: ['./channel-message.component.css']
 })
-export class ChannelMessageListComponent implements OnInit {
+export class ChannelMessageComponent implements OnInit {
 
   listMessage: Array<MessageChannelDto> = [];
   interlocutorUser: UserDto = new UserDto();
@@ -30,14 +32,17 @@ export class ChannelMessageListComponent implements OnInit {
   channelId: number;
   channelName: string;
 
-
   constructor(private channelRest: ChannelRestService,
+              private router: Router,
+              private techService: TechnicalService,
               private authService: AuthenticationService,
+              private channelComponent: ChannelComponent,
               private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+      this.listMessage = [];
       NProgressService.start();
       this.isLoad = true;
       this.authUser = this.authService.getAuth();
@@ -71,6 +76,20 @@ export class ChannelMessageListComponent implements OnInit {
           this.messagePost = new MessageChannelSaveDto();
         });
     }
+  }
+
+  public deleteChannel(): void {
+    NProgressService.start();
+    this.channelRest
+      .deleteChannel(this.channelId)
+      .subscribe(data => {
+        if (data) {
+          NProgressService.done();
+          let index = this.techService.findIndexChannelInListById(this.channelId, this.channelComponent.listChannel);
+          this.channelComponent.listChannel.splice(index, 1);
+          this.router.navigate(['channel']);
+        }
+      });
   }
 
 }

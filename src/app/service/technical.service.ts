@@ -2,6 +2,7 @@ import {Message} from "../model/message.model";
 import {Injectable} from "@angular/core";
 import {MessageForUpdate} from "../model/message-for-update.model";
 import {MessageDto} from "../dto/message.dto";
+import {ChannelDto} from "../dto/channel.dto";
 
 @Injectable()
 export class TechnicalService {
@@ -37,6 +38,22 @@ export class TechnicalService {
       if (el.id === message.id) {
         list[i] = message;
         break;
+      }
+    }
+  }
+
+  public findChannelInListById(id: number, list: Array<ChannelDto>): ChannelDto {
+    for (let m of list) {
+      if (m.id == id) {
+        return m;
+      }
+    }
+  }
+
+  public findIndexChannelInListById(id: number, list: Array<ChannelDto>): number {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id == id) {
+        return i;
       }
     }
   }

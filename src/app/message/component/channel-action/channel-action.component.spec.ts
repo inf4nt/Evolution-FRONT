@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChannelListComponent } from './channel-list.component';
+import { ChannelActionComponent } from './channel-action.component';
 
-describe('ChannelListComponent', () => {
-  let component: ChannelListComponent;
-  let fixture: ComponentFixture<ChannelListComponent>;
+describe('ChannelActionComponent', () => {
+  let component: ChannelActionComponent;
+  let fixture: ComponentFixture<ChannelActionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChannelListComponent ]
+      declarations: [ ChannelActionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChannelListComponent);
+    fixture = TestBed.createComponent(ChannelActionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

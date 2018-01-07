@@ -22,8 +22,8 @@ export class ChannelComponent implements OnInit {
               private dialogRestService: DialogRestService) { }
 
   ngOnInit() {
+    NProgressService.done();
     NProgressService.start();
-
     Promise.all([
       this.dialogRestService
         .findDialogsByUser(this.authService.getAuth().id)
@@ -36,11 +36,6 @@ export class ChannelComponent implements OnInit {
       this.listChannel = result[1];
       NProgressService.done();
     });
-
-
-
-
-
   }
 
 }

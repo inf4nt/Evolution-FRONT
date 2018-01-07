@@ -1,10 +1,12 @@
 <div>
 
   <div class="col-lg-12">
-    <div class="col-lg-3 block-background">
-      <!--<h3 class="text-white">channel list and direct messages</h3>-->
-      <app-channel-list [listChannel]="listChannel"></app-channel-list>
-      <app-direct-message-list [listDialog]="listDialog"></app-direct-message-list>
+    <div class="col-lg-3">
+      <app-channel-action></app-channel-action>
+      <br/>
+      <app-direct-channel [listChannel]="listChannel"></app-direct-channel>
+      <br/>
+      <app-direct-message [listDialog]="listDialog"></app-direct-message>
     </div>
     <div class="col-lg-8 col-lg-offset-1">
       <router-outlet name="channel-router"></router-outlet>
