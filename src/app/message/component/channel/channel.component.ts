@@ -32,8 +32,8 @@ export class ChannelComponent implements OnInit {
         .findChannelForUser(this.authService.getAuth().id)
         .toPromise()
     ]).then(result => {
-      this.listDialog = result[0];
-      this.listChannel = result[1];
+      result [0] ? this.listDialog = result[0] : [];
+      result[1] ? this.listChannel = result[1] : [];
       NProgressService.done();
     });
   }
