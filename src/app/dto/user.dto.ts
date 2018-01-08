@@ -1,10 +1,10 @@
 export class UserDto {
 
-  public id: number;
+  public id: number = null;
 
-  public firstName: string;
+  public firstName: string = null;
 
-  public lastName: string;
+  public lastName: string = null;
 
-  public nickname: string;
+  public nickname: string = null;
 }

@@ -1,0 +1,25 @@
+<div class="block-background">
+  <h3 class="text-center">Channels</h3>
+
+  <div class="block-channel-direct-list">
+    <table class="table">
+      <thead>
+      <tr>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let c of listChannel">
+        <td>
+          <li routerLinkActive="active">
+            <button [routerLink]="['/channel', {outlets: {'channel-router': '' + c.id + '/name/' + c.channelName}}]" class="text-white btn-link">
+              #{{c.channelName}}
+            </button>
+          </li>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

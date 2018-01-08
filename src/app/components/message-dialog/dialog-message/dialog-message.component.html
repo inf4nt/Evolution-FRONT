@@ -21,20 +21,6 @@
       <tr *ngFor="let m of messageList">
         <td style="width: 100%" (click)="selectMessage(m)">
 
-          <!--&lt;!&ndash;[ngClass]="{ 'has-error': f.submitted && !username.valid }"&ndash;&gt;-->
-          <!--<div class="col-lg-8 block-background" [ngStyle]="{'text-align: right': m.sender.id === authUser.id, 'text-align: left': m.sender.id !== authUser.id}"-->
-               <!--[ngClass]="{'pull-right': m.sender.id === authUser.id, 'pull-left': m.sender.id !== authUser.id}">-->
-            <!--<p>-->
-              <!--<a routerLink="/user-home/{{m.sender.id}}" style="color: white">-->
-                <!--{{m.sender.firstName}} {{m.sender.lastName}}-->
-              <!--</a>-->
-              <!--<span class="text-white"> {{m.dateDispatch | date:'yyyy-MM-dd HH:mm'}}</span>-->
-            <!--</p>-->
-            <!--<div >-->
-              <!--{{m.message}}-->
-            <!--</div>-->
-          <!--</div>-->
-
           <div class="col-lg-8 pull-right block-background" *ngIf="m.sender.id === authUser.id"
                style="text-align: right">
             <p>

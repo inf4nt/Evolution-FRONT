@@ -1,3 +1,21 @@
-<p>
-  channel-create works!
-</p>
+<div>
+  <div class="col-lg-12 block-background">
+    <h3 class="text-white text-center">Create channel</h3>
+    <h3 class="text-white text-center" *ngIf="isSuccess">successfully</h3>
+    <form  name="form" #f="ngForm">
+      <label>Channel name
+        <span class="text-white"
+              *ngIf="channelName.hasError('minlength')"> is not valid</span>
+        <span class="channelName"
+              *ngIf="channelName.hasError('required')"> is required</span>
+      </label>
+      <input [ngModelOptions]="{updateOn: 'blur'}" required name="channel-name" minlength="2" maxlength="20" #channelName="ngModel" [(ngModel)]="channelPost.channelName" class="form-control" />
+      <br/>
+      <div class="form-check">
+        <input name="channel-is-private" type="checkbox" class="form-check-input" [(ngModel)]="channelPost.isPrivate">
+        <label class="form-check-label">is private</label>
+      </div>
+      <button class="btn btn-success" (click)="f.form.valid && createNewChannel()" style="width: 100%">Save</button>
+    </form>
+  </div>
+</div>

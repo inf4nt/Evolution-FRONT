@@ -1,0 +1,12 @@
+<div class="block-background">
+  <h3 class="text-white text-center">Channel action</h3>
+  <div class="text-center">
+    <a [routerLink]="['/channel', {outlets: {'channel-router': 'create-channel'}}]" class="btn btn-success"
+       style="width: 100%">
+      Create channel <span class="pull-right glyphicon glyphicon-plus"></span>
+    </a>
+    <br/><br/>
+    <a [routerLink]="['/channel', {outlets: {'channel-router': 'channel-search'}}]" class="btn btn-info" style="width: 100%">Search <span
+      class="pull-right glyphicon glyphicon-search"></span></a>
+  </div>
+</div>

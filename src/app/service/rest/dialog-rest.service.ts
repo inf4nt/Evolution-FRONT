@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {AuthenticationService} from "../../security/authentication.service";
 import {Observable} from "rxjs/Observable";
 import {DialogDto} from "../../dto/dialog.dto";
 import {dialogByUser, messageByDialogId} from "../../common/rest-url";
@@ -9,8 +8,7 @@ import {MessageDto} from "../../dto/message.dto";
 @Injectable()
 export class DialogRestService {
 
-  constructor(private httpClient: HttpClient,
-              private authService: AuthenticationService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   public findDialogsByUser(userId: number): Observable<Array<DialogDto>> {

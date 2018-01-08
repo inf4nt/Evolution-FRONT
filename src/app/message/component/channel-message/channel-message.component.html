@@ -1,0 +1,100 @@
+<div *ngIf="!isLoad">
+  <div class="col-lg-12 div-white block-background">
+
+    <div>
+      <h3 class="text-white text-center">{{channelName}}</h3>
+      <div class="text-center">
+        <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
+        <button [routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"  class="btn btn-info">Add user</button>
+        <button class="btn btn-warning" (click)="out()">Leave</button>
+      </div>
+      <br/>
+    </div>
+
+    <div style="overflow: scroll; overflow-x: hidden" #scrollMe [scrollTop]="scrollMe.scrollHeight"
+         class="form-group block-sms scroll-down">
+      <table class="table">
+        <thead>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let m of listMessage">
+          <td style="width: 100%" (click)="selectMessage(m)">
+
+            <div class="col-lg-8 pull-right block-background" *ngIf="m.sender.id === authUser.id"
+                 style="text-align: right">
+              <p>
+                <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
+                  {{m.sender.firstName}} {{m.sender.lastName}}
+                </a>
+                <span class="text-white"> {{m.datePost | date:'yyyy-MM-dd HH:mm'}}</span>
+              </p>
+              <div (click)="selectMessage(m)">
+                {{m.text}}
+              </div>
+            </div>
+
+            <div class="col-lg-8 pull-left block-background" *ngIf="m.sender.id !== authUser.id" style="text-align: left">
+              <p>
+                <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
+                  {{m.sender.firstName}} {{m.sender.lastName}}
+                </a>
+                <span class="text-white"> {{m.datePost | date:'yyyy-MM-dd HH:mm'}}</span>
+              </p>
+              <div >
+                {{m.text}}
+              </div>
+            </div>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!isAction">
+      <form>
+        <div class="form-group">
+        </div>
+        <textarea placeholder="write message..." [(ngModel)]="messagePost.text" required name="message" class="form-control" style="height: 100px " rows="5" ></textarea>
+
+        <div class="col-lg-12 " >
+          <br/>
+          <button [ngClass]="{disabled : !messagePost.text}" (click)="postMessage()" type="submit" style="width: 100%" class="btn btn-info">
+            Send <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="isAction">
+      <form>
+        <div class="form-group">
+        </div>
+        <textarea placeholder="write message..." [(ngModel)]="selectedMessage.message" required name="message"
+                  class="form-control" style="height: 100px " rows="5"></textarea>
+
+        <div class="col-lg-12">
+          <br/>
+          <div class="col-lg-12">
+            <button class="btn btn-primary" (click)="cancel()" style="width: 15%">Cancel
+              <span class="glyphicon glyphicon-share-alt"></span>
+            </button>
+            <button class="btn btn-success" (click)="edit()" style="width: 69%">Edit
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button class="btn btn-danger  pull-right"
+                    (click)="writeMessageToTemp(selectedMessage)" style="color: white; width: 15%" data-toggle="modal"
+                    href="#modal-message-delete">Delete <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

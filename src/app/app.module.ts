@@ -29,6 +29,8 @@ import {FeedModule} from "./feed/feed.module";
 import { Status500Component } from './components/error/status-500/status-500.component';
 import {AuthenticationService} from "./security/authentication.service";
 import {MessageModule} from "./message/message.module";
+import {DialogRestService} from "./service/rest/dialog-rest.service";
+import {ChannelRestService} from "./service/rest/channel-rest.service";
 
 
 const appRoutes: Routes = [
@@ -83,7 +85,10 @@ const appRoutes: Routes = [
     TechnicalService,
     FriendRestService,
     AuthenticationService,
-    MessageRestService],
+    DialogRestService,
+    ChannelRestService,
+    MessageRestService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

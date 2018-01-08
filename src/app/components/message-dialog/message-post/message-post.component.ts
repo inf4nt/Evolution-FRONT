@@ -4,6 +4,7 @@ import {User} from "../../../model/user.model";
 import {Message} from "../../../model/message.model";
 import {maxListMessageLength} from "../../../common/const";
 import {MessageRestService} from "../../../service/rest/message-rest.service";
+import {MessageDto} from "../../../dto/message.dto";
 
 declare var NProgress: any;
 
@@ -15,13 +16,13 @@ declare var NProgress: any;
 export class MessagePostComponent implements OnInit {
 
   @Input()
-  private recipient: User = new User();
+  recipient: User = new User();
 
   @Input()
-  private sender: User = new User();
+  sender: User = new User();
 
   @Input()
-  private listMessage: Array<Message> = [];
+  listMessage: Array<MessageDto> = [];
 
   messagePost: MessageForSave = new MessageForSave();
 

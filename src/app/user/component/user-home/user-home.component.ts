@@ -37,7 +37,7 @@ export class UserHomeComponent implements OnInit {
               private userDataService: UserRestService,
               private feedDataService: FeedRestService,
               private friendDataService: FriendRestService,
-              private authenticationService: AuthenticationService,) {
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {

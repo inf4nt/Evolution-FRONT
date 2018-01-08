@@ -60,6 +60,13 @@ li {
 
 }
 
+.block-channel-direct-list {
+  height: 250px;
+  width: 100%;
+  overflow: scroll;
+  word-break: break-all;
+  overflow-x: hidden;
+}
 
 .is-active {
   color: red;

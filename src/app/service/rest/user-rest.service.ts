@@ -17,8 +17,7 @@ export class UserRestService {
 
   private usersRest: string = serverUrl + 'user';
 
-  constructor(private httpClient: HttpClient,
-              private transfer: DataTransfer) {
+  constructor(private httpClient: HttpClient) {
   }
 
   public findOne(id: number): Observable<UserDto> {
@@ -28,10 +27,7 @@ export class UserRestService {
 
   public findOneLazy(id: number): Observable<UserDtoLazy> {
     return this.httpClient
-      .get<UserDtoLazy>(this.usersRest + '/' + id + '/lazy')
-      .map(response => {
-        return response;
-      });
+      .get<UserDtoLazy>(this.usersRest + '/' + id + '/lazy');
   }
 
   public findAllList(): Observable<Array<UserDto>> {
@@ -41,10 +37,7 @@ export class UserRestService {
 
   public findAllPage(): Observable<Page<User>> {
     return this.httpClient
-      .get(this.usersRest)
-      .map(response => {
-        return this.transfer.jsonToPage(response);
-      });
+      .get<Page<User>>(this.usersRest);
   }
 
   public postUser(user: UserCreateDto): Observable<UserDtoLazy> {
@@ -76,10 +69,7 @@ export class UserRestService {
 
   public findAllPageable(page: number, size: number): Observable<Page<User>> {
     return this.httpClient
-      .get(findAllUser + '?page=' + page + '&size=' + size)
-      .map(response => {
-        return this.transfer.jsonToPage(response);
-      });
+      .get<Page<User>>(findAllUser + '?page=' + page + '&size=' + size);
   }
 
   public createNewUser(user: UserForSaveDto): Observable<number> {
@@ -111,6 +101,10 @@ export class UserRestService {
       }, err => {
         return false;
       });
+  }
+
+  public findUserByParams(firstName: string, lastName: string, nickname: string): Observable<Array<UserDto>> {
+    return null;
   }
 
 }

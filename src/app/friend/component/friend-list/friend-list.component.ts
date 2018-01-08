@@ -4,6 +4,8 @@ import {Friend} from "../../../model/friend.model";
 import {UserRestService} from "../../../service/rest/user-rest.service";
 import {FriendRestService} from "../../../service/rest/friend-rest.service";
 import {UserDto} from "../../../dto/user.dto";
+import {AuthenticationService} from "../../../security/authentication.service";
+import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
 
 declare var NProgress: any;
 
@@ -20,17 +22,19 @@ export class FriendListComponent implements OnInit {
   currentUser: UserDto = new UserDto();
   listFriend: Array<Friend> = [];
   load: boolean = false;
-
+  authUser: AuthenticationUserDto = new AuthenticationUserDto();
 
   constructor(private activatedRoute: ActivatedRoute,
               private userDataService: UserRestService,
               private router: Router,
+              private authService: AuthenticationService,
               private friendDataService: FriendRestService,) {
   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       NProgress.done();
+      this.authUser = this.authService.getAuth();
       this.listFriend = [];
       this.load = false;
       NProgress.start();

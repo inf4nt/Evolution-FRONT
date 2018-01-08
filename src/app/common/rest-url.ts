@@ -1,6 +1,6 @@
-// export let serverUrl = 'http://localhost:8585/';
+export let serverUrl = 'http://localhost:8585/';
 
-export let serverUrl = 'https://evolution-social-rest-server.herokuapp.com/';
+// export let serverUrl = 'https://evolution-social-rest-server.herokuapp.com/';
 
 export let findOneUser = serverUrl + 'user/';
 
@@ -32,6 +32,8 @@ export let findOneFriend = serverUrl + 'friend/';
 
 export let messageRest = serverUrl + 'message';
 
-export let dialogByUser = serverUrl + 'dialog/user/';
+export let dialogByUser = serverUrl + 'dialog/for-user/';
 
 export let messageByDialogId = serverUrl + 'dialog/';
+
+export let channelRestUrl = serverUrl + 'channel';

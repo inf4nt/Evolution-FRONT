@@ -30,7 +30,9 @@ export class DialogUserListComponent implements OnInit {
     this.messageDataService
       .findLastMessageForMyDialogPage(this.authService.getAuth().id)
       .subscribe(data => {
-        this.messageListInDialogs = data.content;
+        if (data) {
+          this.messageListInDialogs = data.content;
+        }
         NProgress.done();
       });
   }
