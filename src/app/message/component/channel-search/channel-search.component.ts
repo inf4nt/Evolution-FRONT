@@ -13,6 +13,7 @@ import {NProgressService} from "../../../service/nprogress.service";
 export class ChannelSearchComponent implements OnInit {
 
   listChannel: Array<ChannelDto> = [];
+  p: any;
 
   constructor(private channelRest: ChannelRestService,
               public channelComponent: ChannelComponent,
