@@ -31,7 +31,6 @@ const appRoutes: Routes = [
     FriendModule,
     FeedModule,
     RouterModule.forRoot(appRoutes),
-    NgxPaginationModule,
   ],
   exports: [
     UserCreateComponent,

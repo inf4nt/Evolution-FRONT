@@ -4,6 +4,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {HttpClientModule} from "@angular/common/http";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     FormsModule,
     HttpModule,
+    NgxPaginationModule,
   ],
   declarations: []
 })

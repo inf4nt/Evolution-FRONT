@@ -52,7 +52,6 @@ const appRoutes: Routes = [
     CommonModule,
     SharedModule,
     UserModule,
-    NgxPaginationModule,
     RouterModule.forRoot(appRoutes),
   ],
   declarations: [
