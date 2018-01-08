@@ -61,7 +61,7 @@ li {
 }
 
 .block-channel-direct-list {
-  height: 300px;
+  height: 250px;
   width: 100%;
   overflow: scroll;
   word-break: break-all;

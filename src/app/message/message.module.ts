@@ -10,6 +10,10 @@ import { ChannelMessageComponent } from './component/channel-message/channel-mes
 import { DirectMessageComponent } from './component/direct-message/direct-message.component';
 import { DirectChannelComponent } from './component/direct-channel/direct-channel.component';
 import { ChannelActionComponent } from './component/channel-action/channel-action.component';
+import { ChannelAddUserComponent } from './component/channel-add-user/channel-add-user.component';
+import {UserListComponent} from "../user/component/user-list/user-list.component";
+import {UserModule} from "../user/user.module";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const appRoutes: Routes = [
   {path: 'channel', component: ChannelComponent,
@@ -29,6 +33,16 @@ const appRoutes: Routes = [
         component: ChannelCreateComponent,
         outlet: 'channel-router'
       },
+      {
+        path: 'channel-add-user/:channelId/:channelName',
+        component: ChannelAddUserComponent,
+        outlet: 'channel-router'
+      },
+      {
+        path: 'channel-search',
+        component: ChannelSearchComponent,
+        outlet: 'channel-router'
+      },
     ]},
 ];
 
@@ -37,6 +51,8 @@ const appRoutes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
+    UserModule,
+    NgxPaginationModule,
     RouterModule.forRoot(appRoutes),
   ],
   declarations: [
@@ -48,6 +64,7 @@ const appRoutes: Routes = [
     DirectMessageComponent,
     DirectChannelComponent,
     ChannelActionComponent,
+    ChannelAddUserComponent,
   ]
 })
 export class MessageModule { }

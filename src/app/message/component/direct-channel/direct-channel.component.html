@@ -1,9 +1,5 @@
 <div class="block-background">
-  <h3 class="text-white text-center">
-    <li>
-      <a routerLink="{{ '/user-home/' + 5 }}" class="text-white"> Channels</a>
-    </li>
-  </h3>
+  <h3 class="text-center">Channels</h3>
 
   <div class="block-channel-direct-list">
     <table class="table">
@@ -17,7 +13,7 @@
         <td>
           <li routerLinkActive="active">
             <button [routerLink]="['/channel', {outlets: {'channel-router': '' + c.id + '/name/' + c.channelName}}]" class="text-white btn-link">
-              {{c.channelName}}
+              #{{c.channelName}}
             </button>
           </li>
         </td>

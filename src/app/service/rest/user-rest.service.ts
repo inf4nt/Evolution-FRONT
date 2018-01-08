@@ -103,4 +103,8 @@ export class UserRestService {
       });
   }
 
+  public findUserByParams(firstName: string, lastName: string, nickname: string): Observable<Array<UserDto>> {
+    return null;
+  }
+
 }

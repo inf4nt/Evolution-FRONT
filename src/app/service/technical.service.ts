@@ -56,6 +56,7 @@ export class TechnicalService {
         return i;
       }
     }
+    return -1;
   }
 
 }

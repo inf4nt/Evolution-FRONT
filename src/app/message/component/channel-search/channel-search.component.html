@@ -1,3 +1,30 @@
-<p>
-  channel-search works!
-</p>
+<div>
+  <div class="col-lg-12 block-background">
+    <div class="text-center">
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let c of listChannel | paginate: { itemsPerPage: 3, currentPage: p }">
+        <td style="width: 80%">
+          {{c.channelName}}
+        </td>
+        <td style="width: 10%">
+          <button (click)="join(c.id)" class="btn btn-success" *ngIf="this.techService.findIndexChannelInListById(c.id, this.channelComponent.listChannel) === -1">
+            join
+          </button>
+          <button (click)="out(c.id)" class="btn btn-danger" *ngIf="this.techService.findIndexChannelInListById(c.id, this.channelComponent.listChannel) !== -1">
+            out
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

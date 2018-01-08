@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserDto} from "../../../dto/user.dto";
 import {MessageDto} from "../../../dto/message.dto";
 import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
@@ -17,7 +17,7 @@ import {TechnicalService} from "../../../service/technical.service";
   templateUrl: './channel-message.component.html',
   styleUrls: ['./channel-message.component.css']
 })
-export class ChannelMessageComponent implements OnInit {
+export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   listMessage: Array<MessageChannelDto> = [];
   interlocutorUser: UserDto = new UserDto();
@@ -42,6 +42,7 @@ export class ChannelMessageComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+      clearInterval(this.timer);
       this.listMessage = [];
       NProgressService.start();
       this.isLoad = true;
@@ -53,11 +54,29 @@ export class ChannelMessageComponent implements OnInit {
         .subscribe(data => {
           if (data) {
             this.listMessage = data;
+            this.intervalMessage();
           }
           NProgressService.done();
           this.isLoad = false;
         });
     });
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+  }
+
+  public intervalMessage(): void {
+    this.timer = setInterval(() => {
+      this.channelRest
+        .findMessageByChannel(this.channelId)
+        .subscribe(data => {
+          if (data) {
+            this.listMessage = data;
+          }
+        });
+      console.log('interval_' + this.channelId);
+    }, 5000);
   }
 
   public postMessage(): void {
@@ -89,6 +108,22 @@ export class ChannelMessageComponent implements OnInit {
           this.channelComponent.listChannel.splice(index, 1);
           this.router.navigate(['channel']);
         }
+      });
+  }
+
+  public out(): void {
+    NProgressService.start();
+    this.channelRest
+      .outFromChannel(this.channelId)
+      .subscribe(data => {
+        if (data) {
+          let index = this.techService.findIndexChannelInListById(this.channelId, this.channelComponent.listChannel);
+          if (index !== -1) {
+            this.channelComponent.listChannel.splice(index, 1);
+          }
+          this.router.navigate(['channel']);
+        }
+        NProgressService.done();
       });
   }
 

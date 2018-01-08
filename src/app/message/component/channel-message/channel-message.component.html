@@ -5,7 +5,8 @@
       <h3 class="text-white text-center">{{channelName}}</h3>
       <div class="text-center">
         <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
-        <button class="btn btn-info">Add user</button>
+        <button [routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"  class="btn btn-info">Add user</button>
+        <button class="btn btn-warning" (click)="out()">Leave</button>
       </div>
       <br/>
     </div>
