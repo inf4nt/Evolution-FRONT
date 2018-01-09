@@ -14,6 +14,7 @@ import { ChannelAddUserComponent } from './component/channel-add-user/channel-ad
 import {UserListComponent} from "../user/component/user-list/user-list.component";
 import {UserModule} from "../user/user.module";
 import {NgxPaginationModule} from "ngx-pagination";
+import { ChannelUserComponent } from './component/channel-user/channel-user.component';
 
 const appRoutes: Routes = [
   {path: 'channel', component: ChannelComponent,
@@ -43,6 +44,11 @@ const appRoutes: Routes = [
         component: ChannelSearchComponent,
         outlet: 'channel-router'
       },
+      {
+        path: 'channel-user/:channelId/:channelName',
+        component: ChannelUserComponent,
+        outlet: 'channel-router'
+      },
     ]},
 ];
 
@@ -64,6 +70,7 @@ const appRoutes: Routes = [
     DirectChannelComponent,
     ChannelActionComponent,
     ChannelAddUserComponent,
+    ChannelUserComponent,
   ]
 })
 export class MessageModule { }

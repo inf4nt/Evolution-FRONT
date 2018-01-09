@@ -7,6 +7,7 @@ import {MessageChannelDto} from "../../dto/message-channel.dto";
 import {MessageChannelSaveDto} from "../../dto/message-channel-save.dto";
 import {ChannelSaveDto} from "../../dto/channel-save.dto";
 import {Page} from "../../model/page";
+import {UserDto} from "../../dto/user.dto";
 
 @Injectable()
 export class ChannelRestService {
@@ -95,5 +96,15 @@ export class ChannelRestService {
       .map(response => {
         return response.status === 204;
       })
+  }
+
+  public countUserByChannel(id: number): Observable<number> {
+    return this.httpClient
+      .get<number>(channelRestUrl + '/' + id + '/count-user');
+  }
+
+  public findUserByChannelId(id: number): Observable<Array<UserDto>> {
+    return this.httpClient
+      .get<Array<UserDto>>(channelRestUrl + '/' + id + '/user');
   }
 }

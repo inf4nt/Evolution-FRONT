@@ -29,6 +29,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelName: string;
   private timer: any;
   tempMessage: MessageChannelDto = new MessageChannelDto();
+  countUserFromChannel: number;
 
   constructor(private channelRest: ChannelRestService,
               private router: Router,
@@ -47,16 +48,24 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       this.authUser = this.authService.getAuth();
       this.channelId = +params['id'];
       this.channelName = params['name'].toString();
-      this.channelRest
-        .findMessageByChannel(this.channelId)
-        .subscribe(data => {
-          if (data) {
-            this.listMessage = data;
-            this.intervalMessage();
-          }
-          NProgressService.done();
-          this.isLoad = false;
-        });
+
+      Promise.all([
+        this.channelRest
+          .findMessageByChannel(this.channelId)
+          .toPromise(),
+        this.channelRest
+          .countUserByChannel(this.channelId)
+          .toPromise(),
+      ])
+      .then(result => {
+        result[1] ? this.countUserFromChannel = result[1]: 0;
+        if (result[0]) {
+          this.listMessage = result[0];
+          this.intervalMessage();
+        }
+        this.isLoad = false;
+        NProgressService.done();
+      });
     });
   }
 
@@ -121,7 +130,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
           }
           this.router.navigate(['channel']);
         }
-        NProgressService.done();
+        NProgressService.doneAfterCloseModal();
       });
   }
 
