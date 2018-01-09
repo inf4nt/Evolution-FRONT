@@ -9,7 +9,7 @@
         <span class="channelName"
               *ngIf="channelName.hasError('required')"> is required</span>
       </label>
-      <input [ngModelOptions]="{updateOn: 'blur'}" required name="channel-name" minlength="2" maxlength="20" #channelName="ngModel" [(ngModel)]="channelPost.channelName" class="form-control" />
+      <input [ngModelOptions]="{updateOn: 'blur'}" required name="channel-name" minlength="2" maxlength="40" #channelName="ngModel" [(ngModel)]="channelPost.channelName" class="form-control" />
       <br/>
       <div class="form-check">
         <input name="channel-is-private" type="checkbox" class="form-check-input" [(ngModel)]="channelPost.isPrivate">
