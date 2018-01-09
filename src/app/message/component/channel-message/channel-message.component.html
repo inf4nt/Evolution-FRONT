@@ -2,10 +2,13 @@
   <div class="col-lg-12 div-white block-background">
 
     <div>
-      <h3 class="text-white text-center">{{channelName}}</h3>
+      <h3 class="text-white text-center">#{{channelName}}</h3>
       <div class="text-center">
         <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
-        <button [routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"  class="btn btn-info">Add user</button>
+        <button
+          [routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"
+          class="btn btn-info">Add user
+        </button>
         <button class="btn btn-warning" (click)="out()">Leave</button>
       </div>
       <br/>
@@ -23,29 +26,42 @@
         <tbody>
 
         <tr *ngFor="let m of listMessage">
-          <td style="width: 100%" (click)="selectMessage(m)">
+          <td style="width: 100%">
 
             <div class="col-lg-8 pull-right block-background" *ngIf="m.sender.id === authUser.id"
                  style="text-align: right">
-              <p>
+              <div>
+                <div class="pull-left">
+                  <a class="btn btn-success btn-xs" data-toggle="modal" href="#modal-edit-message-channel"
+                     (click)="writeTempMessage(m)">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  <a data-toggle="modal" href="#modal-remove-message-channel" class="btn btn-danger btn-xs"
+                     (click)="writeTempMessage(m)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </a>
+                </div>
                 <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
                   {{m.sender.firstName}} {{m.sender.lastName}}
                 </a>
                 <span class="text-white"> {{m.datePost | date:'yyyy-MM-dd HH:mm'}}</span>
-              </p>
-              <div (click)="selectMessage(m)">
+              </div>
+              <br/>
+              <div>
                 {{m.text}}
               </div>
             </div>
 
-            <div class="col-lg-8 pull-left block-background" *ngIf="m.sender.id !== authUser.id" style="text-align: left">
-              <p>
+            <div class="col-lg-8 pull-left block-background" *ngIf="m.sender.id !== authUser.id"
+                 style="text-align: left">
+              <div>
                 <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
                   {{m.sender.firstName}} {{m.sender.lastName}}
                 </a>
                 <span class="text-white"> {{m.datePost | date:'yyyy-MM-dd HH:mm'}}</span>
-              </p>
-              <div >
+              </div>
+              <br/>
+              <div>
                 {{m.text}}
               </div>
             </div>
@@ -60,11 +76,13 @@
       <form>
         <div class="form-group">
         </div>
-        <textarea placeholder="write message..." [(ngModel)]="messagePost.text" required name="message" class="form-control" style="height: 100px " rows="5" ></textarea>
+        <textarea placeholder="write message..." [(ngModel)]="messagePost.text" required name="message"
+                  class="form-control" style="height: 100px " rows="5"></textarea>
 
-        <div class="col-lg-12 " >
+        <div class="col-lg-12 ">
           <br/>
-          <button [ngClass]="{disabled : !messagePost.text}" (click)="postMessage()" type="submit" style="width: 100%" class="btn btn-info">
+          <button [ngClass]="{disabled : !messagePost.text}" (click)="postMessage()" type="submit" style="width: 100%"
+                  class="btn btn-info">
             Send <span class="glyphicon glyphicon-ok"></span>
           </button>
         </div>
@@ -98,3 +116,46 @@
 
   </div>
 </div>
+
+
+<div class="modal fade" id="modal-remove-message-channel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        Are you sure delete message ?
+        <br/><br/>
+        <u>
+          {{tempMessage.text}}
+        </u>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" (click)="deleteMessageFromChannel()" class="btn btn-danger pull-left">Delete</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="modal-edit-message-channel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">
+          Edit message
+        </h4>
+      </div>
+      <div class="modal-body">
+        <textarea name="text-area-edit-message" class="form-control" rows="4" [ngModel]="tempMessage.text"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary pull-left">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

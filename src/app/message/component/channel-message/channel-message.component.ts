@@ -20,17 +20,15 @@ import {TechnicalService} from "../../../service/technical.service";
 export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   listMessage: Array<MessageChannelDto> = [];
-  interlocutorUser: UserDto = new UserDto();
   authUser: AuthenticationUserDto = new AuthenticationUserDto();
-  tempMessage: MessageDto = new MessageDto();
   selectedMessage: MessageChannelDto = new MessageChannelDto();
-  initialStateSelectedMessage: MessageChannelDto = new MessageChannelDto();
-  isAction: boolean = false;
+  isAction = false;
   isLoad = false;
   messagePost: MessageChannelSaveDto = new MessageChannelSaveDto();
-  private timer: any;
   channelId: number;
   channelName: string;
+  private timer: any;
+  tempMessage: MessageChannelDto = new MessageChannelDto();
 
   constructor(private channelRest: ChannelRestService,
               private router: Router,
@@ -124,6 +122,25 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
           this.router.navigate(['channel']);
         }
         NProgressService.done();
+      });
+  }
+
+  public writeTempMessage(temp: MessageChannelDto): void {
+    this.tempMessage = temp;
+  }
+
+  public deleteMessageFromChannel(): void {
+    NProgressService.start();
+    this.channelRest
+      .deleteMessageFromChannel(this.tempMessage.id)
+      .subscribe(data => {
+        if (data) {
+          let index = this.listMessage.indexOf(this.tempMessage);
+          if (index !== -1) {
+            this.listMessage.splice(index, 1);
+          }
+        }
+        NProgressService.doneAfterCloseModal();
       });
   }
 

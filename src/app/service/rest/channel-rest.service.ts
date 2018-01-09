@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ChannelDto} from "../../dto/channel.dto";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
-import {channelRestUrl, serverUrl} from "../../common/rest-url";
+import {channelRestUrl, deleteMessageFromChannel, serverUrl} from "../../common/rest-url";
 import {MessageChannelDto} from "../../dto/message-channel.dto";
 import {MessageChannelSaveDto} from "../../dto/message-channel-save.dto";
 import {ChannelSaveDto} from "../../dto/channel-save.dto";
@@ -87,5 +87,13 @@ export class ChannelRestService {
       .map(response => {
         return response.status === 204;
       });
+  }
+
+  public deleteMessageFromChannel(messageId: number): Observable<boolean> {
+    return this.httpClient
+      .delete<boolean>(deleteMessageFromChannel + messageId, {observe: 'response'})
+      .map(response => {
+        return response.status === 204;
+      })
   }
 }

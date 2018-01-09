@@ -10,11 +10,12 @@
     <tr *ngFor="let f of feedList">
       <td>
         <div class="block-background div-white">
-          <button *ngIf="f.sender.id == authUser.id || (f.toUser && f.toUser.id == authUser.id)" type="submit"
-                  class="btn btn-default btn-md pull-right" data-toggle="modal" data-target="#feed-delete"
-                  (click)="beforeRemoveFeed(f)">
-            <span class="glyphicon glyphicon-remove text-danger"></span>
-          </button>
+          <div class="pull-right" *ngIf="f.sender.id == authUser.id || (f.toUser && f.toUser.id == authUser.id)">
+            <a data-toggle="modal" href="#feed-delete" class="btn btn-danger btn-xs" (click)="beforeRemoveFeed(f)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </a>
+          </div>
+
           <a routerLink="{{'/user-home/' +  f.sender.id}}" style="color: white" routerLinkActive="active">
             {{f.sender.firstName}} {{f.sender.lastName}}
           </a>

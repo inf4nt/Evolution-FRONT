@@ -1,8 +1,8 @@
 export class ChannelSaveDto {
 
-  channelName: string;
+  public channelName: string;
 
-  isPrivate: boolean = false;
+  public isPrivate: boolean = false;
 
-  whoCreateId: number;
+  public whoCreateId: number;
 }
