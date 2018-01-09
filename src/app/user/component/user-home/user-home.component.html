@@ -27,7 +27,8 @@
         <a routerLink="/dialog" *ngIf="currentUser.id === authUser.id" class="btn btn-success" style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>
         </a>
-        <button [disabled]="currentUser.id == null || currentUser.id == 0" *ngIf="currentUser.id !== authUser.id" routerLink="{{'/message/interlocutor/' + currentUser.id}}"
+        <button [disabled]="currentUser.id == null || currentUser.id == 0" *ngIf="currentUser.id !== authUser.id"
+                [routerLink]="['/channel', {outlets: {'channel-router': 'dialog-by-user/' + currentUser.id}}]"
            class="btn btn-success"
            style="width: 100%">
           Message <span class="glyphicon glyphicon-envelope"></span>

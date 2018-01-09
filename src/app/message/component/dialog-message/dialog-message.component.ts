@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DialogRestService} from "../../../service/rest/dialog-rest.service";
 import {MessageDto} from "../../../dto/message.dto";
 import {ActivatedRoute} from "@angular/router";
 import {NProgressService} from "../../../service/nprogress.service";
@@ -29,14 +28,14 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
   isLoad = false;
   messagePost: MessageForSave = new MessageForSave();
   private timer: any;
-  private dialogId: number;
+  interlocutor: number;
+
 
   constructor(private activatedRoute: ActivatedRoute,
               private authService: AuthenticationService,
               private userRestService: UserRestService,
               private techService: TechnicalService,
-              private messageRestService: MessageRestService,
-              private dialogRestService: DialogRestService) {
+              private messageRestService: MessageRestService) {
   }
 
   ngOnInit() {
@@ -46,25 +45,25 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
       console.log('ngOnInit');
       this.isLoad = true;
       NProgressService.start();
-      this.dialogId = +params['dialogId'];
-      let userId: number = +params['userId'];
+      // this.dialogId = +params['dialogId'];
+      this.interlocutor = +params['userId'];
       this.authUser = this.authService.getAuth();
       this.listMessage = [];
       Promise.all([
 
         this.userRestService
-          .findOne(userId)
+          .findOne(this.interlocutor)
           .toPromise(),
 
-        this.dialogRestService
-          .findMessageByDialogId(this.dialogId)
+        this.messageRestService
+          .findMessageByInterlocutor(this.interlocutor)
           .toPromise(),
 
       ]).then(result => {
         this.interlocutorUser = result[0];
-        this.listMessage = result[1];
+        result[1] ? this.listMessage = result[1] : [];
         if (this.listMessage && this.listMessage.length > 0) {
-          this.startInterval(this.dialogId);
+          this.startInterval(this.interlocutor);
         }
         this.isLoad = false;
         NProgressService.done();
@@ -125,17 +124,16 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
     this.isAction = false;
   }
 
-  public startInterval(dialogId: number): void {
+  public startInterval(interlocutor: number): void {
     this.timer = setInterval(() => {
-      this.dialogRestService
-        .findMessageByDialogId(dialogId)
-        .toPromise()
-        .then((data : any) => {
+      this.messageRestService
+        .findMessageByInterlocutor(interlocutor)
+        .subscribe(data => {
           if (data) {
             this.listMessage = data;
           }
-        });
-      console.log('interval_' + dialogId);
+        })
+      console.log('interval_' + this.interlocutor);
     }, 5000);
   }
 

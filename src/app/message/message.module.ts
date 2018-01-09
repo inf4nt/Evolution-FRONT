@@ -19,8 +19,13 @@ import { ChannelUserComponent } from './component/channel-user/channel-user.comp
 const appRoutes: Routes = [
   {path: 'channel', component: ChannelComponent,
     children: [
+      // {
+      //   path: 'dialog/:dialogId/user/:userId',
+      //   component: MessageInDialogComponent,
+      //   outlet: 'channel-router'
+      // },
       {
-        path: 'dialog/:dialogId/user/:userId',
+        path: 'dialog-by-user/:userId',
         component: MessageInDialogComponent,
         outlet: 'channel-router'
       },

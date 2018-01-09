@@ -11,7 +11,7 @@
       <tr *ngFor="let d of listDialog">
         <td>
           <li routerLinkActive="active">
-            <button [routerLink]="['/channel', {outlets: {'channel-router': 'dialog/' + d.id + '/user/' + d.second.id}}]" class="text-white btn-link">
+            <button [routerLink]="['/channel', {outlets: {'channel-router': 'dialog-by-user/' + d.second.id}}]" class="text-white btn-link">
               {{d.second.firstName}}
               {{d.second.lastName}}
             </button>

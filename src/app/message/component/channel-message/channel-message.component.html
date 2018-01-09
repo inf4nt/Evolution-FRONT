@@ -5,17 +5,20 @@
       <h3 class="text-white text-center">#{{channelName}}</h3>
       <!--<div class="col-lg-8 well col-lg-offset-2">-->
       <div class="text-center">
-        <button class="btn btn-warning" [routerLink]="['/channel', {outlets: {'channel-router': 'channel-user/' + channelId + '/' + channelName}}]">
+        <button class="btn btn-warning"
+                [routerLink]="['/channel', {outlets: {'channel-router': 'channel-user/' + channelId + '/' + channelName}}]">
           <span class="glyphicon glyphicon-user"></span> {{countUserFromChannel}}
         </button>
-        <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
-        <button
-          [routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"
-          class="btn btn-info">
-          <span class="glyphicon glyphicon-plus"></span>
-          Add user
+        <!--<button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>-->
+        <!--<button-->
+        <!--[routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"-->
+        <!--class="btn btn-info">-->
+        <!--<span class="glyphicon glyphicon-plus"></span>-->
+        <!--Add user-->
+        <!--</button>-->
+        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-channel-leave"><span
+          class="glyphicon glyphicon-log-out"></span>Leave
         </button>
-        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-channel-leave" ><span class="glyphicon glyphicon-log-out"></span>Leave</button>
       </div>
       <br/>
     </div>
@@ -61,6 +64,9 @@
             <div class="col-lg-8 pull-left block-background" *ngIf="m.sender.id !== authUser.id"
                  style="text-align: left">
               <div>
+                <a class="pull-right btn btn-success btn-xs" [routerLink]="['/channel', {outlets: {'channel-router': 'dialog-by-user/' + m.sender.id}}]">
+                  <span class="glyphicon glyphicon-envelope"></span>
+                </a>
                 <a routerLink="/user-home/{{m.sender.id}}" style="color: white">
                   {{m.sender.firstName}} {{m.sender.lastName}}
                 </a>
@@ -170,7 +176,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">  Are you sure you want to leave ?</h4>
+        <h4 class="modal-title"> Are you sure you want to leave ?</h4>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
