@@ -9,12 +9,12 @@
                 [routerLink]="['/channel', {outlets: {'channel-router': 'channel-user/' + channelId + '/' + channelName}}]">
           <span class="glyphicon glyphicon-user"></span> {{countUserFromChannel}}
         </button>
-        <!--<button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>-->
+        <button class="btn btn-danger" (click)="deleteChannel()">Delete channel</button>
         <!--<button-->
-        <!--[routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"-->
-        <!--class="btn btn-info">-->
-        <!--<span class="glyphicon glyphicon-plus"></span>-->
-        <!--Add user-->
+          <!--[routerLink]="['/channel', {outlets: {'channel-router': 'channel-add-user/' + channelId + '/' + channelName}}]"-->
+          <!--class="btn btn-info">-->
+          <!--<span class="glyphicon glyphicon-plus"></span>-->
+          <!--Add user-->
         <!--</button>-->
         <button class="btn btn-warning" data-toggle="modal" data-target="#modal-channel-leave"><span
           class="glyphicon glyphicon-log-out"></span>Leave

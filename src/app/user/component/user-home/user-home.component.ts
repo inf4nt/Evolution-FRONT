@@ -53,49 +53,42 @@ export class UserHomeComponent implements OnInit {
 
       NProgressService.start();
 
-
       this.userDataService
         .findOne(id)
-        .toPromise()
-        .then(res => {
-          if (res) {
+        .subscribe(data => {
+          if (data) {
+            this.currentUser = data;
 
-            Promise.all([
+            this.feedDataService
+              .findFeedsForMe(id)
+              .subscribe(data => {
+                if (data) {
+                  this.feedList = data.content;
+                  this.feedList.reverse();
+                }
+              });
 
-              this.feedDataService
-                .findFeedsForMe(id)
-                .toPromise(),
+            this.friendDataService
+              .findRandomFriendByUser(id)
+              .subscribe(data => {
+                if (data) {
+                  this.pageFriends = data;
+                }
+              });
 
+            if (this.authUser.id !== data.id) {
               this.friendDataService
-                .findRandomFriendByUser(id)
-                .toPromise(),
-
-              this.authUser.id !== id
-                ? this.friendDataService.findNextAction(id).toPromise()
-                : null,
-
-            ]).then(results => {
-              this.feedList = results[0].content;
-              this.feedList.reverse();
-
-              this.pageFriends = results[1];
-
-              if (this.authUser.id !== id) {
-                this.friendResultAction = results[2];
-              }
-
-              this.currentUser = res;
-              NProgressService.done();
-              this.isLoading = false;
-            });
-
+                .findNextAction(id)
+                .subscribe(data => {
+                  this.friendResultAction = data;
+                })
+            }
           } else {
             this.router.navigate(['/status-204']);
-            NProgressService.done();
-            this.isLoading = false;
           }
-        });
-
+          NProgressService.done();
+          this.isLoading = false;
+        })
     });
 
   }

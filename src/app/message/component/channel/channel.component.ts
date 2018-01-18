@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../security/authentication.service";
 import {DialogRestService} from "../../../service/rest/dialog-rest.service";
 import {DialogDto} from "../../../dto/dialog.dto";
-import {NProgressService} from "../../../service/nprogress.service";
 import {ChannelRestService} from "../../../service/rest/channel-rest.service";
 import {ChannelDto} from "../../../dto/channel.dto";
 
@@ -22,20 +21,20 @@ export class ChannelComponent implements OnInit {
               private dialogRestService: DialogRestService) { }
 
   ngOnInit() {
-    NProgressService.done();
-    NProgressService.start();
-    Promise.all([
-      this.dialogRestService
-        .findDialogsByUser(this.authService.getAuth().id)
-        .toPromise(),
-      this.channelRest
-        .findChannelForUser(this.authService.getAuth().id)
-        .toPromise()
-    ]).then(result => {
-      result [0] ? this.listDialog = result[0] : [];
-      result[1] ? this.listChannel = result[1] : [];
-      NProgressService.done();
-    });
+    this.dialogRestService
+      .findDialogsByUser(this.authService.getAuth().id)
+      .subscribe(data => {
+        if (data) {
+          this.listDialog = data;
+        }
+      });
+    this.channelRest
+      .findChannelForUser(this.authService.getAuth().id)
+      .subscribe(data => {
+        if (data) {
+          this.listChannel = data;
+        }
+      });
   }
 
 }

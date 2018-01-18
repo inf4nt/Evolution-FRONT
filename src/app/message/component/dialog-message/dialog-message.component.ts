@@ -10,6 +10,10 @@ import {MessageRestService} from "../../../service/rest/message-rest.service";
 import {TechnicalService} from "../../../service/technical.service";
 import {MessageForSave} from "../../../model/message-for-save.model";
 import {maxListMessageLength} from "../../../common/const";
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
+
 
 @Component({
   selector: 'app-dialog-message',
@@ -29,7 +33,7 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
   messagePost: MessageForSave = new MessageForSave();
   private timer: any;
   interlocutor: number;
-
+  private ngUnsubscribe: Subject<Array<MessageDto>> = new Subject();
 
   constructor(private activatedRoute: ActivatedRoute,
               private authService: AuthenticationService,
@@ -40,39 +44,35 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+      NProgressService.done();
       clearInterval(this.timer);
-      NProgressService.start();
       console.log('ngOnInit');
-      this.isLoad = true;
-      NProgressService.start();
-      // this.dialogId = +params['dialogId'];
       this.interlocutor = +params['userId'];
       this.authUser = this.authService.getAuth();
       this.listMessage = [];
-      Promise.all([
 
-        this.userRestService
-          .findOne(this.interlocutor)
-          .toPromise(),
+      this.userRestService
+        .findOne(this.interlocutor)
+        .subscribe(data => {
+          if (data) {
+            this.interlocutorUser = data;
+          }
+        });
 
-        this.messageRestService
-          .findMessageByInterlocutor(this.interlocutor)
-          .toPromise(),
+      this.messageRestService
+        .findMessageByInterlocutor(this.interlocutor)
+        .subscribe(data => {
+          if (data) {
+            this.listMessage = data;
+            this.startInterval(this.interlocutor);
+          }
+        });
 
-      ]).then(result => {
-        this.interlocutorUser = result[0];
-        result[1] ? this.listMessage = result[1] : [];
-        if (this.listMessage && this.listMessage.length > 0) {
-          this.startInterval(this.interlocutor);
-        }
-        this.isLoad = false;
-        NProgressService.done();
-      });
     });
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
+    this.clean();
   }
 
   public selectMessage(message: MessageDto): void {
@@ -91,43 +91,40 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
 
   public deleteMessage(): void {
     if (this.tempMessage) {
-      NProgressService.start();
+      this.clean();
       this.messageRestService
         .deleteMessage(this.tempMessage.id)
         .subscribe(data => {
-          if (data) {
-            const index = this.listMessage.indexOf(this.tempMessage);
-            this.listMessage.splice(index, 1);
-          }
-          NProgressService.doneAfterCloseModal();
-          this.isAction = false;
+          this.startInterval(this.interlocutor);
         });
+      NProgressService.doneAfterCloseModal();
+      const index = this.listMessage.indexOf(this.tempMessage);
+      this.listMessage.splice(index, 1);
+      this.isAction = false;
+      this.tempMessage = new MessageDto();
     }
   }
 
   public edit(): void {
     if (this.selectedMessage && this.selectedMessage.message && this.selectedMessage.message.length > 0) {
-      NProgressService.start();
+      this.clean();
       this.messageRestService
         .put(this.techService.messageToMessageForUpdate(this.selectedMessage))
         .subscribe(data => {
-          this.techService.updateListMessage(this.listMessage, data);
-          NProgressService.done();
-          this.isAction = false;
+          this.startInterval(this.interlocutor);
         });
+      this.isAction = false;
+      this.techService.updateListMessage(this.listMessage, this.selectedMessage);
     } else {
       this.isAction = false;
     }
-  }
-
-  public cancel(): void {
-    this.isAction = false;
   }
 
   public startInterval(interlocutor: number): void {
     this.timer = setInterval(() => {
       this.messageRestService
         .findMessageByInterlocutor(interlocutor)
+        .takeUntil(this.ngUnsubscribe)
         .subscribe(data => {
           if (data) {
             this.listMessage = data;
@@ -139,6 +136,7 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
 
   public postMessage(): void {
     if (this.messagePost.text.length > 0) {
+      this.clean();
       NProgressService.start();
       this.messagePost
         .senderId = this.authUser.id;
@@ -155,10 +153,25 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
             }
           }
           NProgressService.done();
+          this.startInterval(this.interlocutor);
         });
 
     }
     this.messagePost = new MessageForSave();
   }
 
+  public cancel(): void {
+    this.isAction = false;
+  }
+
+  clean(): void {
+    clearInterval(this.timer);
+    window.clearInterval(this.timer);
+    this.unsubscribe();
+  }
+
+  unsubscribe(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }
