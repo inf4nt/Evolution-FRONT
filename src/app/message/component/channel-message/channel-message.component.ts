@@ -1,6 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserDto} from "../../../dto/user.dto";
-import {MessageDto} from "../../../dto/message.dto";
 import {AuthenticationUserDto} from "../../../dto/authentication-user.dto";
 import {MessageChannelDto} from "../../../dto/message-channel.dto";
 import {ChannelRestService} from "../../../service/rest/channel-rest.service";
@@ -8,9 +6,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NProgressService} from "../../../service/nprogress.service";
 import {MessageChannelSaveDto} from "../../../dto/message-channel-save.dto";
 import {AuthenticationService} from "../../../security/authentication.service";
-import {ChannelDto} from "../../../dto/channel.dto";
 import {ChannelComponent} from "../channel/channel.component";
 import {TechnicalService} from "../../../service/technical.service";
+import {Subject} from "rxjs/Subject";
+import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-channel-message',
@@ -30,6 +30,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   private timer: any;
   tempMessage: MessageChannelDto = new MessageChannelDto();
   countUserFromChannel: number;
+  private ngUnsubscribe: Subject<Array<MessageChannelDto>> = new Subject();
 
   constructor(private channelRest: ChannelRestService,
               private router: Router,
@@ -43,46 +44,43 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       clearInterval(this.timer);
       this.listMessage = [];
-      NProgressService.start();
-      this.isLoad = true;
       this.authUser = this.authService.getAuth();
       this.channelId = +params['id'];
       this.channelName = params['name'].toString();
 
-      Promise.all([
-        this.channelRest
-          .findMessageByChannel(this.channelId)
-          .toPromise(),
-        this.channelRest
-          .countUserByChannel(this.channelId)
-          .toPromise(),
-      ])
-      .then(result => {
-        result[1] ? this.countUserFromChannel = result[1]: 0;
-        if (result[0]) {
-          this.listMessage = result[0];
-          this.intervalMessage();
-        }
-        this.isLoad = false;
-        NProgressService.done();
-      });
-    });
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.timer);
-  }
-
-  public intervalMessage(): void {
-    this.timer = setInterval(() => {
       this.channelRest
         .findMessageByChannel(this.channelId)
         .subscribe(data => {
           if (data) {
             this.listMessage = data;
+            this.startInterval(this.channelId);
           }
         });
-      console.log('interval_' + this.channelId);
+
+      this.channelRest
+        .countUserByChannel(this.channelId)
+        .subscribe(data => {
+          data ? this.countUserFromChannel = data : this.countUserFromChannel = 0;
+        });
+
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.clean();
+  }
+
+  public startInterval(channelId: number): void {
+    this.timer = setInterval(() => {
+      this.channelRest
+        .findMessageByChannel(channelId)
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(data => {
+          if (data) {
+            this.listMessage = data;
+          }
+        });
+      console.log('interval_' + channelId);
     }, 5000);
   }
 
@@ -91,7 +89,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       NProgressService.start();
       this.messagePost.channelId = this.channelId;
       this.messagePost.senderId = this.authUser.id;
-      console.log(this.messagePost);
+      this.clean();
       this.channelRest
         .postMessageChannel(this.messagePost)
         .subscribe(data => {
@@ -100,6 +98,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
           }
           NProgressService.done();
           this.messagePost = new MessageChannelSaveDto();
+          this.startInterval(this.channelId);
         });
     }
   }
@@ -139,18 +138,40 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   }
 
   public deleteMessageFromChannel(): void {
-    NProgressService.start();
+    this.clean();
     this.channelRest
       .deleteMessageFromChannel(this.tempMessage.id)
       .subscribe(data => {
-        if (data) {
-          let index = this.listMessage.indexOf(this.tempMessage);
-          if (index !== -1) {
-            this.listMessage.splice(index, 1);
-          }
-        }
-        NProgressService.doneAfterCloseModal();
+        this.startInterval(this.channelId);
       });
+    let index = this.listMessage.indexOf(this.tempMessage);
+    if (index !== -1) {
+      this.listMessage.splice(index, 1);
+    }
+
+    // NProgressService.start();
+    // this.channelRest
+    //   .deleteMessageFromChannel(this.tempMessage.id)
+    //   .subscribe(data => {
+    //     if (data) {
+    //       let index = this.listMessage.indexOf(this.tempMessage);
+    //       if (index !== -1) {
+    //         this.listMessage.splice(index, 1);
+    //       }
+    //     }
+    //     NProgressService.doneAfterCloseModal();
+    //   });
+  }
+
+  private clean(): void {
+    clearInterval(this.timer);
+    window.clearInterval(this.timer);
+    this.unsubscribe();
+  }
+
+  private unsubscribe(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

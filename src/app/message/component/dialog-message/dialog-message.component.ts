@@ -164,13 +164,13 @@ export class MessageInDialogComponent implements OnInit, OnDestroy {
     this.isAction = false;
   }
 
-  clean(): void {
+  public clean(): void {
     clearInterval(this.timer);
     window.clearInterval(this.timer);
     this.unsubscribe();
   }
 
-  unsubscribe(): void {
+  private unsubscribe(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
