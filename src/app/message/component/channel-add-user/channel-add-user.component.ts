@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserRestService} from "../../../service/rest/user-rest.service";
 import {UserDto} from "../../../dto/user.dto";
 import {ActivatedRoute} from "@angular/router";
@@ -20,7 +20,8 @@ export class ChannelAddUserComponent implements OnInit {
 
   constructor(private userRest: UserRestService,
               private channelRest: ChannelRestService,
-              private activatedRoute: ActivatedRoute,) { }
+              private activatedRoute: ActivatedRoute,) {
+  }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -53,7 +54,6 @@ export class ChannelAddUserComponent implements OnInit {
           //   console.log(array);
           //   return false;
           // });
-
 
 
         });
