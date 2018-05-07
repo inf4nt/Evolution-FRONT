@@ -31,7 +31,7 @@ export class FriendRestService {
 
   public findNextAction(second: number): Observable<FriendResultAction> {
     return this.httpClient
-      .get<FriendResultAction>(friendNextAction + '/' + second);
+      .get<FriendResultAction>(friendNextAction +  second);
   }
 
   public actionFriend(friendAction: FriendAction): Observable<FriendResultAction> {

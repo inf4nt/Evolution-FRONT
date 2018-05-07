@@ -39,3 +39,5 @@ export let messageByDialogId = serverUrl + 'dialog/';
 export let channelRestUrl = serverUrl + 'channel';
 
 export let deleteMessageFromChannel = serverUrl + 'channel/message/';
+
+export const notesRestUrl = serverUrl + 'notes';

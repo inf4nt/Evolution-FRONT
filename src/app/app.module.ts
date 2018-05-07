@@ -31,6 +31,8 @@ import {AuthenticationService} from "./security/authentication.service";
 import {MessageModule} from "./message/message.module";
 import {DialogRestService} from "./service/rest/dialog-rest.service";
 import {ChannelRestService} from "./service/rest/channel-rest.service";
+import {NotesModule} from "./notes/notes.module";
+import {NotesRestService} from "./service/rest/notes-rest.service";
 
 
 const appRoutes: Routes = [
@@ -65,6 +67,7 @@ const appRoutes: Routes = [
     FriendModule,
     FeedModule,
     MessageModule,
+    NotesModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
@@ -87,7 +90,8 @@ const appRoutes: Routes = [
     AuthenticationService,
     DialogRestService,
     ChannelRestService,
-    MessageRestService
+    MessageRestService,
+    NotesRestService,
   ],
   bootstrap: [AppComponent]
 })
